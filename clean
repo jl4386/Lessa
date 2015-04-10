@@ -1,0 +1,5 @@
+#!/bin/sh
+
+rm Expr*.java
+rm Expr*.class
+rm *.tokens
