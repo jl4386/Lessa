@@ -190,8 +190,9 @@ power:
 
 atom:
 		'(' (listmaker)? ')' 
-	| 	'{' (songmaker)? '}' 
+	| 	songmaker
 	|	'\'' testlist1 '\'' 
+	|   sequencemaker
 	| 	NAME 
 	| 	NUMBER 
 	| 	STRING+ 
@@ -218,10 +219,10 @@ listmaker:
 
 
 sequencemaker: 
-		'[' NOTE | NAME ( ',' NOTE | NAME )* ']' ;
+		'[' ((NOTE | NAME) ( ',' (NOTE | NAME) )*)? ']' ;
 
 songmaker:
-		'{' sequencemaker | NAME (',' sequencemaker | NAME)* '}' ;
+		'{' ((sequencemaker | NAME) (',' (sequencemaker | NAME))*)? '}' ;
 
 arglist:
 		(argument ',')* (argument (',')? | '*' test (',' argument)* (',' '**' test)? | '**' test) ;
@@ -302,14 +303,8 @@ fragment DIGIT 			: [0-9] ;
 fragment EXPONENT		: [+-]? DIGIT+;
 FLOAT					: DIGIT+ '.' DIGIT+ EXPONENT? ;
 
-L_BRACKET 		: '{' ;
-R_BRACKET 		: '}' ;
-L_S_BRACKET		: '[' ;
-R_S_BRACKET		: ']' ;
-L_P 			: '(' ;
-R_P				: ')' ;
 
-NOTE 			: [A-Ga-gR|r] [0-8] [w|h|q|e|s] ;
+NOTE 			: '\'' [A-Ga-gR|r] [0-8] [w|h|q|e|s] '\'' ;
 
 ID 				: [a-zA-z][a-zA-Z0-9_]*;
 
