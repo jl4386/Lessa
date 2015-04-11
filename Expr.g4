@@ -191,13 +191,12 @@ power:
 atom:
 		'(' (listmaker)? ')' 
 	| 	'{' (songmaker)? '}' 
-	|	 '\'' testlist1 '\'' 
+	|	'\'' testlist1 '\'' 
 	| 	NAME 
 	| 	NUMBER 
 	| 	STRING+ 
 	| 	NOTE ;
  
-
 trailer: 
 		'(' arglist? ')' 
  	| 	'[' subscriptlist ']' 
@@ -342,5 +341,7 @@ STRING					: '"' STRING_GUTS '"' ;
 fragment STRING_GUTS 	: (ESC | ~('\\' | '"'))* ;
 ESC						: '\\' ('\\' | '"') ;
 
-CMT		: '/$' .*? '$/' ;
-SCMT	: '$$' ~('\r' | '\n')* ;
+CMT		: '/$' .*? '$/' -> skip;
+SCMT	: '$$' ~('\r' | '\n')* -> skip;
+SPACES	: [ \t]+ -> skip;
+LINE_JOINING : '\\' SPACES? ( '\r'? '\n' | '\r' ) -> skip;
