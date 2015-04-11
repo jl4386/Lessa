@@ -54,10 +54,10 @@ import_stmt:
 	| 	import_from ;
 
 import_name:
-		'import' dotted_as_names ;
+		IMPORT dotted_as_names ;
 
 import_from:
-		('from' ('.'* dotted_name | '.'+) 'import' ('*' | '(' import_as_names ')' | import_as_names) );
+		(FROM ('.'* dotted_name | '.'+) IMPORT ('*' | '(' import_as_names ')' | import_as_names) );
 
 import_as_name:
 		NAME ('as' NAME) ;
@@ -99,10 +99,10 @@ for_stmt:
 		'for' '(' expr_list 'in' test_list ')' stmt ;
 
 funcdef:
-		'def' NAME parameters compound_stmt ;
+		DEF NAME parameters compound_stmt ;
 
 classdef:
-		'class' NAME ('(' (test_list)? ')')? compound_stmt ;
+		CLASS NAME ('(' (test_list)? ')')? compound_stmt ;
 
 assign_stmt:
 		expr assign_operators expr ';' ;
@@ -152,7 +152,7 @@ and_test:
         not_test ('and' not_test)* ;
  
 not_test:
-        'not' not_test | comparison ;
+        NOT not_test | comparison ;
  
 comparison:
         arith_expr (comp_op arith_expr)* ;
@@ -196,6 +196,9 @@ atom:
 	| 	NAME 
 	| 	NUMBER 
 	| 	STRING+ 
+	| 	NONE
+	|	TRUE
+	|	FALSE
 	| 	NOTE ;
  
 trailer: 
@@ -298,6 +301,14 @@ AND			: 'and' ;
 OR			: 'or' ;
 DEL			: 'del' ;
 THIS		: 'this' ; 
+FROM 		: 'from';
+IMPORT 		: 'import';
+AS 			: 'as';
+GLOBAL 		: 'global';
+IS 			: 'is';
+NONE 		: 'None';
+TRUE 		: 'True';
+FALSE 		: 'False';
 
 fragment DIGIT 			: [0-9] ;
 fragment EXPONENT		: [+-]? DIGIT+;
@@ -312,12 +323,14 @@ PLUSASSIGN 		: '+=' ;
 MINUSASSIGN 	: '-=' ;
 TIMESASSIGN 	: '*=' ;
 DIVIDEASSIGN 	: '/=' ;
+MOD_ASSIGN 		: '%=' ;
 
 POWER		: '**' ;
 TIMES 		: '*' ;
 DIVIDE 		: '/' ;
 PLUS  		: '+' ;
 MINUS 		: '-' ;
+MOD 		: '%' ;
 
 EQUAL 		: '==' ;
 NOTEQUAL 	: '!=' ;
