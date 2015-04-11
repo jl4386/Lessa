@@ -184,8 +184,9 @@ factor:
         ('+'|'-')  factor 
     | 	power ;
 
-power:
-        atom ('**' factor)? ;
+power: 
+		atom trailer* ( '**' factor )? ;
+
 
 atom:
 		'(' (listmaker)? ')' 
@@ -196,6 +197,22 @@ atom:
 	| 	STRING+ 
 	| 	NOTE ;
  
+
+trailer: 
+		'(' arglist? ')' 
+ 	| 	'[' subscriptlist ']' 
+ 	|	'.' NAME ;
+
+/// subscriptlist: subscript (',' subscript)* [',']
+subscriptlist: 
+		subscript ( ',' subscript )* ','? ;
+
+/// subscript: test | [test] ':' [test] [sliceop]
+subscript: 
+		test 
+ 	| 	test? ':' test? sliceop? ;
+
+
 listmaker:
 		test ( list_for | (',' test)* ) ;
 /// remove [',']
