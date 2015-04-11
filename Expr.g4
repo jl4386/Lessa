@@ -47,7 +47,7 @@ small_stmt:
 		(del_stmt | import_stmt) ;
 
 del_stmt:
-		'del' expr_list ;
+		DEL expr_list ;
 
 import_stmt:
 		import_name
@@ -79,24 +79,24 @@ expr_stmt:
         expr_list ';' ;
 
 compound_stmt:
-        '{' stmt_list '}' ;
+        '{' (stmt_list)? '}' ;
 
 stmt_list:
 		stmt
 	|	stmt_list stmt ;
 
 selection_stmt:
-		'if' '(' test ')' stmt ('elif' '(' test ')' stmt)* ('else' stmt)? ;
+		IF '(' test ')' stmt (ELIF '(' test ')' stmt)* (ELSE stmt)? ;
 
 iteration_stmt:
 		while_stmt 
 	| 	for_stmt ;
 
 while_stmt:
-		'while' '(' test ')' stmt ;
+		WHILE '(' test ')' stmt ;
 
 for_stmt:
-		'for' '(' expr_list 'in' test_list ')' stmt ;
+		FOR '(' expr_list IN test_list ')' stmt ;
 
 funcdef:
 		DEF NAME parameters compound_stmt ;
@@ -122,13 +122,13 @@ jump_stmt:
 	| 	return_stmt ;
  
 break_stmt:
-     	'break' ';'  ;
+     	BREAK ';'  ;
 
 continue_stmt:
-        'continue' ';' ;
+        CONTINUE ';' ;
 
 return_stmt:
-       	'return' (test_list)? ';' ;
+       	RETURN (test_list)? ';' ;
 
 expr_list:
 		expr (',' expr)*  ;
@@ -143,13 +143,13 @@ sliceop:
 		':' (test)? ;
 
 test:
-        or_test ('if' or_test 'else' test)? ;
+        or_test (IF or_test ELSE test)? ;
 
 or_test:
-        and_test ('or' and_test)* ;
+        and_test (OR and_test)* ;
 
 and_test:
-        not_test ('and' not_test)* ;
+        not_test (AND not_test)* ;
  
 not_test:
         NOT not_test | comparison ;
@@ -166,10 +166,10 @@ comp_op:
 	|	'<='
 	|	'<>'
 	|	'!='
-	|	'in'
-	|	'not' 'in'
+	|	IN
+	|	NOT IN
 	|	'is'
-	|	'is' 'not' ;
+	|	'is' NOT ;
 
 expr: 
 	arith_expr ;
@@ -239,22 +239,22 @@ list_iter:
 	| 	list_if ;
 
 list_for:
-		'for' expr_list 'in' test_list (list_iter)? ;
+		FOR expr_list IN test_list (list_iter)? ;
 /// change testlist_safe to test_list 
 
 
 list_if:
-		'if' test (list_iter)? ;
+		IF test (list_iter)? ;
 
 comp_iter:
 		comp_for 
 	| 	comp_if ;
  
 comp_for:
-		'for' expr_list 'in' or_test (comp_iter)? ;
+		FOR expr_list IN or_test (comp_iter)? ;
 
 comp_if:
-		'if' test (comp_iter)? ;
+		IF test (comp_iter)? ;
 
 testlist1: 
 		test (',' test)* ;
