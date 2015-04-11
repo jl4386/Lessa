@@ -275,16 +275,6 @@ fplist:
 
 
 
-
-NAME:
-		ID ;
-NUMBER:
-		INT
-	|	FLOAT ;
-
-NEWLINE : [\r\n]+ ;
-INT     : [0-9]+ ;
-
 CLASS		: 'class' ;
 DEF			: 'def' ;
 RETURN		: 'return' ;
@@ -310,14 +300,18 @@ NONE 		: 'None';
 TRUE 		: 'True';
 FALSE 		: 'False';
 
-fragment DIGIT 			: [0-9] ;
-fragment EXPONENT		: [+-]? DIGIT+;
-FLOAT					: DIGIT+ '.' DIGIT+ EXPONENT? ;
+NUMBER      	: INT |	FLOAT ;
 
+NEWLINE 		: [\r\n]+ ;
+
+FLOAT			: DIGIT+ '.' DIGIT+ EXPONENT? ;
 
 NOTE 			: '\'' [A-Ga-gR|r] [0-8] [w|h|q|e|s] '\'' ;
 
+NAME            : ID ;
+
 ID 				: [a-zA-z][a-zA-Z0-9_]*;
+INT     		: [0-9]+ ;
 
 PLUSASSIGN 		: '+=' ;
 MINUSASSIGN 	: '-=' ;
@@ -349,7 +343,13 @@ STRING					: '"' STRING_GUTS '"' ;
 fragment STRING_GUTS 	: (ESC | ~('\\' | '"'))* ;
 ESC						: '\\' ('\\' | '"') ;
 
-CMT		: '/$' .*? '$/' -> skip;
-SCMT	: '$$' ~('\r' | '\n')* -> skip;
-SPACES	: [ \t]+ -> skip;
-LINE_JOINING : '\\' SPACES? ( '\r'? '\n' | '\r' ) -> skip;
+SKIP
+ : ( SPACES | CMT | SCMT | LINE_JOINING ) -> skip
+ ;
+
+fragment CMT			: '/$' .*? '$/' ;
+fragment SCMT			: '$$' ~('\r' | '\n')* ;
+fragment SPACES			: [ \t]+ ;
+fragment LINE_JOINING : '\\' SPACES? ( '\r'? '\n' | '\r' ) ;
+fragment DIGIT 			: [0-9] ;
+fragment EXPONENT		: [+-]? DIGIT+;
