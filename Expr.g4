@@ -15,11 +15,16 @@ grammar Expr;
 prog: 	single_input ;
 ///	|	file_input ;
 
+///single_input:
+///		(NEWLINE | stmt NEWLINE)* ;
+
 single_input:
-		(NEWLINE | stmt NEWLINE) ;
+		(stmt )* ;
+
 
 decorator: 
-		'@' dotted_name ( '(' (arglist)? ')' )? NEWLINE ;
+		'@' dotted_name ( '(' (arglist)? ')' )?  ;
+///'@' dotted_name ( '(' (arglist)? ')' )?  ;
 
 decorators: 
 		decorator+ ;
@@ -38,6 +43,7 @@ stmt:
 	| 	funcdef 
 	| 	classdef
 	|	assign_stmt
+	|	decorated
 	;
 
 simple_stmt:
@@ -76,7 +82,7 @@ dotted_name:
 		NAME ('.' NAME)* ;
 
 expr_stmt:
-        expr_list ';' ;
+        expr_list? ';' ;
 
 compound_stmt:
         '{' (stmt_list)? '}' ;
@@ -168,31 +174,43 @@ comp_op:
 	|	'!='
 	|	IN
 	|	NOT IN
-	|	'is'
-	|	'is' NOT ;
+	|	IS
+	|	IS NOT ;
 
 expr: 
-	arith_expr ;
+		arith_expr ;
  
 arith_expr:
         term (('+'|'-') term)* ;
- 
+
+/// note expr
+
+
 term:
-        factor (('*'|'/'|'%'|'//') factor)* ;
+        factor (('*'|'/'|'%'|'//') factor)* 
+    |	tone ;
+
+tone:
+		(SHARP|FLAT) atom
+	|	atom ;
  
 factor:
         ('+'|'-')  factor 
     | 	power ;
 
 power: 
-		atom trailer* ( '**' factor )? ;
+		atom_trailer ( '**' factor )? ;
+
+atom_trailer:
+		(THIS '.')? atom  (trailer)*;
 
 
 atom:
-		'(' (listmaker)? ')' 
-	| 	songmaker
-	|	'\'' testlist1 '\'' 
-	|   sequencemaker
+		'(' (listmaker_test)? ')' 
+	| 	'{' (songmaker)?  '}'
+	/// what it testlist1 ????
+	|	'\'' testlist1 '\''            
+	|   '[' (sequencemaker)? ']'
 	| 	NAME 
 	| 	NUMBER 
 	| 	STRING+ 
@@ -201,14 +219,31 @@ atom:
 	|	FALSE
 	| 	NOTE ;
  
+
+
+
+listmaker_test:
+		test ( list_for | (',' test)* ) ;
+/// remove [',']
+
 trailer: 
 		'(' arglist? ')' 
  	| 	'[' subscriptlist ']' 
  	|	'.' NAME ;
 
+sequencemaker: 
+		 (NOTE | NAME) ( ',' (NOTE | NAME) )*  ;
+
+songmaker:
+		 (sequencemaker | NAME) (',' (sequencemaker | NAME))* ;
+
+
+
+
 /// subscriptlist: subscript (',' subscript)* [',']
 subscriptlist: 
-		subscript ( ',' subscript )* ','? ;
+		subscript ( ',' subscript )* ;
+///','?
 
 /// subscript: test | [test] ':' [test] [sliceop]
 subscript: 
@@ -216,19 +251,9 @@ subscript:
  	| 	test? ':' test? sliceop? ;
 
 
-listmaker:
-		test ( list_for | (',' test)* ) ;
-/// remove [',']
-
-
-sequencemaker: 
-		'[' ((NOTE | NAME) ( ',' (NOTE | NAME) )*)? ']' ;
-
-songmaker:
-		'{' ((sequencemaker | NAME) (',' (sequencemaker | NAME))*)? '}' ;
-
 arglist:
-		(argument ',')* (argument (',')? | '*' test (',' argument)* (',' '**' test)? | '**' test) ;
+		(argument ',')* (argument (',')? 
+	| '*' test (',' argument)* (',' '**' test)? | '**' test) ;
 
 argument:
 		test (comp_for)?
@@ -301,16 +326,16 @@ FALSE 		: 'False';
 
 NUMBER      	: INT |	FLOAT ;
 
-NEWLINE 		: [\r\n]+ ;
+
 
 FLOAT			: DIGIT+ '.' DIGIT+ EXPONENT? ;
 
-NOTE 			: '\'' [A-Ga-gR|r] [0-8] [w|h|q|e|s] '\'' ;
+NOTE 			: '\'' ((('A'..'G'|'a'..'g') ('2'..'8') ('w'|'h'|'q'|'e'|'s')) | ('R'|'r') )'\'' ;
 
 NAME            : ID ;
 
-ID 				: [a-zA-z][a-zA-Z0-9_]*;
-INT     		: [0-9]+ ;
+ID 				: ('a'..'z'|'A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')*;
+fragment INT     		: ('0'..'9')+ ;
 
 PLUSASSIGN 		: '+=' ;
 MINUSASSIGN 	: '-=' ;
@@ -343,12 +368,17 @@ fragment STRING_GUTS 	: (ESC | ~('\\' | '"'))* ;
 ESC						: '\\' ('\\' | '"') ;
 
 SKIP
- : ( SPACES | CMT | SCMT | LINE_JOINING ) -> skip
+ : ( SPACES | CMT | SCMT | LINE_JOINING | LINE_BAR | NEWLINE ) -> skip
  ;
 
+NEWLINE 		: [\r\n]+ ;
 fragment CMT			: '/$' .*? '$/' ;
 fragment SCMT			: '$$' ~('\r' | '\n')* ;
 fragment SPACES			: [ \t]+ ;
+
+/// valid line_bar like ['C3q', | , 'C3q'] or ['C3q', | 'C3q']
+LINE_BAR		: '|' (SPACES)* (',')? ; 		
+
 fragment LINE_JOINING : '\\' SPACES? ( '\r'? '\n' | '\r' ) ;
-fragment DIGIT 			: [0-9] ;
-fragment EXPONENT		: [+-]? DIGIT+;
+fragment DIGIT 			: ('0'..'9')+ ;
+fragment EXPONENT		: ('+'|'-')? DIGIT+;
