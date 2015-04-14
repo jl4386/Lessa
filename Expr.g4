@@ -335,7 +335,15 @@ NOTE 			: '\'' ((('A'..'G'|'a'..'g') ('2'..'8') ('w'|'h'|'q'|'e'|'s')) | ('R'|'r
 NAME            : ID ;
 
 ID 				: ('a'..'z'|'A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')*;
-fragment INT     		: ('0'..'9')+ ;
+
+
+fragment INT             	: DEC_INT | OCT_INT | HEX_INT ;
+fragment DEC_INT			: NONZERO_DIGIT DIGIT* | '0' ;
+fragment OCT_INT			: '0' ('o' | 'O') OCT_DIGIT+ | '0' OCT_DIGIT+ ;
+fragment HEX_INT			: '0' ('x' | 'X') HEX_DIGIT+ ;
+fragment NONZERO_DIGIT		: [1-9] ;
+fragment OCT_DIGIT			: [0-7] ;
+fragment HEX_DIGIT			: [a-fA-F0-9] ;
 
 PLUSASSIGN 		: '+=' ;
 MINUSASSIGN 	: '-=' ;
