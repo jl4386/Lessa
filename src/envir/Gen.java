@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.io.Writer;
 
 public class Gen {
-  private static final String tempFileName = "definition.py";
-  private static final String exeFileName = "exec.py";
-  private static final String dirtyFileName = "dirty.txt";
+  public static final String tempFileName = "definition.py";
+  public static final String exeFileName = "exec.py";
+  public static final String dirtyFileName = "dirty.txt";
   
   private static File temp;
   private static File exec;
