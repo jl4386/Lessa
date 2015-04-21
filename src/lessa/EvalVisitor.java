@@ -24,8 +24,9 @@ public class EvalVisitor extends ExprBaseVisitor<Integer> {
 				try {
 					Writer w = new FileWriter(Gen.exeFileName, false);
 					w.write(print);
+					w.write(" ");
 					w.write(value);
-					System.out.println(print+value);
+					System.out.println(print+" "+value);
 					w.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
