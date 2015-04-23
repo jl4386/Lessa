@@ -181,7 +181,7 @@ expr:
 		arith_expr ;
  
 arith_expr:
-        term (('+'|'-') term)* ;
+        term (op=('+'|'-') term)* ;
 
 /// note expr
 
