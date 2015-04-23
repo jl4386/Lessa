@@ -2,8 +2,8 @@ grammar Expr;
 
 ///prog:	(expr NEWLINE | CLASS | seq)*  ;
 ///seq:	L_S_BRACKET (NOTE COMMA)* NOTE R_S_BRACKET ; 
-///expr:	expr ('*'|'/') expr
-///    |	expr ('+'|'-') expr
+///expr:	expr op=('*'|'/') expr
+///    |	expr op=('+'|'-') expr
 ///    |	INT
 ///	|   FLOAT
 ///	|   STRING
