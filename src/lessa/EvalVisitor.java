@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.*;
 
+import envir.Envir;
 import envir.Gen;
 
 
@@ -22,11 +23,12 @@ public class EvalVisitor extends ExprBaseVisitor<Integer> {
 				String value = ctx.STRING().getText();
 				
 				try {
-					Writer w = new FileWriter(Gen.exeFileName, false);
+				    System.out.println("-----------------generating code-----------------\n");
+					Writer w = new FileWriter(Envir.exeFileName, false);
 					w.write(print);
 					w.write(" ");
 					w.write(value);
-					System.out.println(print+" "+value);
+					//System.out.println(print+" "+value);
 					w.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
