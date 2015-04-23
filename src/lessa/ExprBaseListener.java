@@ -1,6 +1,4 @@
-package lessa;
-
-// Generated from Expr.g4 by ANTLR 4.5
+package lessa;// Generated from Expr.g4 by ANTLR 4.5
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -121,18 +119,6 @@ public class ExprBaseListener implements ExprListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDel_stmt(ExprParser.Del_stmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterPrint_stmt(ExprParser.Print_stmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPrint_stmt(ExprParser.Print_stmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

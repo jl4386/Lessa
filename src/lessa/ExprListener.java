@@ -1,6 +1,4 @@
-package lessa;
-
-// Generated from Expr.g4 by ANTLR 4.5
+package lessa;// Generated from Expr.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -99,16 +97,6 @@ public interface ExprListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDel_stmt(ExprParser.Del_stmtContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ExprParser#print_stmt}.
-	 * @param ctx the parse tree
-	 */
-	void enterPrint_stmt(ExprParser.Print_stmtContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ExprParser#print_stmt}.
-	 * @param ctx the parse tree
-	 */
-	void exitPrint_stmt(ExprParser.Print_stmtContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#import_stmt}.
 	 * @param ctx the parse tree
