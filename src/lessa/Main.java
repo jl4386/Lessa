@@ -55,8 +55,7 @@ public class Main {
        
       InputStream filepy = new FileInputStream(Envir.dir+Envir.exeFileName);
       interpreter.execfile(filepy);
-      //System.out.println(interpreter.get("i"));
-      //pi.exec("This is a test\n");
+      
       filepy.close();
     } catch (FileNotFoundException e) {
       // TODO Auto-generated catch block
