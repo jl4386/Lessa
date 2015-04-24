@@ -21,16 +21,16 @@ public class Indent{
 //      e.printStackTrace();
 //    }
 //  }
-  public static String getIndent(){
+  public String getIndent(){
     return(indent.toString());
   }
   
-  public static void addIndent(){
-    indent.append("  ");
+  public void addIndent(){
+    indent.append("\t");
   }
-  public static void delIndent(){
+  public void delIndent(){
     int len = indent.length();
-    indent.delete(len-2, len);
+    indent.delete(len-"\t".length(), len);
   }
   
 //  public void write(String content){
@@ -43,4 +43,7 @@ public class Indent{
 //    }
 //    
 //  }
+  public static void main(String[] args){
+    System.out.println("\t".length());
+  }
 }
