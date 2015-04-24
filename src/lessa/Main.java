@@ -88,13 +88,14 @@ public class Main {
     System.out.println("Lessa 1.0");
     System.out.println("-------------------------------");
     while (!(input = sc.nextLine()).equals("exit()")){
+      System.out.println("hi" + "\n");
       strseen.append(input+"\n");
       
       if(input.endsWith(";")&&count==0){      
         //System.out.println(strseen.toString());
         
         parse(strseen.toString());
-        exec();
+        //exec();
         
         
         strseen.delete(0, strseen.length());
@@ -114,7 +115,7 @@ public class Main {
         //System.out.println(strseen.toString());
         
         parse(strseen.toString());
-        exec();
+        //exec();
         
         strseen.delete(0, strseen.length());
         continue;
