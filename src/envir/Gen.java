@@ -84,12 +84,6 @@ public class Gen {
       // execution file content
       
       w.write(content+"\n\n");
-      
-      
-      
-      
-      
-      
       w.close();
     } catch (IOException e) {
       // TODO Auto-generated catch block
