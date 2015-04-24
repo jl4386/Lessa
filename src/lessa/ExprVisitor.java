@@ -1,6 +1,4 @@
-package lessa;
-
-// Generated from Expr.g4 by ANTLR 4.5
+package lessa;// Generated from Expr.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -66,12 +64,6 @@ public interface ExprVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDel_stmt(ExprParser.Del_stmtContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ExprParser#print_stmt}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPrint_stmt(ExprParser.Print_stmtContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ExprParser#import_stmt}.
 	 * @param ctx the parse tree
