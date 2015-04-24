@@ -34,16 +34,16 @@ decorated:
 
 // needs assign statement
 stmt:
-		simple_stmt 
-	| 	expr_stmt 
-	| 	compound_stmt 
-	| 	selection_stmt 
-	|	iteration_stmt 
-	| 	jump_stmt 
-	| 	funcdef 
-	| 	classdef
-	|	assign_stmt
-	|	decorated
+		simple_stmt         #SIMPLESTMT
+	| 	expr_stmt           #EXPRSTMT
+	| 	compound_stmt       #COMPSTMT
+	| 	selection_stmt      #SELECTSTMT
+	|	iteration_stmt      #ITRSTMT
+	| 	jump_stmt           #JMPSTMT
+	| 	funcdef             #FUNCDEFSTMT
+	| 	classdef            #CLASSDEFSTMT
+	|	assign_stmt         #ASSIGNSTMT
+	|	decorated           #DECORATEDSTMT
 	;
 
 simple_stmt:
@@ -56,8 +56,9 @@ del_stmt:
 		DEL expr_list ;
 
 import_stmt:
-		import_name
-	| 	import_from ;
+		import_name         #IMNAMESTMT
+	| 	import_from         #IMFROMSTMT
+	;
 
 import_name:
 		IMPORT dotted_as_names ;
@@ -88,15 +89,17 @@ compound_stmt:
         '{' (stmt_list)? '}' ;
 
 stmt_list:
-		stmt
-	|	stmt_list stmt ;
+		stmt               #LISTSTMT
+	|	stmt_list stmt     #LISTLISTSTMT
+	;
 
 selection_stmt:
 		IF '(' test ')' stmt (ELIF '(' test ')' stmt)* (ELSE stmt)? ;
 
 iteration_stmt:
-		while_stmt 
-	| 	for_stmt ;
+		while_stmt         #WILEITR
+	| 	for_stmt           #FORITR
+	;
 
 while_stmt:
 		WHILE '(' test ')' stmt ;
@@ -114,18 +117,20 @@ assign_stmt:
 		expr assign_operators expr ';' ;
 
 assign_operators:
-		ASSIGN
-	|	PLUSASSIGN
-	|	MINUSASSIGN
-	|	TIMESASSIGN
-	|	DIVIDEASSIGN ;
+		ASSIGN             #ASSIGNOP
+	|	PLUSASSIGN         #PASSIGNOP
+	|	MINUSASSIGN        #MASSIGNOP
+	|	TIMESASSIGN        #TASSIGNOP
+	|	DIVIDEASSIGN       #DASSIGNOP
+	;
 
 
 
 jump_stmt:
-        break_stmt 
-	| 	continue_stmt 
-	| 	return_stmt ;
+        break_stmt         #BJMP
+	| 	continue_stmt      #CJMP
+	| 	return_stmt        #RJMP
+	;
  
 break_stmt:
      	BREAK ';'  ;
@@ -164,9 +169,9 @@ comparison:
         arith_expr (comp_op arith_expr)* ;
 
 
-comp_op:
+comp_op:              
         '<'
-	|	'>'
+	|	'>'            
 	|	'=='
 	|	'>='
 	|	'<='
@@ -181,22 +186,37 @@ expr:
 		arith_expr ;
  
 arith_expr:
-        term (op=('+'|'-') term)* ;
+        term (ADDMINOP term)* ;
+
+ADDMINOP:
+		'+'
+	|	'-'
+	;
 
 /// note expr
 
 
 term:
-        factor (('*'|'/'|'%'|'//') factor)* 
-    |	tone ;
+        factor (MULDIVOP factor)*            #FTERM
+    |	tone                                 #TTERM
+    ;
+
+MULDIVOP:
+		'*'
+	|	'/'
+	|	'%'
+	|	'//'
+	;
 
 tone:
-		(SHARP|FLAT) atom
-	|	atom ;
+		op=(SHARP|FLAT) atom                    #SFATOMTONE
+	|	atom                                 #ATOMTONE
+	;
  
 factor:
-        ('+'|'-')  factor 
-    | 	power ;
+        op=('+'|'-')  factor                    #PMFACTOR
+    | 	power                                #PWFACTOR
+    ;
 
 power: 
 		atom_trailer ( '**' factor )? ;
@@ -206,18 +226,19 @@ atom_trailer:
 
 
 atom:
-		'(' (listmaker_test)? ')' 
-	| 	'{' (songmaker)?  '}'
+		'(' (listmaker_test)? ')'            #ATOMLIST 
+	| 	'{' (songmaker)?  '}'                #ATOMSONG
 	/// what it testlist1 ????
-	|	'\'' testlist1 '\''            
-	|   '[' (sequencemaker)? ']'
-	| 	NAME 
-	| 	NUMBER 
-	| 	STRING+ 
-	| 	NONE
-	|	TRUE
-	|	FALSE
-	| 	NOTE ;
+	|	'\'' testlist1 '\''                  #ATOMTESTLIST
+	|   '[' (sequencemaker)? ']'             #ATOMSEQ
+	| 	NAME                                 #ATOMNAME
+	| 	NUMBER                               #ATOMNUM
+	| 	STRING+                              #ATOMSTR
+	| 	NONE                                 #ATOMNONE
+	|	TRUE                                 #ATOMTR
+	|	FALSE                                #ATOMFAL
+	| 	NOTE                                 #ATOMNOTE
+	;
  
 
 
@@ -227,9 +248,10 @@ listmaker_test:
 /// remove [',']
 
 trailer: 
-		'(' arglist? ')' 
- 	| 	'[' subscriptlist ']' 
- 	|	'.' NAME ;
+		'(' arglist? ')'                     #TLRARG
+ 	| 	'[' subscriptlist ']'                #TLRSUBLIST
+ 	|	'.' NAME                             #TLRNAME
+ 	;
 
 sequencemaker: 
 		 (NOTE | NAME) ( ',' (NOTE | NAME) )*  ;
@@ -247,21 +269,25 @@ subscriptlist:
 
 /// subscript: test | [test] ':' [test] [sliceop]
 subscript: 
-		test 
- 	| 	test? ':' test? sliceop? ;
+		test                             #SUBSCRT
+ 	| 	test? ':' test? sliceop?         #SUBSCRTT
+ 	;
 
 
 arglist:
-		(argument ',')* (argument (',')? 
-	| '*' test (',' argument)* (',' '**' test)? | '**' test) ;
+		(argument ',')* (argument (',')?                       
+	| '*' test (',' argument)* (',' '**' test)? | '**' test)   
+	;
 
 argument:
-		test (comp_for)?
-	| 	test '=' test ;
+		test (comp_for)?              #ARGTEST
+	| 	test '=' test                 #ARGEQ
+	;
 
 list_iter:
-		list_for 
-	| 	list_if ;
+		list_for                      #LISTITRFOR
+	| 	list_if                       #LISTITRIF
+	;
 
 list_for:
 		FOR expr_list IN test_list (list_iter)? ;
@@ -272,8 +298,9 @@ list_if:
 		IF test (list_iter)? ;
 
 comp_iter:
-		comp_for 
-	| 	comp_if ;
+		comp_for                       #CMPITRFOR
+	| 	comp_if                        #CMPITRIF
+	;
  
 comp_for:
 		FOR expr_list IN or_test (comp_iter)? ;
@@ -291,8 +318,9 @@ varargslist:
 		(fpdef ('=' test)? ',')* ('*' NAME (',' '**' NAME)? | '**' NAME) | fpdef ('=' test)? (',' fpdef ('=' test)?)* (',')? ;
 
 fpdef: 
-		NAME 
-	| 	'(' fplist ')' ;
+		NAME                          #FPDEFNAME
+	| 	'(' fplist ')'                #FPDEFLIST
+	;
 
 fplist: 
 		fpdef (',' fpdef)*  ;
