@@ -163,7 +163,8 @@ and_test:
         not_test (AND not_test)* ;
  
 not_test:
-        NOT not_test | comparison ;
+        NOT not_test 
+    |   comparison ;
  
 comparison:
         arith_expr (comp_op arith_expr)* ;

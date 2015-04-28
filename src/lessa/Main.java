@@ -93,7 +93,7 @@ public class Main {
         //System.out.println(strseen.toString());
         
         parse(strseen.toString());
-        exec();
+        //exec();
         
         
         strseen.delete(0, strseen.length());
@@ -113,7 +113,7 @@ public class Main {
         //System.out.println(strseen.toString());
         
         parse(strseen.toString());
-        exec();
+        //exec();
         
         strseen.delete(0, strseen.length());
         continue;
