@@ -64,7 +64,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //stmt -> expr_stmt
   @Override public String visitEXPRSTMT(ExprParser.EXPRSTMTContext ctx) {
 	  System.out.println("stmt -> expr_stmt");
-	  String expression = indent.getIndent() + visit(ctx.expr_stmt()) + "\n";
+	  String expression = indent.getIndent() + visit(ctx.expr_stmt());
 	  System.out.println("stmt -> expr_stmt return:\n" + expression);
 	  return expression; 
   }
@@ -72,7 +72,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //stmt -> compound_stmt
   @Override public String visitCOMPSTMT(ExprParser.COMPSTMTContext ctx) {
 	  System.out.println("stmt -> compound_stmt");
-	  String ret = indent.getIndent() + visit(ctx.compound_stmt()) + "\n";
+	  String ret = visit(ctx.compound_stmt());
 	  System.out.println("stmt -> compound_stmt return:\n" + ret);
 	  return ret;
   }
@@ -80,9 +80,9 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //stmt -> selection_stmt
   @Override public String visitSELECTSTMT(ExprParser.SELECTSTMTContext ctx) {
 	  System.out.println("stmt -> selection_stmt");
-	  indent.addIndent();
-	  String expression = visit(ctx.selection_stmt()) + "\n";
-	  indent.delIndent();
+	  //indent.addIndent();
+	  String expression = visit(ctx.selection_stmt());
+	  //indent.delIndent();
 	  System.out.println("stmt -> selection_stmt:\n" + expression);
 	  return expression; 
   }
@@ -90,7 +90,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //stmt: iteration_stmt
   @Override public String visitITRSTMT(ExprParser.ITRSTMTContext ctx) { 
 	  System.out.println("stmt -> iteration_stmt");
-	  String expression = visit(ctx.iteration_stmt()) + "\n";
+	  String expression = visit(ctx.iteration_stmt());
 	  System.out.println("stmt -> iteration_stmt:\n" + expression);
 	  return expression;
   }
@@ -154,7 +154,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //stmt_list: stmt_list stmt
   @Override public String visitLISTLISTSTMT(ExprParser.LISTLISTSTMTContext ctx) { 
 	  System.out.println("stmt_list -> stmt_list stmt");
-	  String ret = visit(ctx.stmt_list()) + "\n" + visit(ctx.stmt());
+	  String ret = visit(ctx.stmt_list())  + visit(ctx.stmt());
 	  return ret;
   }
   
@@ -405,19 +405,19 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //expr_stmt -> expr_list? ';'
   @Override 
   public String visitExpr_stmt(ExprParser.Expr_stmtContext ctx) {
-	  System.out.println("expr_stmt \n");
+	  //System.out.println("expr_stmt \n");
 	  String expr = "";
 	  if (ctx.expr_list() != null){
 	  expr = visit(ctx.expr_list());
 	  }
 	  expr += "\n";
-	  System.out.println("expr_stmt:" + expr + "\n");
+	  //System.out.println("expr_stmt:" + expr + "\n");
 	  return expr; 
   }
   
   //expr_list -> expr (',' expr)*
   public String visitExpr_list(ExprParser.Expr_listContext ctx) {
-	  System.out.println("expr_list \n");
+	  //System.out.println("expr_list \n");
 	  String expression = visit(ctx.expr(0));
 	  int i = 1;
 	  while (ctx.expr(i) != null) {
@@ -430,7 +430,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   @Override
   public String visitExpr(ExprParser.ExprContext ctx) {
 	  //String expression = indent.getIndent() + visit(ctx.arith_expr()); // Why indent here ? 
-	  System.out.println("expr -> arith_expr");
+	  //System.out.println("expr -> arith_expr");
 	  String expression = visit(ctx.arith_expr());
 	  return expression;
   }
@@ -438,7 +438,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //arith_expr -> term (op=('+'|'-') term)* ;
   @Override 
   public String visitArith_expr(ExprParser.Arith_exprContext ctx) {
-	System.out.println("Arith_expr -> term (op=('+'|'-') term)*");
+	//System.out.println("Arith_expr -> term (op=('+'|'-') term)*");
     String arithstring = visit(ctx.term(0));
     int i = 1;
     while (ctx.term(i) != null) {
@@ -459,7 +459,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
 //term -> factor (MULDIVOP factor)*
   @Override public String visitFTERM(ExprParser.FTERMContext ctx) {
-	  System.out.println("term -> factor (MULDIVOP factor)*");
+	  //System.out.println("term -> factor (MULDIVOP factor)*");
 	  String fac = visit(ctx.factor(0));
 	  int i = 1;
 	  while (ctx.factor(i) != null) {
@@ -470,14 +470,14 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //term -> tone
   @Override public String visitTTERM(ExprParser.TTERMContext ctx) {
-	  System.out.println("term -> tone");
+	  //System.out.println("term -> tone");
 	  return visit(ctx.tone()); 
   }
   
 //tone -> op=(SHARP|FLAT) atom
   @Override 
   public String visitSFATOMTONE(ExprParser.SFATOMTONEContext ctx) {
-	  System.out.println("tone -> op=(SHARP|FLAT) atom");
+	  //System.out.println("tone -> op=(SHARP|FLAT) atom");
 	  String sf = ctx.op.getText() + visit(ctx.atom());
 	  return sf;
   }
@@ -485,7 +485,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //tone -> atom
   @Override 
   public String visitATOMTONE(ExprParser.ATOMTONEContext ctx) {
-	  System.out.println("tone -> atom");
+	  //System.out.println("tone -> atom");
 	  return visit(ctx.atom());
   }
   
@@ -527,7 +527,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //atom -> NAME
   @Override public String visitATOMNAME(ExprParser.ATOMNAMEContext ctx) {
-	  System.out.println("atom -> NAME");
+	  //System.out.println("atom -> NAME");
 	  String name = ctx.NAME().getText();
 	  //System.out.println("NAME = " + name);
 	  return name; 
@@ -535,7 +535,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //atom -> NUMBER
   @Override public String visitATOMNUM(ExprParser.ATOMNUMContext ctx) {
-	  System.out.println("atom->number");
+	  //System.out.println("atom->number");
 	  String number = ctx.NUMBER().getText();
 	  //System.out.println("NUMBER = " + number);
 	  return number; 
@@ -543,7 +543,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //atom -> STRING+
   @Override public String visitATOMSTR(ExprParser.ATOMSTRContext ctx) {
-	  System.out.println("atom -> ATOMSTR");
+	  //System.out.println("atom -> ATOMSTR");
 	  String ret = ctx.STRING(0).getText();
 	  int i = 1;
 	  while (ctx.STRING(i) != null) {
