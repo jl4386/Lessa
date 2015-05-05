@@ -1,7 +1,6 @@
 from music import *
 import time
 
-
 # define note and operations on note
 
 a = note('C3w')
@@ -72,7 +71,7 @@ elif a == b:
 	print 'a = b'
 elif a > b:
 	print 'a > b'
-	
+
 
 # define sequence and operations on sequence
 
@@ -127,7 +126,6 @@ converted = list_to_seq(list1)
 
 print converted
 
-
 # define song and operations on song
 
 mySong = song()
@@ -147,6 +145,16 @@ seq1 = seq1 + seq2
 print "after adding seq2 to seq1:"
 
 print seq1
+
+print "after appending a note 'C3w':"
+
+seq1.append(a)
+
+print seq1
+
+print "slice the sequence using seq1[1:3]:"
+
+print seq1[1:3]
 
 # seq2.set(['C3q', 'C3q', 'G3q', 'G3q', 'A3q', 'A3q', 'G3w', 'F3q', 'F3q', 'E3q', 'E3q', 'D3q', 'D3q', 'C3w'])
 
