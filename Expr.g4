@@ -33,6 +33,7 @@ decorated:
 		decorators (classdef | funcdef) ;
 
 // needs assign statement
+
 stmt:
 		simple_stmt         #SIMPLESTMT
 	| 	expr_stmt           #EXPRSTMT
@@ -67,7 +68,7 @@ import_from:
 		(FROM ('.'* dotted_name | '.'+) IMPORT ('*' | '(' import_as_names ')' | import_as_names) );
 
 import_as_name:
-		NAME ('as' NAME) ;
+		NAME ('as' NAME)?;
 
 dotted_as_name:
 		dotted_name ('as' NAME)? ;
@@ -81,6 +82,7 @@ dotted_as_names:
 
 dotted_name:
 		NAME ('.' NAME)* ;
+
 
 expr_stmt:
         expr_list? ';' ;
