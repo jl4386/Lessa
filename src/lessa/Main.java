@@ -33,8 +33,12 @@ public class Main {
     try {
       input = new ANTLRInputStream(stream);
       ExprLexer lexer = new ExprLexer(input);
+      lexer.removeErrorListeners();
+      lexer.addErrorListener(DescriptiveErrorListener.INSTANCE);
       CommonTokenStream tokens = new CommonTokenStream(lexer);
       ExprParser parser = new ExprParser(tokens);
+      parser.removeErrorListeners();
+      parser.addErrorListener(DescriptiveErrorListener.INSTANCE);
       ParseTree tree = parser.prog(); // parse
 
       EvalVisitor eval = new EvalVisitor();
