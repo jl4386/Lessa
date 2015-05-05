@@ -12,7 +12,8 @@ import envir.Indent;
 public class EvalVisitor extends ExprBaseVisitor<String> {
   Map<String, Integer> memory = new HashMap<String, Integer>();//我不知道这是啥！！！
   Indent indent = new Indent();
-
+  boolean deflag = false;
+  
   public EvalVisitor() throws FileNotFoundException, UnsupportedEncodingException {
     //writer = new PrintWriter("out.py", "UTF-8");
   }
@@ -48,12 +49,19 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  input += visit(ctx.stmt(i++)) + "\n";
 	  }
 	  try {
-	      //System.out.println("-----------------generating code-----------------\n");
-	      Writer w = new FileWriter(Envir.exeFileName, false);
-	      w.write(input);
-	      w.close();
-	      System.out.println("final written single_input:");
-	      System.out.println(input);
+	    if(deflag){
+          Writer w = new FileWriter(Envir.tempFileName, true);
+          w.write(input);
+          w.close();
+          
+        }else{
+          Writer w = new FileWriter(Envir.exeFileName, false);
+          w.write(input);
+          w.write("\n");
+          w.close();
+          System.out.println("final written single_input:");
+          System.out.println(input);
+        }
 	    } catch (IOException e) {
 	      // TODO Auto-generated catch block
 	      e.printStackTrace();
@@ -175,7 +183,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //return_stmt: RETURN (test_list)? ';' 
   @Override public String visitReturn_stmt(ExprParser.Return_stmtContext ctx) { 
-	  String ret = ctx.RETURN().getText();
+	  String ret = ctx.RETURN().getText()+" ";
 	  if (ctx.test_list() != null) {
 		  ret += visit(ctx.test_list());
 	  }
@@ -276,6 +284,38 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   @Override public String visitFORITR(ExprParser.FORITRContext ctx) { 
 	  System.out.println("iteration_stmt->for_stmt");
 	  return visit(ctx.for_stmt());
+  }
+  
+  //funcdef_stmt
+  @Override
+  public String visitFuncdef(ExprParser.FuncdefContext ctx) {
+    deflag = true;
+    StringBuffer func = new StringBuffer();
+    func.append(indent.getIndent());
+    func.append("def").append(" ").append(ctx.NAME().getText()).append("(");
+    if(ctx.parameters()!=null)
+      func.append(visit(ctx.parameters()));
+    func.append(")").append(":\n");
+    indent.addIndent();
+    String rt = func.toString()+visit(ctx.compound_stmt());
+    indent.delIndent();
+    return rt;
+  }
+  
+  //classdef_stmt
+  //TODO
+  @Override 
+  public String visitClassdef(ExprParser.ClassdefContext ctx) { 
+    deflag = true;
+    StringBuffer cls = new StringBuffer();
+    cls.append("class").append(" ").append(ctx.NAME().getText()).append("(");
+    if (ctx.test_list()!=null)
+      cls.append(visit(ctx.test_list()));
+    cls.append(")").append(":\n");
+    indent.addIndent();
+    String rt = cls.toString()+visit(ctx.compound_stmt());
+    indent.delIndent();
+    return rt; 
   }
   
   //while_stmt: WHILE '(' test ')' stmt
