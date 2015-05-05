@@ -12,7 +12,8 @@ import envir.Indent;
 public class EvalVisitor extends ExprBaseVisitor<String> {
   Map<String, Integer> memory = new HashMap<String, Integer>();//我不知道这是啥！！！
   Indent indent = new Indent();
-  boolean deflag = false;
+  boolean funcflag = false;
+  boolean classflag = false;
   
   public EvalVisitor() throws FileNotFoundException, UnsupportedEncodingException {
     //writer = new PrintWriter("out.py", "UTF-8");
@@ -50,7 +51,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  i++;
 	  }
 	  try {
-	    if(deflag){
+	    if(funcflag || classflag){
           Writer w = new FileWriter(Envir.tempFileName, true);
           w.write(input);
           w.close();
@@ -407,13 +408,12 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //funcdef_stmt
   @Override
   public String visitFuncdef(ExprParser.FuncdefContext ctx) {
-    deflag = true;
+    funcflag = true;
     StringBuffer func = new StringBuffer();
     func.append(indent.getIndent());
-    func.append("def").append(" ").append(ctx.NAME().getText()).append("(");
-    if(ctx.parameters()!=null)
-      func.append(visit(ctx.parameters()));
-    func.append(")").append(":\n");
+    func.append("def").append(" ").append(ctx.NAME().getText());
+    func.append(visit(ctx.parameters())).append(":\n");
+     
     indent.addIndent();
     String rt = func.toString()+visit(ctx.compound_stmt());
     indent.delIndent();
@@ -424,7 +424,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //TODO
   @Override 
   public String visitClassdef(ExprParser.ClassdefContext ctx) { 
-    deflag = true;
+    classflag = true;
     StringBuffer cls = new StringBuffer();
     cls.append("class").append(" ").append(ctx.NAME().getText()).append("(");
     if (ctx.test_list()!=null)
@@ -861,7 +861,45 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  }
 	  return ret;
   }
-
+  //parameters -> '(' (varargslist)? ')'
+  @Override public String visitParameters(ExprParser.ParametersContext ctx) { 
+    StringBuffer sb = new StringBuffer();
+    sb.append("(");
+    if (classflag)
+      sb.append("self,");
+    String rt = sb.toString();
+    if (ctx.varargslist()!=null)
+      rt += visit(ctx.varargslist());
+    rt += ")";
+    return rt; 
+  }
+  
+  //varagslist -> (fpdef ('=' test)? ',')* ('*' NAME (',' '**' NAME)? | '**' NAME) 
+  //             | fpdef ('=' test)? (',' fpdef ('=' test)?)* (',')? 
+  @Override public String visitVarargslist(ExprParser.VarargslistContext ctx) {
+     //String s=null;
+     int i=0;
+     StringBuffer sb = new StringBuffer();
+     while(ctx.fpdef(i)!=null){
+       sb.append(visit(ctx.fpdef(i)));
+       if(ctx.test(i)!=null)
+         sb.append("=").append(visit(ctx.test(i)));
+       sb.append(", ");
+       i++;
+     }   
+     return sb.toString();
+  }
+  
+  @Override public String visitFPDEFNAME(ExprParser.FPDEFNAMEContext ctx) { 
+    //System.out.println("TOKENN:"+ctx.getText());
+    return ctx.getText(); 
+  }
+  
+  @Override public String visitFPDEFLIST(ExprParser.FPDEFLISTContext ctx) { 
+    //System.out.println("FPDLIST:"+ctx.getText());
+    return ctx.getText();
+  }
+  
   /**
   @Override
   public String visitTerm(ExprParser.TermContext ctx) { 
