@@ -717,7 +717,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)*");
 	  String at = "";
 	  if (ctx.THIS() != null) {
-		  at = "this.";
+		  at = "self.";
 	  }
 	  at += visit(ctx.atom());
 	  int i = 0;
@@ -782,7 +782,8 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //trailer ->'(' arglist? ')'
   @Override public String visitTLRARG(ExprParser.TLRARGContext ctx) { 
 	  System.out.println("trailer ->'(' arglist? ')'");
-	  return visitChildren(ctx);
+	  String ret = "(" + visit(ctx.arglist()) + ")";
+	  return ret;
   }
   
   //trailer -> '[' subscriptlist ']'
