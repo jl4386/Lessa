@@ -1,5 +1,6 @@
-// Generated from Expr.g4 by ANTLR 4.5
 package lessa;
+
+// Generated from Expr.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

@@ -47,6 +47,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  String input = "";
 	  while(ctx.stmt(i) != null) {
 		  input += visit(ctx.stmt(i++)) + "\n";
+		  i++;
 	  }
 	  try {
 	    if(deflag){
@@ -133,6 +134,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  int i = 1;
 	  while(ctx.small_stmt(i) != null) {
 		  ret += visit(ctx.small_stmt(i)) + "\n";
+		  i++;
 	  }
 	  return ret;
   }
@@ -155,6 +157,122 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  return ret;
   }
   
+  //import_stmt -> import_name
+  @Override public String visitIMNAMESTMT(ExprParser.IMNAMESTMTContext ctx) {
+	  System.out.println("import_stmt -> import_name");
+	  String ret = visit(ctx.import_name());
+	  return ret;
+  }
+  
+  //import_stmt -> import_from
+  @Override public String visitIMFROMSTMT(ExprParser.IMFROMSTMTContext ctx) { 
+	  System.out.println("import_stmt -> import_from");
+	  String ret = visit(ctx.import_from());
+	  return ret;
+  }
+  
+  //import_from -> (FROM ('.'* dotted_name | '.'+) IMPORT ('*' | '(' import_as_names ')' | import_as_names) )
+  @Override public String visitImport_from(ExprParser.Import_fromContext ctx) { 
+	  System.out.println("import_from -> (FROM ('.'* dotted_name | '.'+) IMPORT ('*' | '(' import_as_names ')' | import_as_names) )");
+	  String ret = "from" + " ";
+	  
+	  String text = ctx.getText();
+	  int index = text.indexOf("import");
+	  String prefix = text.substring(0, index);
+	  String postfix = text.substring(index);
+	  String midStr = prefix.replace("from", "");
+	  String lastStr = postfix.replace("import", "");
+	  
+	  
+	  if (ctx.dotted_name() != null) {
+		  ret += visit(ctx.dotted_name());
+	  } else {
+		  ret += midStr;
+	  }
+	  
+	  ret += " " + "import" + " ";
+	  
+	  if(ctx.import_as_names() != null) {
+		  ret += visit(ctx.import_as_names());
+	  } else {
+		  ret += lastStr;
+	  }
+	  
+	  
+	  System.out.println("import_from -> (FROM ('.'* dotted_name | '.'+) IMPORT ('*' | '(' import_as_names ')' | import_as_names) ) return:");
+	  System.out.println(ret);
+	  return ret;
+  }
+  
+  //import_as_names -> import_as_name (',' import_as_name)* ;
+  @Override public String visitImport_as_names(ExprParser.Import_as_namesContext ctx) { 
+	  System.out.println("import_as_names -> import_as_name (',' import_as_name)*");
+	  String ret = visit(ctx.import_as_name(0));
+	  int i = 1;
+	  while (ctx.import_as_name(i) != null) {
+		  ret += "," + visit(ctx.import_as_name(i));
+		  i++;
+	  }
+	  System.out.println("import_as_names -> import_as_name (',' import_as_name)* return:" + ret);
+	  return ret;
+  }
+  
+  //import_as_name -> NAME ('as' NAME)? ;
+  @Override public String visitImport_as_name(ExprParser.Import_as_nameContext ctx) {
+	  System.out.println("import_as_name -> NAME ('as' NAME)?");
+	  String ret = ctx.NAME(0).getText();
+	  int i = 1;
+	  if (ctx.NAME(i) != null) {
+		  ret += " as " + ctx.NAME(i).getText();
+	  }
+	  System.out.println("import_as_name -> NAME ('as' NAME)? return:" + ret);
+	  return ret;
+  }
+  
+ 
+  //import_name -> IMPORT dotted_as_names 
+  @Override public String visitImport_name(ExprParser.Import_nameContext ctx) { 
+	  System.out.println("import_name -> IMPORT dotted_as_names");
+	  String ret = ctx.IMPORT().getText() + " " + visit(ctx.dotted_as_names());
+	  System.out.println("import_name -> IMPORT dotted_as_names return:" + ret);
+	  return ret;
+  }
+  //dotted_as_names -> dotted_as_name (',' dotted_as_name)* 
+  @Override public String visitDotted_as_names(ExprParser.Dotted_as_namesContext ctx) { 
+	  System.out.println("dotted_as_names -> dotted_as_name (',' dotted_as_name)*");
+	  String ret = visit(ctx.dotted_as_name(0));
+	  int i = 1;
+	  while (ctx.dotted_as_name(i) != null) {
+		  ret += "," + visit(ctx.dotted_as_name(i));
+		  i++;
+	  }
+	  System.out.println("dotted_as_names -> dotted_as_name (',' dotted_as_name)* return:" + ret);
+	  return ret;
+  }
+  
+  //dotted_as_name -> dotted_name ('as' NAME)? 
+  @Override public String visitDotted_as_name(ExprParser.Dotted_as_nameContext ctx) { 
+	  System.out.println("dotted_as_name -> dotted_name ('as' NAME)?");
+	  String ret = visit(ctx.dotted_name());
+	  if (ctx.NAME() != null) {
+		  ret += "as" + " " +  ctx.NAME().getText(); 
+	  }
+	  System.out.println("dotted_as_name -> dotted_name ('as' NAME)? return:" + ret);
+	  return ret;
+  }
+  
+  //dotted_name -> NAME ('.' NAME)* 
+  @Override public String visitDotted_name(ExprParser.Dotted_nameContext ctx) { 
+	  System.out.println("dotted_name -> NAME ('.' NAME)*");
+	  String ret = ctx.NAME(0).getText();
+	  int i = 1;
+	  while (ctx.NAME(i) != null) {
+		  ret += "." + ctx.NAME(i).getText();
+		  i++;
+	  }
+	  System.out.println("dotted_name -> NAME ('.' NAME)* return:" + ret);
+	  return ret;
+  }
   
   //jump_stmt: break_stmt 
   @Override public String visitBJMP(ExprParser.BJMPContext ctx) { 
@@ -503,6 +621,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  int i = 1;
 	  while (ctx.expr(i) != null) {
 		  expression += " ," + visit(ctx.expr(i++));
+		  i++;
 	  }
 	  return expression;
   }
@@ -524,6 +643,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
     int i = 1;
     while (ctx.term(i) != null) {
     	arithstring += " " + ctx.ADDMINOP(i-1).getText() + " " + visit(ctx.term(i++)); 
+    	i++;
     }
     /**try {
       //System.out.println("-----------------generating code-----------------\n");
@@ -545,6 +665,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  int i = 1;
 	  while (ctx.factor(i) != null) {
 		  fac += " " + ctx.MULDIVOP(i-1).getText() + " " + visit(ctx.factor(i++));
+		  i++;
 	  }
 	  return fac;
   }
@@ -602,6 +723,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  int i = 0;
 	  while (ctx.trailer(i) != null) {
 		  at += visit(ctx.trailer(i++));
+		  i++;
 	  }
 	  return at;
   }
@@ -676,6 +798,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  int i = 1;
 	  while (ctx.subscript(i) != null) {
 		  ret += "," + visit(ctx.subscript(i));
+		  i++;
 	  }
 	  System.out.println("subscriptlist -> subscript ( ',' subscript )* return:" + ret);
 	  return ret;
@@ -692,7 +815,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //subscript -> test? ':' test? sliceop?
   @Override public String visitSUBSCRTT(ExprParser.SUBSCRTTContext ctx) { 
 	  System.out.println("subscript -> test? ':' test? sliceop?");
-	  String ret = null;
+	  String ret = "";
 	  if (ctx.test(0) != null) {
 		  ret = visit(ctx.test(0));
 	  }
