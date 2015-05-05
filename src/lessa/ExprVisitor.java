@@ -1,5 +1,7 @@
 // Generated from Expr.g4 by ANTLR 4.5
 package lessa;
+import lessa.ExprParser.ATOMNONEContext;
+
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
