@@ -26,48 +26,154 @@ instrument_dict = {'Piano': 1, 'Guitar': 25, 'Bass': 33, 'Violin': 41, 'Cello': 
 
 duration_dict = {'w': 1, 'h': 0.5, 'q': 0.25, 'e': 0.125, 's': 0.0625}
 
+def list_to_seq(list):
+	tmp_seq = sequence()
+	for item in list:
+		if not isinstance(item, str):
+			for i in range(len(list)):
+				list[i] = str(list[i]).replace("\'", "")
+			break
+	tmp_seq.set(list)
+	tmp_seq.instrument = 1
+	return tmp_seq
 
 class note:
 
 	def __init__(self, str):
 		self.pitch = str[:-1]
+		if self.pitch not in pitch_dict:
+			print self.pitch
+			raise ValueError('Please define a valid pitch')
 		self.duration = str[-1]
+		if self.duration not in duration_dict:
+			raise ValueError('Please define a valid duration')
 		self.note = str
+		self.is_sharp = False
+		self.is_flat = False
+
+	def __add__(self, other):
+		if not isinstance(other, int):
+			raise TypeError('Note can only be added to integers')
+
+		index = pitch_list.index(self.pitch)
+		index += other
+		if index > len(pitch_list):
+			raise IndexError('Pitch out of range, please make sure your pitch is within A0-C8')
+		else:
+			pitch = pitch_list[index]
+
+		return note(pitch + self.duration)
+
+	def __iadd__(self, other):
+		if not isinstance(other, int):
+			raise TypeError('Note can only be added to integers')
+
+		index = pitch_list.index(self.pitch)
+		index += other
+		if index > len(pitch_list):
+			raise IndexError('Pitch out of range, please make sure your pitch is within A0-C8')
+		else:
+			pitch = pitch_list[index]
+
+		return note(pitch + self.duration)
+
+	def __sub__(self, other):
+		if not isinstance(other, int):
+			raise TypeError('Note can only be added to integers')
+
+		index = pitch_list.index(self.pitch)
+		index -= other
+		if index < 0 :
+			raise IndexError('Pitch out of range, please make sure your pitch is within A0-C8')
+		else:
+			pitch = pitch_list[index]
+
+		return note(pitch + self.duration)
+
+	def __isub__(self, other):
+		if not isinstance(other, int):
+			raise TypeError('Note can only be added to integers')
+
+		index = pitch_list.index(self.pitch)
+		index -= other
+		if index < 0:
+			raise IndexError('Pitch out of range, please make sure your pitch is within A0-C8')
+		else:
+			pitch = pitch_list[index]
+
+		return note(pitch + self.duration)
+
+	def __cmp__(self, other):
+		if not isinstance(other, note):
+			raise TypeError('Notes can only be compared to notes')
+
+		index1 = pitch_list.index(self.pitch)
+		index2 = pitch_list.index(other.pitch)
+
+		if index1 < index2:
+			return -1
+		elif index1 == index2:
+			return 0
+		elif index1 > index2:
+			return 1
+
+	def __repr__(self):
+		if self.is_sharp:
+			return str('#\'' + self.note + '\'')
+		elif self.is_flat:
+			return str('b\'' + self.note + '\'')
+		else:
+			return str('\'' + self.note + '\'')
+
+	def __str__(self):
+		if self.is_sharp:
+			return str('#\'' + self.note + '\'')
+		elif self.is_flat:
+			return str('~\'' + self.note + '\'')
+		else:
+			return str('\'' + self.note + '\'')
 
 	def get_note(self):
-		return self.note
+		return str(self.note)
 
 	def get_pitch(self):
-		return self.pitch
+		return str(self.pitch)
 
 	def get_tone(self):
-		return self.pitch[0:1]
+		return str(self.pitch[0:1])
 
 	def get_duration(self):
-		return self.duration
+		return str(self.duration)
 
 	def pitch_up(self):
-		index = pitch_list.index(self.pitch)
-		index += 1
-		if index > len(pitch_list):
-			print "error"
+		if self.is_flat:
+			self.is_flat = False
+		elif self.is_sharp:
+			self.is_sharp = False
+			index = pitch_list.index(self.pitch)
+			index += 1
+			if index > len(pitch_list):
+				raise IndexError('Pitch out of range, please make sure your pitch is within A0-C8')
+			else:
+				self.pitch = pitch_list[index]
+				self.note = self.pitch + self.duration
 		else:
-			self.pitch = pitch_list[index]
+			self.is_sharp = True
 
 	def pitch_down(self):
-		index = pitch_list.index(self.pitch)
-		index -= 1
-		if index < 0:
-			print "error"
+		if self.is_sharp:
+			self.is_sharp = False
+		elif self.is_flat:
+			self.is_flat = False
+			index = pitch_list.index(self.pitch)
+			index -= 1
+			if index < 0:
+				raise IndexError('Pitch out of range, please make sure your pitch is within A0-C8')
+			else:
+				self.pitch = pitch_list[index]
+				self.note = self.pitch + self.duration
 		else:
-			self.pitch = pitch_list[index]
-
-	def tone_up(self):
-		pass
-
-	def tone_down(self):
-		pass
-
+			self.is_flat = True
 
 class sequence:
 
@@ -75,11 +181,54 @@ class sequence:
 		self.stream = []
 		self.instrument = 1
 
+	def __add__(self, other):
+		if self.instrument != other.instrument:
+			raise ValueError('Two sequence have different instrument, cannot concatenate')
+		tmp_stream = self.stream + other.stream
+		tmp_seq = sequence()
+		tmp_seq.stream = tmp_stream
+		tmp_seq.instrument = self.instrument
+		return tmp_seq
+
+	def __iadd__(self, other):
+		if self.instrument != other.instrument:
+			raise ValueError('Two sequence have different instrument, cannot concatenate')
+		tmp_stream = self.stream + other.stream
+		tmp_seq = sequence()
+		tmp_seq.stream = tmp_stream
+		tmp_seq.instrument = self.instrument
+		return tmp_seq
+
+	def __getitem__(self, key):
+		return self.stream[key]
+
+	def __setitem__(self, key, value):
+		tmp_note = note(value)
+		self.stream[key] = tmp_note
+
+	def __delitem__(self, key):
+		try:
+			del(self.stream[key])
+		except IndexError:
+			raise IndexError('sequence assignment index out of range')
+
+	def __len__(self):
+		return len(self.stream)
+
+	def __repr__(self):
+		return str(self.stream)
+
+	def __str__(self):
+		return str(self.stream)
+
 	def set(self, stream):
 		self.stream = []
 		for item in stream:
 			tmp = note(item)
 			self.stream.append(tmp)
+
+	def get_stream(self):
+		return self.stream
 
 	def get_instrument(self):
 		for key, value in instrument_dict.iteritems():
@@ -92,17 +241,39 @@ class sequence:
 		except KeyError:
 			print "instrument not in dictionary"
 
+	def to_list(self):
+		return list(self.stream)
+
 class song:
 
 	def __init__(self):
 		self.sequence_list = []
 		self.instrument_list = []
+		self.name_list = []
 
-	def construct_seq(self, seq, track, MIDI_obj):
+	def __repr__(self):
+		song_str = ''
+		for i in range(len(self.sequence_list) - 1):
+			song_str += 'sequence' + str(i+1) + ': ' + str(self.sequence_list[i]) + '\n'
+		song_str += 'sequence' + str(len(self.sequence_list)) + ': ' + str(self.sequence_list[len(self.sequence_list) - 1])
+
+		return song_str
+
+	def __str__(self):
+		song_str = ''
+		for i in range(len(self.sequence_list) - 1):
+			song_str += self.name_list[i] + ": " + str(self.sequence_list[i]) + '\n'
+		song_str += self.name_list[len(self.sequence_list) - 1] + ": " + str(self.sequence_list[len(self.sequence_list) - 1])
+
+		return song_str
+
+	def construct_seq(self, seq, track, volume, MIDI_obj):
 		# Tracks are numbered from zero. Times are measured in beats.
 		time = 0
 		channel = 0
-		volume = 100
+		volume = volume
+
+		print track
 
 		# Add track name and tempo.
 		MIDI_obj.addTrackName(track, time, "Track" + str(track))
@@ -111,22 +282,38 @@ class song:
 		for note in seq:
 			pitch = pitch_dict[note.get_pitch().upper()]
 			duration = duration_dict[note.get_duration().lower()]
-			
 			MIDI_obj.addNote(track, channel, pitch, time, duration, volume)
 			time += duration
 
 	def change_instrument(self, MIDI_obj, track, channel, time, instrument):
 		MIDI_obj.addProgramChange(track, channel, time, instrument)
 
-	def add(self, sequence):
-		self.sequence_list.append(sequence)
-		self.instrument_list.append(sequence.instrument)
+	def add(self, seq, name):
+		if not isinstance(seq, sequence):
+			raise TypeError('Only sequence object can be added to song object')
+
+		self.sequence_list.append(seq.stream)
+		self.instrument_list.append(seq.instrument)
+		self.name_list.append(name)
+
+	def subtract(self, name):
+		if not isinstance(name, str):
+			raise TypeError('Please input a string as sequence name')
+
+		try:
+			index = self.name_list.index(name)
+			del(self.name_list[index])
+			del(self.sequence_list[index])
+			del(self.instrument_list[index])
+		except ValueError, IndexError:
+			raise ValueError('The sequence you are trying to delete is not in the song')
 
 	def play(self):
 		# Create the MIDIFile Object with n track
-		MyMIDI = MIDIFile(len(self.sequence_list))
+		MyMIDI = MIDIFile(len(self.sequence_list), removeDuplicates = False, deinterleave = False)
 		for i in range(len(self.sequence_list)):
-			self.construct_seq(self.sequence_list[i].stream, i, MyMIDI)
+			self.construct_seq(self.sequence_list[i], i, 100, MyMIDI)
+			print self.sequence_list[i].instrument
 			self.change_instrument(MyMIDI, i, 0, 0, self.sequence_list[i].instrument)
 
 		# write MIDI file to disk.
@@ -155,3 +342,9 @@ class song:
 		while pygame.mixer.music.get_busy():
 		# check if playback has finished
 			clock.tick(30)
+
+	def get_sequence_list(self):
+		return self.sequence_list
+
+	def get_instrument_list(self):
+		return self.instrument_list
