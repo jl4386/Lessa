@@ -774,7 +774,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //atom -> '(' (listmaker_test)? ')' 
   @Override public String visitATOMLIST(ExprParser.ATOMLISTContext ctx) {
 	  System.out.println("'(' (listmaker_test)? ')' ");
-	  String ret = "(" + visit(ctx.listmaker_test()) + ")";
+	  String ret = "[" + visit(ctx.listmaker_test()) + "]";
 	  return ret;
   }
  
