@@ -150,7 +150,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //del_stmt -> DEL expr_list 
   @Override public String visitDel_stmt(ExprParser.Del_stmtContext ctx) {
-	  System.out.println("del_stmt -> DEL expr_list ");
+	  System.out.println("del_stmt -> DEL expr_: ");
 	  String ret = ctx.DEL().getText() +" " +  visit(ctx.expr_list());
 	  return ret;
   }
@@ -649,6 +649,14 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  return ctx.FALSE().getText();
   }
   
+  //atom -> '(' (listmaker_test)? ')' 
+  @Override public String visitATOMLIST(ExprParser.ATOMLISTContext ctx) {
+	  System.out.println("'(' (listmaker_test)? ')' ");
+	  String ret = "(" + visit(ctx.listmaker_test()) + ")";
+	  return ret;
+  }
+ 
+  
   //trailer ->'(' arglist? ')'
   @Override public String visitTLRARG(ExprParser.TLRARGContext ctx) { 
 	  System.out.println("trailer ->'(' arglist? ')'");
@@ -715,6 +723,19 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  ret = visit(ctx.test());
 	  }
 	  System.out.println("sliceop -> ':' (test)? return:" + ret);
+	  return ret;
+  }
+  
+  //listmaker -> test ( list_for | (',' test)* )
+  @Override public String visitListmaker_test(ExprParser.Listmaker_testContext ctx) {
+	  System.out.println("test ( list_for | (',' test)* )" );
+	  String ret = visit(ctx.test(0));
+	  int i = 1;
+	  while (ctx.test(i) != null) {
+		  ret += ", ";
+		  ret += visit(ctx.test(i));
+		  i++;
+	  }
 	  return ret;
   }
 

@@ -71,12 +71,10 @@ public class Main {
   }
   
   public static void main(String[] args) throws Exception {
-      
-    sc = new Scanner(System.in);
+	sc = new Scanner(System.in);
     
     //initialization
     Gen.initShell();
-    
     String input = null;
     Pattern pre = Pattern.compile("\\{");
     Pattern pos = Pattern.compile("\\}");
