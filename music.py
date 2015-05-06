@@ -177,8 +177,8 @@ class note:
 
 class sequence:
 
-	def __init__(self):
-		self.stream = []
+	def __init__(self, seq):
+		self.stream = seq
 		self.instrument = 1
 
 	def __add__(self, other):
@@ -227,11 +227,6 @@ class sequence:
 	def __str__(self):
 		return str(self.stream)
 
-	def set(self, stream):
-		self.stream = []
-		for item in stream:
-			tmp = note(item)
-			self.stream.append(tmp)
 
 	def get_stream(self):
 		return self.stream
