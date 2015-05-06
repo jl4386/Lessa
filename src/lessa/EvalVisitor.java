@@ -400,15 +400,21 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  println("assign_stmt:expr assign_operators expr ';'");
 
 	  String retValue = null;
+	  String rExpr = visit(ctx.expr(0));
 	  String leftExpr = visit(ctx.expr(1));
 	  if (leftExpr.substring(0, 1).equals("#")) {
 		  retValue = visit(ctx.expr(0)) + ".pitch_up()";
 	  } else if (leftExpr.substring(0, 1).equals("~")){
 		  retValue = visit(ctx.expr(0)) + ".pitch_down()";
+	  } else if (rExpr.contains(".instrument")) {
+		  println(rExpr);
+		  String[] l = rExpr.split(".");
+		  retValue = l[0] + "." + "change_instrument(" + leftExpr + ")"; 
 	  } else {
 		  retValue = visit(ctx.expr(0)) + " " + visit(ctx.assign_operators()) +  " " + visit(ctx.expr(1));
 	  }
 
+ 
 	  String expr = visit(ctx.expr(0));
 	  String value = visit(ctx.expr(1));
 	  //StringBuffer ret =new StringBuffer();
@@ -820,6 +826,21 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //atom_trailer -> (THIS '.')? atom  (trailer)*;
   public String visitAtom_trailer(ExprParser.Atom_trailerContext ctx) {
 	  println("atom_trailer -> (THIS '.')? atom  (trailer)*");
+	  
+	  
+	  String atomStr = null;
+	  if (ctx.atom() != null) {
+		  atomStr =  visit(ctx.atom());
+		  if (atomStr.equals("play")) {
+			  String trailerStr = visit(ctx.trailer(0));
+			  trailerStr = trailerStr.substring(1, trailerStr.length() - 1);
+			  String ret = trailerStr + ".play()";
+			  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+			  return ret;
+		  }
+	  }
+	  
+	  
 	  String at = "";
 	  if (ctx.THIS() != null) {
 		  at = "self.";
@@ -832,6 +853,13 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  }
 	  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + at);
 	  return at;
+  }
+  
+  //atom ->'{' (songmaker)?  '}' 
+  @Override public String visitATOMSONG(ExprParser.ATOMSONGContext ctx) { 
+	  println("atom ->'{' (songmaker)?  '}' ");
+	  String ret = "song()";
+	  return ret;
   }
   
   //atom -> NAME
@@ -996,15 +1024,18 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   // sequencemaker -> (NOTE|NAME) ( ',' NOTE|NAME)*
   @Override public String visitSequencemaker(ExprParser.SequencemakerContext ctx) {
 	  println(" (NOTE | NAME) ( ',' (NOTE | NAME) )* ");
+	  
 	  String ret = "";
 	  int i = 0;
 	  while(ctx.getChild(i) != null) {
+		 
 		  if (!ctx.getChild(i).getText().equals(",")) {
 			  if (i > 0) ret += ", ";
-			  ret += ctx.getChild(i).getText();
+			  ret += ctx.getChild(i).getText();			  
 		  }
 		  i++;
 	  }
+	  println("sequencemaker -> (NOTE|NAME) ( ',' NOTE|NAME)* return:" + ret);
 	  return ret;
   }
   
