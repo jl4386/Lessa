@@ -1001,7 +1001,12 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  while(ctx.getChild(i) != null) {
 		  if (!ctx.getChild(i).getText().equals(",")) {
 			  if (i > 0) ret += ", ";
-			  ret += ctx.getChild(i).getText();
+			  String s = ctx.getChild(i).getText();
+			  if (s.startsWith("'")) {
+				  ret += ("note(" + s + ")");
+			  } else {
+				  ret += s;
+			  }
 		  }
 		  i++;
 	  }
