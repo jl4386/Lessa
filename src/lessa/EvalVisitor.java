@@ -27,12 +27,12 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
     String value = ctx.STRING().getText();
 
     try {
-      //System.out.println("-----------------generating code-----------------\n");
+      //println("-----------------generating code-----------------\n");
       Writer w = new FileWriter(Envir.exeFileName, false);
       w.write(print);
       w.write(" ");
       w.write(value);
-      //System.out.println(print+" "+value);
+      //println(print+" "+value);
       w.close();
     } catch (IOException e) {
       // TODO Auto-generated catch block
@@ -43,7 +43,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   }**/
   //single_input -> (stmt)* 
   @Override public String visitSingle_input(ExprParser.Single_inputContext ctx) {
-	  System.out.println("single_input -> (stmt)* ");
+	  println("single_input -> (stmt)* ");
 	  int i = 0;
 	  String input = "";
 	  while(ctx.stmt(i) != null) {
@@ -61,8 +61,8 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
           w.write(input);
           w.write("\n");
           w.close();
-          System.out.println("final written single_input:");
-          System.out.println(input);
+          println("final written single_input:");
+          println(input);
         }
 	    } catch (IOException e) {
 	      // TODO Auto-generated catch block
@@ -73,64 +73,64 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //stmt -> simple_stmt 
   @Override public String visitSIMPLESTMT(ExprParser.SIMPLESTMTContext ctx) { 
-	  System.out.println("stmt -> simple_stmt ");
+	  println("stmt -> simple_stmt ");
 	  return visit(ctx.simple_stmt());
   }
   
   
   //stmt -> expr_stmt
   @Override public String visitEXPRSTMT(ExprParser.EXPRSTMTContext ctx) {
-	  System.out.println("stmt -> expr_stmt");
+	  println("stmt -> expr_stmt");
 	  String expression = indent.getIndent() + visit(ctx.expr_stmt());
-	  System.out.println("stmt -> expr_stmt return:\n" + expression);
+	  println("stmt -> expr_stmt return:\n" + expression);
 	  return expression; 
   }
   
   //stmt -> compound_stmt
   @Override public String visitCOMPSTMT(ExprParser.COMPSTMTContext ctx) {
-	  System.out.println("stmt -> compound_stmt");
+	  println("stmt -> compound_stmt");
 	  String ret = visit(ctx.compound_stmt());
-	  System.out.println("stmt -> compound_stmt return:\n" + ret);
+	  println("stmt -> compound_stmt return:\n" + ret);
 	  return ret;
   }
   
   //stmt -> selection_stmt
   @Override public String visitSELECTSTMT(ExprParser.SELECTSTMTContext ctx) {
-	  System.out.println("stmt -> selection_stmt");
+	  println("stmt -> selection_stmt");
 	  //indent.addIndent();
 	  String expression = visit(ctx.selection_stmt());
 	  //indent.delIndent();
-	  System.out.println("stmt -> selection_stmt:\n" + expression);
+	  println("stmt -> selection_stmt:\n" + expression);
 	  return expression; 
   }
   
   //stmt: iteration_stmt
   @Override public String visitITRSTMT(ExprParser.ITRSTMTContext ctx) { 
-	  System.out.println("stmt -> iteration_stmt");
+	  println("stmt -> iteration_stmt");
 	  String expression = visit(ctx.iteration_stmt());
-	  System.out.println("stmt -> iteration_stmt:\n" + expression);
+	  println("stmt -> iteration_stmt:\n" + expression);
 	  return expression;
   }
   
   //stmt: assign_stmt
   @Override public String visitASSIGNSTMT(ExprParser.ASSIGNSTMTContext ctx) { 
-	  System.out.println("stmt -> assign_stmt");
+	  println("stmt -> assign_stmt");
 	  String ret = indent.getIndent() + visit(ctx.assign_stmt()) + "\n";
-	  System.out.println("stmt -> assign_stmt return:\n" + ret);
+	  println("stmt -> assign_stmt return:\n" + ret);
 	  return ret;
   }
   
   //stmt: jump_stmt 
   @Override public String visitJMPSTMT(ExprParser.JMPSTMTContext ctx) { 
-	  System.out.println("stmt -> jump_stmt");
+	  println("stmt -> jump_stmt");
 	  String ret = indent.getIndent() + visit(ctx.jump_stmt()) + "\n";
-	  System.out.println("stmt -> jump_stmt return:\n" + ret);
+	  println("stmt -> jump_stmt return:\n" + ret);
 	  return ret;
   }
   
   //simple_stmt -> small_stmt (';' small_stmt)* ';' 
   @Override public String visitSimple_stmt(ExprParser.Simple_stmtContext ctx) {
-	  System.out.println("simple_stmt -> small_stmt (';' small_stmt)* ';' ");
+	  println("simple_stmt -> small_stmt (';' small_stmt)* ';' ");
 	  String ret = visit(ctx.small_stmt(0)) + "\n";
 	  int i = 1;
 	  while(ctx.small_stmt(i) != null) {
@@ -142,7 +142,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //small_stmt -> (del_stmt | import_stmt) 
   @Override public String visitSmall_stmt(ExprParser.Small_stmtContext ctx) { 
-	  System.out.println("small_stmt -> (del_stmt | import_stmt)");
+	  println("small_stmt -> (del_stmt | import_stmt)");
 	  if (ctx.del_stmt() != null) {
 		  return visit(ctx.del_stmt());
 	  } else if (ctx.import_stmt() != null) {
@@ -153,28 +153,28 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //del_stmt -> DEL expr_list 
   @Override public String visitDel_stmt(ExprParser.Del_stmtContext ctx) {
-	  System.out.println("del_stmt -> DEL expr_: ");
+	  println("del_stmt -> DEL expr_: ");
 	  String ret = ctx.DEL().getText() +" " +  visit(ctx.expr_list());
 	  return ret;
   }
   
   //import_stmt -> import_name
   @Override public String visitIMNAMESTMT(ExprParser.IMNAMESTMTContext ctx) {
-	  System.out.println("import_stmt -> import_name");
+	  println("import_stmt -> import_name");
 	  String ret = visit(ctx.import_name());
 	  return ret;
   }
   
   //import_stmt -> import_from
   @Override public String visitIMFROMSTMT(ExprParser.IMFROMSTMTContext ctx) { 
-	  System.out.println("import_stmt -> import_from");
+	  println("import_stmt -> import_from");
 	  String ret = visit(ctx.import_from());
 	  return ret;
   }
   
   //import_from -> (FROM ('.'* dotted_name | '.'+) IMPORT ('*' | '(' import_as_names ')' | import_as_names) )
   @Override public String visitImport_from(ExprParser.Import_fromContext ctx) { 
-	  System.out.println("import_from -> (FROM ('.'* dotted_name | '.'+) IMPORT ('*' | '(' import_as_names ')' | import_as_names) )");
+	  println("import_from -> (FROM ('.'* dotted_name | '.'+) IMPORT ('*' | '(' import_as_names ')' | import_as_names) )");
 	  String ret = "from" + " ";
 	  
 	  String text = ctx.getText();
@@ -200,78 +200,78 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  }
 	  
 	  
-	  System.out.println("import_from -> (FROM ('.'* dotted_name | '.'+) IMPORT ('*' | '(' import_as_names ')' | import_as_names) ) return:");
-	  System.out.println(ret);
+	  println("import_from -> (FROM ('.'* dotted_name | '.'+) IMPORT ('*' | '(' import_as_names ')' | import_as_names) ) return:");
+	  println(ret);
 	  return ret;
   }
   
   //import_as_names -> import_as_name (',' import_as_name)* ;
   @Override public String visitImport_as_names(ExprParser.Import_as_namesContext ctx) { 
-	  System.out.println("import_as_names -> import_as_name (',' import_as_name)*");
+	  println("import_as_names -> import_as_name (',' import_as_name)*");
 	  String ret = visit(ctx.import_as_name(0));
 	  int i = 1;
 	  while (ctx.import_as_name(i) != null) {
 		  ret += "," + visit(ctx.import_as_name(i));
 		  i++;
 	  }
-	  System.out.println("import_as_names -> import_as_name (',' import_as_name)* return:" + ret);
+	  println("import_as_names -> import_as_name (',' import_as_name)* return:" + ret);
 	  return ret;
   }
   
   //import_as_name -> NAME ('as' NAME)? ;
   @Override public String visitImport_as_name(ExprParser.Import_as_nameContext ctx) {
-	  System.out.println("import_as_name -> NAME ('as' NAME)?");
+	  println("import_as_name -> NAME ('as' NAME)?");
 	  String ret = ctx.NAME(0).getText();
 	  int i = 1;
 	  if (ctx.NAME(i) != null) {
 		  ret += " as " + ctx.NAME(i).getText();
 	  }
-	  System.out.println("import_as_name -> NAME ('as' NAME)? return:" + ret);
+	  println("import_as_name -> NAME ('as' NAME)? return:" + ret);
 	  return ret;
   }
   
  
   //import_name -> IMPORT dotted_as_names 
   @Override public String visitImport_name(ExprParser.Import_nameContext ctx) { 
-	  System.out.println("import_name -> IMPORT dotted_as_names");
+	  println("import_name -> IMPORT dotted_as_names");
 	  String ret = ctx.IMPORT().getText() + " " + visit(ctx.dotted_as_names());
-	  System.out.println("import_name -> IMPORT dotted_as_names return:" + ret);
+	  println("import_name -> IMPORT dotted_as_names return:" + ret);
 	  return ret;
   }
   //dotted_as_names -> dotted_as_name (',' dotted_as_name)* 
   @Override public String visitDotted_as_names(ExprParser.Dotted_as_namesContext ctx) { 
-	  System.out.println("dotted_as_names -> dotted_as_name (',' dotted_as_name)*");
+	  println("dotted_as_names -> dotted_as_name (',' dotted_as_name)*");
 	  String ret = visit(ctx.dotted_as_name(0));
 	  int i = 1;
 	  while (ctx.dotted_as_name(i) != null) {
 		  ret += "," + visit(ctx.dotted_as_name(i));
 		  i++;
 	  }
-	  System.out.println("dotted_as_names -> dotted_as_name (',' dotted_as_name)* return:" + ret);
+	  println("dotted_as_names -> dotted_as_name (',' dotted_as_name)* return:" + ret);
 	  return ret;
   }
   
   //dotted_as_name -> dotted_name ('as' NAME)? 
   @Override public String visitDotted_as_name(ExprParser.Dotted_as_nameContext ctx) { 
-	  System.out.println("dotted_as_name -> dotted_name ('as' NAME)?");
+	  println("dotted_as_name -> dotted_name ('as' NAME)?");
 	  String ret = visit(ctx.dotted_name());
 	  if (ctx.NAME() != null) {
 		  ret += "as" + " " +  ctx.NAME().getText(); 
 	  }
-	  System.out.println("dotted_as_name -> dotted_name ('as' NAME)? return:" + ret);
+	  println("dotted_as_name -> dotted_name ('as' NAME)? return:" + ret);
 	  return ret;
   }
   
   //dotted_name -> NAME ('.' NAME)* 
   @Override public String visitDotted_name(ExprParser.Dotted_nameContext ctx) { 
-	  System.out.println("dotted_name -> NAME ('.' NAME)*");
+	  println("dotted_name -> NAME ('.' NAME)*");
 	  String ret = ctx.NAME(0).getText();
 	  int i = 1;
 	  while (ctx.NAME(i) != null) {
 		  ret += "." + ctx.NAME(i).getText();
 		  i++;
 	  }
-	  System.out.println("dotted_name -> NAME ('.' NAME)* return:" + ret);
+	  println("dotted_name -> NAME ('.' NAME)* return:" + ret);
 	  return ret;
   }
   
@@ -311,7 +311,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //compound_stmt:'{' (stmt_list)? '}' ;
   @Override public String visitCompound_stmt(ExprParser.Compound_stmtContext ctx) {
-	  System.out.println("compound_stmt -> '{' (stmt_list)? '}'");
+	  println("compound_stmt -> '{' (stmt_list)? '}'");
 	  String ret = "";
 	  if (ctx.stmt_list() != null) {
 		  ret += visit(ctx.stmt_list());
@@ -321,23 +321,23 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //stmt_list: stmt_list stmt
   @Override public String visitLISTLISTSTMT(ExprParser.LISTLISTSTMTContext ctx) { 
-	  System.out.println("stmt_list -> stmt_list stmt");
+	  println("stmt_list -> stmt_list stmt");
 	  String ret = visit(ctx.stmt_list())  + visit(ctx.stmt());
 	  return ret;
   }
   
   //stmt_list: stmt
   @Override public String visitLISTSTMT(ExprParser.LISTSTMTContext ctx) {
-	  System.out.println("stmt_list -> stmt");
+	  println("stmt_list -> stmt");
 	  String ret = visit(ctx.stmt());
 	  return ret;
   }
   
   //assign_stmt:expr assign_operators expr ';' ;
   @Override public String visitAssign_stmt(ExprParser.Assign_stmtContext ctx) { 
-	  System.out.println("assign_stmt:expr assign_operators expr ';'");
+	  println("assign_stmt:expr assign_operators expr ';'");
 	  String ret = visit(ctx.expr(0)) + " " + visit(ctx.assign_operators()) +  " " + visit(ctx.expr(1));
-	  System.out.println("assign_stmt return:" + ret);
+	  println("assign_stmt return:" + ret);
 	  return ret;
   }
   
@@ -369,7 +369,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //selection_stmt -> IF '(' test ')' stmt (ELIF '(' test ')' stmt)* (ELSE stmt)?
   @Override 
   public String visitSelection_stmt(ExprParser.Selection_stmtContext ctx) {
-	  System.out.println("selection_stmt -> IF '(' test ')' stmt (ELIF '(' test ')' stmt)* (ELSE stmt)?");
+	  println("selection_stmt -> IF '(' test ')' stmt (ELIF '(' test ')' stmt)* (ELSE stmt)?");
 	  //String select = "if " + ctx.test(0).getText() + ":\n" + visit(ctx.stmt(0));
 	  String select = indent.getIndent() + "if " + visit(ctx.test(0)) + ":\n";
 	  indent.addIndent();
@@ -389,19 +389,19 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  select += visit(ctx.stmt(i));
 		  indent.delIndent();
 	  }
-	  System.out.println("selection_stmt return:\n" + select);
+	  println("selection_stmt return:\n" + select);
 	  return select; 
   }
   
   //iteration_stmt: while_stmt
   @Override public String visitWILEITR(ExprParser.WILEITRContext ctx) { 
-	  System.out.println("iteration_stmt->while_stmt");
+	  println("iteration_stmt->while_stmt");
 	  return visit(ctx.while_stmt());
   }
   
   //iteration_stmt: for_stmt
   @Override public String visitFORITR(ExprParser.FORITRContext ctx) { 
-	  System.out.println("iteration_stmt->for_stmt");
+	  println("iteration_stmt->for_stmt");
 	  return visit(ctx.for_stmt());
   }
   
@@ -438,30 +438,30 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //while_stmt: WHILE '(' test ')' stmt
   @Override public String visitWhile_stmt(ExprParser.While_stmtContext ctx) {
-	  System.out.println("while_stmt -> WHILE '(' test ')' stmt");
+	  println("while_stmt -> WHILE '(' test ')' stmt");
 	  String ret ="while " + visit(ctx.test()) + ":" + "\n";
 	  indent.addIndent();
 	  ret += visit(ctx.stmt());
 	  indent.delIndent();
-	  System.out.println("while_stmt return:");
-	  System.out.println(ret);
+	  println("while_stmt return:");
+	  println(ret);
 	  return ret;
   }
   
   //for_stmt: FOR '(' expr_list IN test_list ')' stmt 
   @Override public String visitFor_stmt(ExprParser.For_stmtContext ctx) {
-	  System.out.println("for_stmt -> FOR '(' expr_list IN test_list ')' stmt");
+	  println("for_stmt -> FOR '(' expr_list IN test_list ')' stmt");
 	  indent.addIndent();
 	  String ret = "for" + " " + visit(ctx.expr_list()) + " " + "in" +  " " 
 	  + visit(ctx.test_list()) + ":" + "\n" +  visit(ctx.stmt());
 	  indent.delIndent();
-	  System.out.println("for_stmt return:" + ret);
+	  println("for_stmt return:" + ret);
 	  return ret;
   }
   
   //test_list: test (',' test)* 
   @Override public String visitTest_list(ExprParser.Test_listContext ctx) { 
-	  System.out.println("test_list -> test (',' test)* ");
+	  println("test_list -> test (',' test)* ");
 	  String ret = visit(ctx.test(0));
 	  int i = 1;
 	  while (ctx.test(i) != null) {
@@ -473,19 +473,19 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //test: or_test (IF or_test ELSE test)?
   @Override public String visitTest(ExprParser.TestContext ctx) { 
-	  System.out.println("test -> or_test (IF or_test ELSE test)?");
+	  println("test -> or_test (IF or_test ELSE test)?");
 	  String ret = null;
 	  ret = visit(ctx.or_test(0));
 	  if (ctx.or_test(1) != null) {
 		  ret += "if " + visit(ctx.or_test(1)) + "else " + visit(ctx.test());
 	  }
-	  System.out.println("test return:" + ret);
+	  println("test return:" + ret);
 	  return ret;
   }
   
   //or_test: and_test (OR and_test)* ;
   @Override public String visitOr_test(ExprParser.Or_testContext ctx) { 
-	  System.out.println("or_test -> and_test (OR and_test)*");
+	  println("or_test -> and_test (OR and_test)*");
 	  String ret = null;
 	  ret = visit(ctx.and_test(0));
 	  int i = 1;
@@ -493,13 +493,13 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  ret += "or " + visit(ctx.and_test(i));
 		  i++;
 	  }
-	  //System.out.println("or_test return:" + ret);
+	  //println("or_test return:" + ret);
 	  return ret;
   }
   
   //and_test: not_test (AND not_test)* ;
   @Override public String visitAnd_test(ExprParser.And_testContext ctx) { 
-	  System.out.println("and_test -> not_test (AND not_test)*");
+	  println("and_test -> not_test (AND not_test)*");
 	  String ret = null;
 	  ret = visit(ctx.not_test(0));
 	  int i = 1;
@@ -507,7 +507,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  ret += "and " + visit(ctx.not_test(i));
 		  i++;
 	  }
-	  //System.out.println("and_test return:" + ret);
+	  //println("and_test return:" + ret);
 	  return ret;
   }
   
@@ -515,20 +515,20 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   @Override public String visitNot_test(ExprParser.Not_testContext ctx) { 
 	  String ret = null;
 	  if (ctx.getChildCount() == 2) {
-		  System.out.println("not_test -> NOT not_test");
+		  println("not_test -> NOT not_test");
 		  ret = "not " + visit(ctx.not_test()); 
-		  //System.out.println("not_test -> NOT not_test return:" + ret);
+		  //println("not_test -> NOT not_test return:" + ret);
 	  } else {
-		  System.out.println("not_test -> comparison");
+		  println("not_test -> comparison");
 		  ret = visit(ctx.comparison());
-		  //System.out.println("not_test -> comparison return:" + ret);
+		  //println("not_test -> comparison return:" + ret);
 	  }
 	  return ret;
   }
 
   //comparison: arith_expr (comp_op arith_expr)* ;
   @Override public String visitComparison(ExprParser.ComparisonContext ctx) { 
-	  System.out.println("comparison -> arith_expr (comp_op arith_expr)*");
+	  println("comparison -> arith_expr (comp_op arith_expr)*");
 	  String ret = "";
 	  ret += visit(ctx.arith_expr(0));
 	  int i = 1;
@@ -537,7 +537,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  ret += visit(ctx.arith_expr(i));
 		  i++;
 	  }
-	  System.out.println("comparison return: " + ret);
+	  println("comparison return: " + ret);
 	  return ret;
   }
   
@@ -549,51 +549,51 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  String ret = null;
 	  switch (text) {
 	  	case "<":
-	  		//System.out.println("comp_op -> '<'");
+	  		//println("comp_op -> '<'");
 	  		ret = "<";
 	  		break;
 	  	case ">":
-	  		//System.out.println("comp_op -> '>'");
+	  		//println("comp_op -> '>'");
 	  		ret = ">";
 	  		break;
 	  	case "==":
-	  		//System.out.println("comp_op -> '=='");
+	  		//println("comp_op -> '=='");
 	  		ret = "==";
 	  		break;
 	  	case ">=":
-	  		//System.out.println("comp_op -> '>='");
+	  		//println("comp_op -> '>='");
 	  		ret = ">=";
 	  		break;
 	  	case "<=":
-	  		//System.out.println("comp_op -> '<='");
+	  		//println("comp_op -> '<='");
 	  		ret = "<=";
 	  		break;
 	  	case "<>":
-	  		//System.out.println("comp_op -> '<>'");
+	  		//println("comp_op -> '<>'");
 	  		ret = "<>";
 	  		break;
 	  	case "!=":
-	  		//System.out.println("comp_op -> '!='");
+	  		//println("comp_op -> '!='");
 	  		ret = "!=";
 	  		break;
 	  	case "in":
-	  		//System.out.println("comp_op -> IN");
+	  		//println("comp_op -> IN");
 	  		ret = "in";
 	  		break;
 	  	case "is":
-	  		//System.out.println("comp_op -> IS");
+	  		//println("comp_op -> IS");
 	  		ret = "is";
 	  		break;
 	  	case "isnot":
-	  		//System.out.println("comp_op -> IS NOT");
+	  		//println("comp_op -> IS NOT");
 	  		ret = "is not";
 	  		break;
 	  	case "notin":
-	  		//System.out.println("comp_op -> NOT IN");
+	  		//println("comp_op -> NOT IN");
 	  		ret = "not in";
 	  		break;
 	  	default:
-	  		//System.out.println("So what is it ?:" + text);
+	  		//println("So what is it ?:" + text);
 	  		break;
 	  }
 	  return ret;
@@ -604,19 +604,19 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //expr_stmt -> expr_list? ';'
   @Override 
   public String visitExpr_stmt(ExprParser.Expr_stmtContext ctx) {
-	  //System.out.println("expr_stmt \n");
+	  //println("expr_stmt \n");
 	  String expr = "";
 	  if (ctx.expr_list() != null){
 	  expr = visit(ctx.expr_list());
 	  }
 	  expr += "\n";
-	  //System.out.println("expr_stmt:" + expr + "\n");
+	  //println("expr_stmt:" + expr + "\n");
 	  return expr; 
   }
   
   //expr_list -> expr (',' expr)*
   public String visitExpr_list(ExprParser.Expr_listContext ctx) {
-	  System.out.println("expr_list -> expr (',' expr)*");
+	  println("expr_list -> expr (',' expr)*");
 	  String expression = visit(ctx.expr(0));
 	  int i = 1;
 	  while (ctx.expr(i) != null) {
@@ -630,7 +630,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   @Override
   public String visitExpr(ExprParser.ExprContext ctx) {
 	  //String expression = indent.getIndent() + visit(ctx.arith_expr()); // Why indent here ? 
-	  System.out.println("expr -> arith_expr");
+	  println("expr -> arith_expr");
 	  String expression = visit(ctx.arith_expr());
 	  return expression;
   }
@@ -638,7 +638,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //arith_expr -> term (op=('+'|'-') term)* ;
   @Override 
   public String visitArith_expr(ExprParser.Arith_exprContext ctx) {
-	System.out.println("arith_expr -> term (op=('+'|'-') term)*");
+	println("arith_expr -> term (op=('+'|'-') term)*");
     String arithstring = visit(ctx.term(0));
     int i = 1;
     while (ctx.term(i) != null) {
@@ -646,7 +646,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
     	i++;
     }
     /**try {
-      //System.out.println("-----------------generating code-----------------\n");
+      //println("-----------------generating code-----------------\n");
       Writer w = new FileWriter(Envir.exeFileName, false);
       w.write(arithstring);
       w.close();
@@ -654,13 +654,13 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }**/
-    //System.out.println("Arith_expr return:" + arithstring);
+    //println("Arith_expr return:" + arithstring);
     return arithstring;
   }
   
 //term -> factor (MULDIVOP factor)*
   @Override public String visitFTERM(ExprParser.FTERMContext ctx) {
-	  System.out.println("term -> factor (MULDIVOP factor)*");
+	  println("term -> factor (MULDIVOP factor)*");
 	  String fac = visit(ctx.factor(0));
 	  int i = 1;
 	  while (ctx.factor(i) != null) {
@@ -672,14 +672,14 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //term -> tone
   @Override public String visitTTERM(ExprParser.TTERMContext ctx) {
-	  System.out.println("term -> tone");
+	  println("term -> tone");
 	  return visit(ctx.tone()); 
   }
   
 //tone -> op=(SHARP|FLAT) atom
   @Override 
   public String visitSFATOMTONE(ExprParser.SFATOMTONEContext ctx) {
-	  System.out.println("tone -> op=(SHARP|FLAT) atom");
+	  println("tone -> op=(SHARP|FLAT) atom");
 	  String sf = ctx.op.getText() + visit(ctx.atom());
 	  return sf;
   }
@@ -687,34 +687,34 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //tone -> atom
   @Override 
   public String visitATOMTONE(ExprParser.ATOMTONEContext ctx) {
-	  System.out.println("tone -> atom");
+	  println("tone -> atom");
 	  return visit(ctx.atom());
   }
   
   //factor -> op=('+'|'-')  factor
   public String visitPMFactor(ExprParser.PMFACTORContext ctx) {
-	  System.out.println("factor -> op=('+'|'-')  factor");
+	  println("factor -> op=('+'|'-')  factor");
 	  String pwr = ctx.op.getText() + " " + visit(ctx.factor());
 	  return pwr;
   }
   
   //factor -> power
   public String visitPWFactor(ExprParser.PWFACTORContext ctx) {
-	  System.out.println("factor->power");
+	  println("factor->power");
 	  String pwr = visit(ctx.power());
 	  return pwr;
   }
   
   //power -> atom_trailer ('**' factor)?
   public String visitPower(ExprParser.PowerContext ctx) {
-	  System.out.println("power -> atom_trailer ('**' factor)?");
+	  println("power -> atom_trailer ('**' factor)?");
 	  String at = visit(ctx.atom_trailer());
 	  return at;
   }
   
   //atom_trailer -> (THIS '.')? atom  (trailer)*;
   public String visitAtom_trailer(ExprParser.Atom_trailerContext ctx) {
-	  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)*");
+	  println("atom_trailer -> (THIS '.')? atom  (trailer)*");
 	  String at = "";
 	  if (ctx.THIS() != null) {
 		  at = "self.";
@@ -730,23 +730,23 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   //atom -> NAME
   @Override public String visitATOMNAME(ExprParser.ATOMNAMEContext ctx) {
-	  System.out.println("atom -> NAME");
+	  println("atom -> NAME");
 	  String name = ctx.NAME().getText();
-	  //System.out.println("NAME = " + name);
+	  //println("NAME = " + name);
 	  return name; 
   }
   
   //atom -> NUMBER
   @Override public String visitATOMNUM(ExprParser.ATOMNUMContext ctx) {
-	  System.out.println("atom->number");
+	  println("atom->number");
 	  String number = ctx.NUMBER().getText();
-	  //System.out.println("NUMBER = " + number);
+	  //println("NUMBER = " + number);
 	  return number; 
   }
   
   //atom -> STRING+
   @Override public String visitATOMSTR(ExprParser.ATOMSTRContext ctx) {
-	  System.out.println("atom -> ATOMSTR");
+	  println("atom -> ATOMSTR");
 	  String ret = ctx.STRING(0).getText();
 	  int i = 1;
 	  while (ctx.STRING(i) != null) {
@@ -771,59 +771,75 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  return ctx.FALSE().getText();
   }
   
+  //atom -> ATOMNOTE
+  @Override public String visitATOMNOTE(ExprParser.ATOMNOTEContext ctx) {
+	  println("atom -> ATOMNOTE");
+	  return ctx.NOTE().getText();
+  }
+  
   //atom -> '(' (listmaker_test)? ')' 
   @Override public String visitATOMLIST(ExprParser.ATOMLISTContext ctx) {
-	  System.out.println("'(' (listmaker_test)? ')' ");
-	  String ret = "[" + visit(ctx.listmaker_test()) + "]";
+	  println("'(' (listmaker_test)? ')' ");
+	  String ret = "";
+	  if (ctx.listmaker_test() != null) ret = visit(ctx.listmaker_test());
+	  ret = "[" + ret + "]";
 	  return ret;
   }
  
+  //atom -> '[' (sequencemaker)? ']'
+  @Override public String visitATOMSEQ(ExprParser.ATOMSEQContext ctx) {
+	  println("'[' (sequencemaker)? ']'");
+	  String ret = "";
+	  if (ctx.sequencemaker() != null) ret = visit(ctx.sequencemaker());
+	  ret = "[" + ret + "]";
+	  return ret;
+  }
   
   //trailer ->'(' arglist? ')'
   @Override public String visitTLRARG(ExprParser.TLRARGContext ctx) { 
-	  System.out.println("trailer ->'(' arglist? ')'");
+	  println("trailer ->'(' arglist? ')'");
 	  String ret = "(" + visit(ctx.arglist()) + ")";
 	  return ret;
   }
   
   //trailer -> '[' subscriptlist ']'
   @Override public String visitTLRSUBLIST(ExprParser.TLRSUBLISTContext ctx) {
-	  System.out.println("trailer -> '[' subscriptlist ']'");
+	  println("trailer -> '[' subscriptlist ']'");
 	  String ret = "[" + visit(ctx.subscriptlist()) + "]";
-	  System.out.println("trailer -> '[' subscriptlist ']' return:" + ret);
+	  println("trailer -> '[' subscriptlist ']' return:" + ret);
 	  return ret;
   }
   
   //trailer -> '.' NAME
   @Override public String visitTLRNAME(ExprParser.TLRNAMEContext ctx) { 
-	  System.out.println("trailer -> '.' NAME");
+	  println("trailer -> '.' NAME");
 	  return visitChildren(ctx);
   }
   
   //subscriptlist -> subscript ( ',' subscript )* 
   @Override public String visitSubscriptlist(ExprParser.SubscriptlistContext ctx) { 
-	  System.out.println("subscriptlist -> subscript ( ',' subscript )* ");
+	  println("subscriptlist -> subscript ( ',' subscript )* ");
 	  String ret = visit(ctx.subscript(0));
 	  int i = 1;
 	  while (ctx.subscript(i) != null) {
 		  ret += "," + visit(ctx.subscript(i));
 		  i++;
 	  }
-	  System.out.println("subscriptlist -> subscript ( ',' subscript )* return:" + ret);
+	  println("subscriptlist -> subscript ( ',' subscript )* return:" + ret);
 	  return ret;
   }
   
   //subscript -> test  
   @Override public String visitSUBSCRT(ExprParser.SUBSCRTContext ctx) { 
-	  System.out.println("subscript -> test");
+	  println("subscript -> test");
 	  String ret =  visit(ctx.test());
-	  System.out.println("subscript -> test return:" + ret);
+	  println("subscript -> test return:" + ret);
 	  return ret;
   }
   
   //subscript -> test? ':' test? sliceop?
   @Override public String visitSUBSCRTT(ExprParser.SUBSCRTTContext ctx) { 
-	  System.out.println("subscript -> test? ':' test? sliceop?");
+	  println("subscript -> test? ':' test? sliceop?");
 	  String ret = "";
 	  if (ctx.test(0) != null) {
 		  ret = visit(ctx.test(0));
@@ -835,33 +851,49 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  if (ctx.sliceop() != null) {
 		  ret += visit(ctx.sliceop());
 	  }
-	  System.out.println("subscript -> test? ':' test? sliceop? return:" + ret);
+	  println("subscript -> test? ':' test? sliceop? return:" + ret);
 	  return ret;
   }
   
   //sliceop -> ':' (test)? 
   @Override public String visitSliceop(ExprParser.SliceopContext ctx) { 
-	  System.out.println("sliceop -> ':' (test)? ");
+	  println("sliceop -> ':' (test)? ");
 	  String ret = ":";
 	  if (ctx.test() != null) {
 		  ret = visit(ctx.test());
 	  }
-	  System.out.println("sliceop -> ':' (test)? return:" + ret);
+	  println("sliceop -> ':' (test)? return:" + ret);
 	  return ret;
   }
   
   //listmaker -> test ( list_for | (',' test)* )
   @Override public String visitListmaker_test(ExprParser.Listmaker_testContext ctx) {
-	  System.out.println("test ( list_for | (',' test)* )" );
-	  String ret = visit(ctx.test(0));
-	  int i = 1;
+	  println("test ( list_for | (',' test)* )" );
+	  String ret = "";
+	  int i = 0;
 	  while (ctx.test(i) != null) {
-		  ret += ", ";
+		  if (i > 0) ret += ", ";
 		  ret += visit(ctx.test(i));
 		  i++;
 	  }
 	  return ret;
   }
+  
+  // sequencemaker -> (NOTE|NAME) ( ',' NOTE|NAME)*
+  @Override public String visitSequencemaker(ExprParser.SequencemakerContext ctx) {
+	  println(" (NOTE | NAME) ( ',' (NOTE | NAME) )* ");
+	  String ret = "";
+	  int i = 0;
+	  while(ctx.getChild(i) != null) {
+		  if (!ctx.getChild(i).getText().equals(",")) {
+			  if (i > 0) ret += ", ";
+			  ret += ctx.getChild(i).getText();
+		  }
+		  i++;
+	  }
+	  return ret;
+  }
+  
   //parameters -> '(' (varargslist)? ')'
   @Override public String visitParameters(ExprParser.ParametersContext ctx) { 
     StringBuffer sb = new StringBuffer();
@@ -892,13 +924,17 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   }
   
   @Override public String visitFPDEFNAME(ExprParser.FPDEFNAMEContext ctx) { 
-    //System.out.println("TOKENN:"+ctx.getText());
+    //println("TOKENN:"+ctx.getText());
     return ctx.getText(); 
   }
   
   @Override public String visitFPDEFLIST(ExprParser.FPDEFLISTContext ctx) { 
-    //System.out.println("FPDLIST:"+ctx.getText());
+    //println("FPDLIST:"+ctx.getText());
     return ctx.getText();
+  }
+  
+  private static void println(String msg) {
+	  System.out.println(msg);
   }
   
   /**
@@ -910,7 +946,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   
   /**@Override 
   public Integer visitSelection_stmt(ExprParser.Selection_stmtContext ctx){
-    System.out.println("start:"+ctx.getRuleContext().getText());
+    println("start:"+ctx.getRuleContext().getText());
     
     return visitChildren(ctx);
 		  
