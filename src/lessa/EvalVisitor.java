@@ -1,12 +1,16 @@
 package lessa;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.io.*;
 
 import envir.Envir;
 import envir.Gen;
+import envir.ImpStmt;
 import envir.Indent;
+import envir.Variable;
 
 
 public class EvalVisitor extends ExprBaseVisitor<String> {
@@ -41,26 +45,76 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 
     return 0;
   }**/
+  private void writeVars(Writer w){
+    Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
+    while(it.hasNext()){
+      Map.Entry<String, Variable> pair= it.next();
+      try {
+        w.write(pair.getKey());
+        w.write("=");
+        w.write(pair.getValue().value);
+        w.write("\n");
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }    
+    }
+  }
+  
+  private void writeImps(Writer w){
+    try {
+      w.write("import imp\n");
+      String module = Envir.tempFileName.substring(0, Envir.tempFileName.length()-3);
+      w.write(module+"=imp.load_source('"+module+"', '"+Envir.dir+Envir.tempFileName+"')\n" );
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+    
+    
+    Iterator<Entry<String, ImpStmt>> it = Envir.defTable.entrySet().iterator();
+    
+    while(it.hasNext()){
+      Map.Entry<String, ImpStmt> pair = it.next();
+      try {
+        
+        w.write(pair.getValue().stmt);
+        w.write("\n");
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+  }
+  
+  
   //single_input -> (stmt)* 
   @Override public String visitSingle_input(ExprParser.Single_inputContext ctx) {
 	  System.out.println("single_input -> (stmt)* ");
 	  int i = 0;
+	  
+	  
 	  String input = "";
 	  while(ctx.stmt(i) != null) {
 		  input += visit(ctx.stmt(i++)) + "\n";
 		  i++;
 	  }
+	  
 	  try {
+	    Writer exWriter = new FileWriter(Envir.exeFileName, false);
+	    
 	    if(funcflag || classflag){
           Writer w = new FileWriter(Envir.tempFileName, true);
           w.write(input);
           w.close();
           
         }else{
-          Writer w = new FileWriter(Envir.exeFileName, false);
-          w.write(input);
-          w.write("\n");
-          w.close();
+          
+          writeImps(exWriter);
+          writeVars(exWriter);
+          exWriter.write(input);
+          exWriter.write("\n");
+          exWriter.close();
           System.out.println("final written single_input:");
           System.out.println(input);
         }
@@ -336,17 +390,34 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //assign_stmt:expr assign_operators expr ';' ;
   @Override public String visitAssign_stmt(ExprParser.Assign_stmtContext ctx) { 
 	  System.out.println("assign_stmt:expr assign_operators expr ';'");
-	  String ret = null;
+
+	  String retValue = null;
 	  String leftExpr = visit(ctx.expr(1));
 	  if (leftExpr.substring(0, 1).equals("#")) {
-		  ret = visit(ctx.expr(0)) + ".pitch_up()";
+		  retValue = visit(ctx.expr(0)) + ".pitch_up()";
 	  } else if (leftExpr.substring(0, 1).equals("~")){
-		  ret = visit(ctx.expr(0)) + ".pitch_down()";
+		  retValue = visit(ctx.expr(0)) + ".pitch_down()";
 	  } else {
-		  ret = visit(ctx.expr(0)) + " " + visit(ctx.assign_operators()) +  " " + visit(ctx.expr(1));
+		  retValue = visit(ctx.expr(0)) + " " + visit(ctx.assign_operators()) +  " " + visit(ctx.expr(1));
 	  }
-	  System.out.println("assign_stmt return:" + ret);
-	  return ret;
+
+	  String expr = visit(ctx.expr(0));
+	  String value = visit(ctx.expr(1));
+	  //StringBuffer ret =new StringBuffer();
+//	  ret.append(expr).append(" ").append(visit(ctx.assign_operators()));
+//	  ret.append(" ").append(value); 
+	  if(!(classflag || funcflag)){
+	    if(Envir.varTable.containsKey(expr)){
+	      Envir.varTable.get(expr).dirty=true;
+	    }else{
+	      Variable v = new Variable(expr,value);
+	      Envir.varTable.put(expr, v);
+	      //v.dirty=true;
+	    }
+	  }
+	  
+	  System.out.println("assign_stmt return:" + retValue);
+	  return retValue;
   }
   
   //assign_operators: ASSIGN
@@ -417,9 +488,19 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   @Override
   public String visitFuncdef(ExprParser.FuncdefContext ctx) {
     funcflag = true;
+    String name =ctx.NAME().getText();
+    
+    // generate import stmt if it is not class function
+    if(!classflag){
+      ImpStmt is = new ImpStmt("from "
+          + Envir.tempFileName.substring(0, Envir.tempFileName.length()-3)
+          + " import "+name);
+      Envir.defTable.put(name, is);
+    }
+      
     StringBuffer func = new StringBuffer();
     func.append(indent.getIndent());
-    func.append("def").append(" ").append(ctx.NAME().getText());
+    func.append("def").append(" ").append(name);
     func.append(visit(ctx.parameters())).append(":\n");
      
     indent.addIndent();
@@ -434,7 +515,15 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   public String visitClassdef(ExprParser.ClassdefContext ctx) { 
     classflag = true;
     StringBuffer cls = new StringBuffer();
-    cls.append("class").append(" ").append(ctx.NAME().getText()).append("(");
+    String name = ctx.NAME().getText();
+    
+    // generate import from class definition
+    ImpStmt is = new ImpStmt("from "
+        + Envir.tempFileName.substring(0, Envir.tempFileName.length()-3)
+        + " import " + name);
+    Envir.defTable.put(name, is);
+    
+    cls.append("class").append(" ").append(name).append("(");
     if (ctx.test_list()!=null)
       cls.append(visit(ctx.test_list()));
     cls.append(")").append(":\n");
@@ -797,9 +886,15 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //trailer ->'(' arglist? ')'
   @Override public String visitTLRARG(ExprParser.TLRARGContext ctx) { 
 	  System.out.println("trailer ->'(' arglist? ')'");
-	  String ret = "(" + visit(ctx.arglist()) + ")";
-	  System.out.println("trailer ->'(' arglist? ')' return:" + ret);
-	  return ret;
+
+	  StringBuffer ret = new StringBuffer();
+	  ret.append("(");
+	  if(ctx.arglist()!=null){
+	    ret.append(visit(ctx.arglist()));
+	  }
+	  ret.append( ")");
+	  System.out.println("trailer ->'(' arglist? ')' return:" + ret.toString());
+	  return ret.toString();
   }
   
   //trailer -> '[' subscriptlist ']'
