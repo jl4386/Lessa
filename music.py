@@ -255,22 +255,21 @@ class song:
 
 	def __init__(self):
 		self.sequence_list = []
-		self.instrument_list = []
 		self.name_list = []
 
 	def __repr__(self):
 		song_str = ''
 		for i in range(len(self.sequence_list) - 1):
-			song_str += 'sequence' + str(i+1) + ': ' + str(self.sequence_list[i]) + '\n'
-		song_str += 'sequence' + str(len(self.sequence_list)) + ': ' + str(self.sequence_list[len(self.sequence_list) - 1])
+			song_str += self.name_list[i] + ": " + str(self.sequence_list[i].stream) + '\n'
+		song_str += self.name_list[len(self.sequence_list) - 1] + ": " + str(self.sequence_list[len(self.sequence_list) - 1].stream)
 
 		return song_str
 
 	def __str__(self):
 		song_str = ''
 		for i in range(len(self.sequence_list) - 1):
-			song_str += self.name_list[i] + ": " + str(self.sequence_list[i]) + '\n'
-		song_str += self.name_list[len(self.sequence_list) - 1] + ": " + str(self.sequence_list[len(self.sequence_list) - 1])
+			song_str += self.name_list[i] + ": " + str(self.sequence_list[i].stream) + '\n'
+		song_str += self.name_list[len(self.sequence_list) - 1] + ": " + str(self.sequence_list[len(self.sequence_list) - 1].stream)
 
 		return song_str
 
@@ -279,8 +278,6 @@ class song:
 		time = 0
 		channel = 0
 		volume = volume
-
-		print track
 
 		# Add track name and tempo.
 		MIDI_obj.addTrackName(track, time, "Track" + str(track))
@@ -299,8 +296,7 @@ class song:
 		if not isinstance(seq, sequence):
 			raise TypeError('Only sequence object can be added to song object')
 
-		self.sequence_list.append(seq.stream)
-		self.instrument_list.append(seq.instrument)
+		self.sequence_list.append(seq)
 		self.name_list.append(name)
 
 	def subtract(self, name):
@@ -311,7 +307,6 @@ class song:
 			index = self.name_list.index(name)
 			del(self.name_list[index])
 			del(self.sequence_list[index])
-			del(self.instrument_list[index])
 		except ValueError, IndexError:
 			raise ValueError('The sequence you are trying to delete is not in the song')
 
@@ -319,8 +314,7 @@ class song:
 		# Create the MIDIFile Object with n track
 		MyMIDI = MIDIFile(len(self.sequence_list), removeDuplicates = False, deinterleave = False)
 		for i in range(len(self.sequence_list)):
-			self.construct_seq(self.sequence_list[i], i, 100, MyMIDI)
-			print self.sequence_list[i].instrument
+			self.construct_seq(self.sequence_list[i].stream, i, 100, MyMIDI)
 			self.change_instrument(MyMIDI, i, 0, 0, self.sequence_list[i].instrument)
 
 		# write MIDI file to disk.

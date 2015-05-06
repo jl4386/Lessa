@@ -132,7 +132,7 @@ mySong = song()
 
 mySong.add(seq1, "seq1")
 
-# mySong.play()
+mySong.play()
 
 time.sleep(1)
 
@@ -168,10 +168,10 @@ print "print song:"
 
 print mySong
 
+mySong.play()
+
 mySong.subtract("seq1")
 
 print "after subtracting seq1:"
 
 print mySong
-
-# mySong.play()
