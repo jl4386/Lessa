@@ -336,7 +336,15 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //assign_stmt:expr assign_operators expr ';' ;
   @Override public String visitAssign_stmt(ExprParser.Assign_stmtContext ctx) { 
 	  System.out.println("assign_stmt:expr assign_operators expr ';'");
-	  String ret = visit(ctx.expr(0)) + " " + visit(ctx.assign_operators()) +  " " + visit(ctx.expr(1));
+	  String ret = null;
+	  String leftExpr = visit(ctx.expr(1));
+	  if (leftExpr.substring(0, 1).equals("#")) {
+		  ret = visit(ctx.expr(0)) + ".pitch_up()";
+	  } else if (leftExpr.substring(0, 1).equals("~")){
+		  ret = visit(ctx.expr(0)) + ".pitch_down()";
+	  } else {
+		  ret = visit(ctx.expr(0)) + " " + visit(ctx.assign_operators()) +  " " + visit(ctx.expr(1));
+	  }
 	  System.out.println("assign_stmt return:" + ret);
 	  return ret;
   }
@@ -722,9 +730,10 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  at += visit(ctx.atom());
 	  int i = 0;
 	  while (ctx.trailer(i) != null) {
-		  at += visit(ctx.trailer(i++));
+		  at += visit(ctx.trailer(i));
 		  i++;
 	  }
+	  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + at);
 	  return at;
   }
   
@@ -732,7 +741,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   @Override public String visitATOMNAME(ExprParser.ATOMNAMEContext ctx) {
 	  System.out.println("atom -> NAME");
 	  String name = ctx.NAME().getText();
-	  //System.out.println("NAME = " + name);
+	  System.out.println("atom -> NAME return:" + name);
 	  return name; 
   }
   
@@ -771,6 +780,12 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  return ctx.FALSE().getText();
   }
   
+  //atom -> NOTE
+  @Override public String visitATOMNOTE(ExprParser.ATOMNOTEContext ctx) { 
+	  String ret = "note(" + ctx.NOTE().getText() + ")";
+	  return ret;
+  }
+  
   //atom -> '(' (listmaker_test)? ')' 
   @Override public String visitATOMLIST(ExprParser.ATOMLISTContext ctx) {
 	  System.out.println("'(' (listmaker_test)? ')' ");
@@ -783,6 +798,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   @Override public String visitTLRARG(ExprParser.TLRARGContext ctx) { 
 	  System.out.println("trailer ->'(' arglist? ')'");
 	  String ret = "(" + visit(ctx.arglist()) + ")";
+	  System.out.println("trailer ->'(' arglist? ')' return:" + ret);
 	  return ret;
   }
   
@@ -797,7 +813,8 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //trailer -> '.' NAME
   @Override public String visitTLRNAME(ExprParser.TLRNAMEContext ctx) { 
 	  System.out.println("trailer -> '.' NAME");
-	  return visitChildren(ctx);
+	  String ret = "." + ctx.NAME().getText();
+	  return ret;
   }
   
   //subscriptlist -> subscript ( ',' subscript )* 
