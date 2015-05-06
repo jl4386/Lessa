@@ -7,18 +7,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.antlr.v4.runtime.ANTLRFileStream;
+//import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
 
 import envir.Envir;
 import envir.Gen;
+import envir.Variable;
 
 public class Main {
   private static Scanner sc;
@@ -52,6 +57,8 @@ public class Main {
     
   }
   
+ 
+  
   private static void exec(){
   //run the statement
     interpreter = new PythonInterpreter();
@@ -59,6 +66,14 @@ public class Main {
        
       InputStream filepy = new FileInputStream(Envir.dir+Envir.exeFileName);
       interpreter.execfile(filepy);
+      Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
+      while(it.hasNext()){
+        Map.Entry<String, Variable> pair= it.next();
+        if (pair.getValue().dirty){
+          PyObject value = interpreter.get(pair.getKey());
+          pair.getValue().value = value.toString();
+        } 
+      }
       
       filepy.close();
     } catch (FileNotFoundException e) {
@@ -95,7 +110,7 @@ public class Main {
         //System.out.println(strseen.toString());
         
         parse(strseen.toString());
-        //exec();
+        exec();
         
         
         strseen.delete(0, strseen.length());
@@ -115,7 +130,7 @@ public class Main {
         //System.out.println(strseen.toString());
         
         parse(strseen.toString());
-        //exec();
+        exec();
         
         strseen.delete(0, strseen.length());
         continue;

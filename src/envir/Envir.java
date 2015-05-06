@@ -10,5 +10,5 @@ public class Envir {
   public static final String tempFileName = "definition.py";
   public static final String exeFileName = "exec.py";
   
-  public static final String dir = "/Users/Alex/Documents/Compiler/Lessa/";
+  public static final String dir = System.getProperty("user.dir")+"/";
 }

@@ -101,17 +101,17 @@ public class Gen {
   
   
   public static void main(String[] args){
-//    Gen.initShell();
-//    System.out.println(Gen.exec.canExecute());
-    Variable v = new Variable("i","13");
-    v.dirty = true;
-    Envir.varTable.put("i", v);
-//    Gen.genDefinition("def A(){ print 1}\n", "A");    
-//    Gen.genExecution("print(\"a = 1\");");
-//    Gen.writeDirty();
-    Gen.refreshDirty();
-    System.out.println(Envir.varTable.get("i").value);
-    
+////    Gen.initShell();
+////    System.out.println(Gen.exec.canExecute());
+//    Variable v = new Variable("i","13");
+//    v.dirty = true;
+//    Envir.varTable.put("i", v);
+////    Gen.genDefinition("def A(){ print 1}\n", "A");    
+////    Gen.genExecution("print(\"a = 1\");");
+////    Gen.writeDirty();
+//    Gen.refreshDirty();
+//    System.out.println(Envir.varTable.get("i").value);
+    System.out.println(System.getProperty("user.dir"));
     
   }
   

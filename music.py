@@ -182,6 +182,9 @@ class sequence:
 		self.instrument = 1
 
 	def __add__(self, other):
+		if not isinstance(other, sequence):
+			raise TypeError('Sequences can only be added to sequences')
+
 		if self.instrument != other.instrument:
 			raise ValueError('Two sequence have different instrument, cannot concatenate')
 		tmp_stream = self.stream + other.stream
@@ -191,6 +194,9 @@ class sequence:
 		return tmp_seq
 
 	def __iadd__(self, other):
+		if not isinstance(other, sequence):
+			raise TypeError('Sequences can only be added to sequences')
+			
 		if self.instrument != other.instrument:
 			raise ValueError('Two sequence have different instrument, cannot concatenate')
 		tmp_stream = self.stream + other.stream
@@ -243,6 +249,12 @@ class sequence:
 
 	def to_list(self):
 		return list(self.stream)
+
+	def append(self, other):
+		if not isinstance(other, note):
+			raise TypeError('Sequences can only append notes')
+
+		self.stream.append(other)
 
 class song:
 
