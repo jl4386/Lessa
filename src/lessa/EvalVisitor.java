@@ -47,43 +47,49 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   }**/
   private void writeVars(Writer w){
     Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
+    try {
+      w.write("#Auto-generate variables from variable tables\n");
+    
     while(it.hasNext()){
       Map.Entry<String, Variable> pair= it.next();
-      try {
-        w.write(pair.getKey());
-        w.write("=");
-        w.write(pair.getValue().value);
-        w.write("\n");
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }    
+     
+        if(pair.getValue().create){
+          pair.getValue().create=false;
+        }else{
+          w.write(pair.getKey());
+          w.write("=");
+          w.write(pair.getValue().value);
+          w.write("\n");
+        } 
+      }
+    w.write("\n");
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
     }
   }
   
   private void writeImps(Writer w){
     try {
+      w.write("#Auto-generate imp_stmt support function and class\n");
       w.write("import imp\n");
       String module = Envir.tempFileName.substring(0, Envir.tempFileName.length()-3);
-      w.write(module+"=imp.load_source('"+module+"', '"+Envir.dir+Envir.tempFileName+"')\n" );
-    } catch (IOException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
-    
+      w.write(module+"=imp.load_source('"+module+"', '"+Envir.dir+Envir.tempFileName+"')\n" );  
     
     Iterator<Entry<String, ImpStmt>> it = Envir.defTable.entrySet().iterator();
     
     while(it.hasNext()){
       Map.Entry<String, ImpStmt> pair = it.next();
-      try {
+      
         
         w.write(pair.getValue().stmt);
         w.write("\n");
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+      
+    }
+    w.write("\n");
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
     }
   }
   
