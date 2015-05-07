@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.io.*;
 
 import envir.Envir;
+import envir.Gen;
 import envir.ImpStmt;
 import envir.Indent;
 import envir.Variable;
@@ -44,64 +45,16 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 
     return 0;
   }**/
-  private void writeVars(Writer w){
-    Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
-    try {
-      w.write("#Auto-generate variables from variable tables\n");
-    
-    while(it.hasNext()){
-      Map.Entry<String, Variable> pair= it.next();
-     
-        if(pair.getValue().create){
-          pair.getValue().create=false;
-        }else{
-          w.write(pair.getKey());
-          w.write("=");
-          w.write(pair.getValue().value);
-          w.write("\n");
-        } 
-      }
-    w.write("\n");
-    } catch (IOException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
-  }
   
-  private void writeImps(Writer w){
-    try {
-      w.write("#Auto-generate imp_stmt support function and class\n");
-      w.write("import imp\n");
-      //w.write("music=imp.load_source('music', '"+Envir.dir+"music.py')\n" );
-      String module = Envir.tempFileName.substring(0, Envir.tempFileName.length()-3);
-      w.write(module+"=imp.load_source('"+module+"', '"+Envir.dir+Envir.tempFileName+"')\n" );  
-      //w.write("from music import *");
-      
-      
-    Iterator<Entry<String, ImpStmt>> it = Envir.defTable.entrySet().iterator();
-    
-    while(it.hasNext()){
-      Map.Entry<String, ImpStmt> pair = it.next();
-      
-        
-        w.write(pair.getValue().stmt);
-        w.write("\n");
-      
-    }
-    w.write("\n");
-    } catch (IOException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
-  }
+  
+  
   
   
   //single_input -> (stmt)* 
   @Override public String visitSingle_input(ExprParser.Single_inputContext ctx) {
 	  println("single_input -> (stmt)* ");
 	  int i = 0;
-	  
-	  
+
 	  String input = "";
 	  Writer exWriter = null;
 	  
@@ -110,8 +63,8 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	   */
       try {
         exWriter = new FileWriter(Envir.exeFileName, false);
-        writeImps(exWriter);
-        writeVars(exWriter);
+        Gen.writeImps(exWriter);
+        Gen.writeVars(exWriter);
       } catch (IOException e1) {
         // TODO Auto-generated catch block
         e1.printStackTrace();

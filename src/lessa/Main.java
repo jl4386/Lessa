@@ -74,17 +74,12 @@ public class Main {
        
       InputStream filepy = new FileInputStream(Envir.dir+Envir.exeFileName);
       
-      
+      //execute a statement
       interpreter.execfile(filepy);
-            
-      Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
-      while(it.hasNext()){
-        Map.Entry<String, Variable> pair= it.next();
-        if (pair.getValue().dirty){
-          PyObject value = interpreter.get(pair.getKey());
-          pair.getValue().value = value.toString();
-        } 
-      }
+      
+      //refresh variables
+      Gen.refreshDirty(interpreter);
+      
       
       filepy.close();
     } catch (FileNotFoundException e) {
@@ -106,20 +101,12 @@ public class Main {
       System.out.println(se.traceback.dumpStack());
       
       //remove error variables
-      removeVariables();
+      Gen.removeErrorVariables();
       
     } 
   }
   
-  private static void removeVariables(){
-    Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
-    while(it.hasNext()){
-      Variable v = it.next().getValue();
-      if (v.create){
-        Envir.varTable.remove(v.name);
-      }
-    }
-  }
+  
   
   
   public static void main(String[] args) throws Exception {
