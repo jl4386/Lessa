@@ -73,10 +73,10 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
     try {
       w.write("#Auto-generate imp_stmt support function and class\n");
       w.write("import imp\n");
-      w.write("music=imp.load_source('music', '"+Envir.dir+"music.py')\n" );
+      //w.write("music=imp.load_source('music', '"+Envir.dir+"music.py')\n" );
       String module = Envir.tempFileName.substring(0, Envir.tempFileName.length()-3);
       w.write(module+"=imp.load_source('"+module+"', '"+Envir.dir+Envir.tempFileName+"')\n" );  
-      w.write("from music import *");
+      //w.write("from music import *");
       
       
     Iterator<Entry<String, ImpStmt>> it = Envir.defTable.entrySet().iterator();

@@ -14,16 +14,23 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+
+
 //import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.python.core.PyException;
 import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
 
 import envir.Envir;
 import envir.Gen;
+import envir.LessaError;
+import envir.LessaErrorDic;
 import envir.Variable;
+
 
 public class Main {
   private static Scanner sc;
@@ -59,13 +66,16 @@ public class Main {
   
  
   
-  private static void exec(){
+  private static void exec() throws InterruptedException{
   //run the statement
     interpreter = new PythonInterpreter();
     try {
        
       InputStream filepy = new FileInputStream(Envir.dir+Envir.exeFileName);
+      
+      
       interpreter.execfile(filepy);
+            
       Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
       while(it.hasNext()){
         Map.Entry<String, Variable> pair= it.next();
@@ -82,6 +92,19 @@ public class Main {
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
+    }catch(PyException se){
+      //se.printStackTrace();
+      
+      //TODO
+      System.out.println(se.type);
+      LessaError le = LessaErrorDic.Exceptions.get(se.type);
+      StringBuffer sb = new StringBuffer("Error Number:");
+      sb.append(" ").append(le.codeNO).append("  Type:").append(le.type);
+      System.out.println(sb);
+      System.out.println("Description: "+se.value);
+      System.out.println(se.traceback.dumpStack());
+      
+      
     } 
   }
   
