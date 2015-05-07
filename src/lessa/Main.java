@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 
 
+
 //import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -104,9 +105,22 @@ public class Main {
       System.out.println("Description: "+se.value);
       System.out.println(se.traceback.dumpStack());
       
+      //remove error variables
+      removeVariables();
       
     } 
   }
+  
+  private static void removeVariables(){
+    Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
+    while(it.hasNext()){
+      Variable v = it.next().getValue();
+      if (v.create){
+        Envir.varTable.remove(v.name);
+      }
+    }
+  }
+  
   
   public static void main(String[] args) throws Exception {
 	sc = new Scanner(System.in);

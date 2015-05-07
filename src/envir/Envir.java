@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.python.core.Py;
-import org.python.core.PyObject;
 
 public class Envir {
   public static final Map<String, Variable> varTable = new LinkedHashMap<String, Variable>();

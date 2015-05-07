@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import java.io.*;
 
 import envir.Envir;
-import envir.Gen;
 import envir.ImpStmt;
 import envir.Indent;
 import envir.Variable;
@@ -104,22 +103,38 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  
 	  
 	  String input = "";
+	  Writer exWriter = null;
+	  
+	  /** pre-write: 
+	   *  write vars and imp_stmt into execfile
+	   */
+      try {
+        exWriter = new FileWriter(Envir.exeFileName, false);
+        writeImps(exWriter);
+        writeVars(exWriter);
+      } catch (IOException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
+	  
+      /** tree traversal
+       *    generate target code
+       */
 	  while(ctx.stmt(i) != null) {
 		  input += visit(ctx.stmt(i++)) + "\n";
 		  i++;
 	  }
-	  
+	   
 	  try {
-	    Writer exWriter = new FileWriter(Envir.exeFileName, false);
 	    
+	    // write class, function def into tempfile
 	    if(funcflag || classflag){
           Writer w = new FileWriter(Envir.tempFileName, true);
           w.write(input);
           w.close();
           
         }else{
-          writeImps(exWriter);
-          writeVars(exWriter);
+          // write into execution 
           exWriter.write(input);
           exWriter.write("\n");
           exWriter.close();
