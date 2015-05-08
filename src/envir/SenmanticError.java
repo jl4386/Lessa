@@ -1,10 +1,10 @@
 package envir;
 
-public class LessaError {
+public class SenmanticError {
   public String type;
   public String codeNO;
   
-  public LessaError(String content, String no){
+  public SenmanticError(String content, String no){
     this.type = content;
     this.codeNO = no;
   }

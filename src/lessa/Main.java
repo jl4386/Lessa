@@ -7,12 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 
 
@@ -23,14 +21,14 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.python.core.PyException;
-import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
 
 import envir.Envir;
 import envir.Gen;
-import envir.LessaError;
-import envir.LessaErrorDic;
-import envir.Variable;
+import envir.SenmanticError;
+import envir.SemanErrorDic;
+import envir.SyntaxError;
+
 
 
 public class Main {
@@ -60,6 +58,9 @@ public class Main {
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
+    } catch(SyntaxError se){
+      //se.printStackTrace();
+      System.err.println(se.getMessage());
     }
     
     
@@ -93,7 +94,7 @@ public class Main {
       
       //TODO
       System.out.println(se.type);
-      LessaError le = LessaErrorDic.Exceptions.get(se.type);
+      SenmanticError le = SemanErrorDic.Exceptions.get(se.type);
       StringBuffer sb = new StringBuffer("Error Number:");
       sb.append(" ").append(le.codeNO).append("  Type:").append(le.type);
       System.out.println(sb);
