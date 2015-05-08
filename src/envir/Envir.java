@@ -15,5 +15,6 @@ public class Envir {
   
   public static final String dir = System.getProperty("user.dir")+"/";
   
+  public static boolean playflag = false;
   
 }

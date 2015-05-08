@@ -14,6 +14,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+
 //import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -23,6 +25,8 @@ import org.python.util.PythonInterpreter;
 
 import envir.Envir;
 import envir.Gen;
+import envir.MidiLis;
+import envir.MidiPlay;
 import envir.SenmanticError;
 import envir.SemanErrorDic;
 import envir.SymbolError;
@@ -31,7 +35,8 @@ import envir.SyntaxError;
 public class Main {
 	private static Scanner sc;
 	private static PythonInterpreter interpreter;
-
+	public boolean playflag = false; 
+	
 	private static List<String> readFile(String file) throws Exception {
 		String line = null;
 		List<String> lines = new ArrayList<String>();
@@ -108,13 +113,26 @@ public class Main {
 			if (repl) {
 				filepy = new FileInputStream(Envir.dir
 						+ Envir.exeFileName);
+				// execute a statement
+	            interpreter.execfile(filepy);
 			} else {
+			    
 				filepy= new FileInputStream(Envir.dir
 						+ Envir.compileFileName);
+				if(Envir.playflag){
+				  MidiPlay player = new MidiPlay();
+				  player.run();
+				  MidiLis listener = new MidiLis(player.sequencer);
+				  player.sequencer.addMetaEventListener(listener);
+				  Envir.playflag =false;
+				}else{
+				  // execute a statement
+	              interpreter.execfile(filepy);
+				}
+				
 			}
-
-			// execute a statement
-			interpreter.execfile(filepy);
+			
+			
 
 			// refresh variables
 			Gen.refreshDirty(interpreter);

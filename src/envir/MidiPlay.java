@@ -11,8 +11,8 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
 public class MidiPlay extends Thread{
-  Sequencer sequencer;
-  String filename;
+  public Sequencer sequencer;
+  public String filename;
   public MidiPlay(){
     try {
       sequencer= MidiSystem.getSequencer();
