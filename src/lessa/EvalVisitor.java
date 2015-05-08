@@ -369,7 +369,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //stmt_list: stmt_list stmt
   @Override public String visitLISTLISTSTMT(ExprParser.LISTLISTSTMTContext ctx) { 
 	  println("stmt_list -> stmt_list stmt");
-	  String ret = visit(ctx.stmt_list())  + visit(ctx.stmt());
+	  String ret = visit(ctx.stmt_list())  + "\n" + visit(ctx.stmt());
 	  return ret;
   }
   
