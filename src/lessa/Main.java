@@ -184,11 +184,12 @@ public class Main {
 					continue;
 				parse(strseen.toString(), repl);
 				strseen.delete(0, strseen.length());
+				System.out.println(""+index);
 			}
 			exec(repl);
 		}
 
-		//Gen.closeShell();
+		Gen.closeShell();
 
 		// ExprLexer lexer = new ExprLexer(new ANTLRFileStream("?"));
 		// ExprParser parser = new ExprParser(new CommonTokenStream(lexer));
