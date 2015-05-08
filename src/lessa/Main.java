@@ -68,7 +68,7 @@ public class Main {
 		return count;
 	}
 
-	private static void parse(String s) {
+	private static void parse(String s, boolean repl) {
 		InputStream stream = new ByteArrayInputStream(
 				s.getBytes(StandardCharsets.UTF_8));
 		ANTLRInputStream input;
@@ -84,7 +84,7 @@ public class Main {
 			parser.addErrorListener(DescriptiveErrorListener.INSTANCE);
 			ParseTree tree = parser.prog(); // parse
 
-			EvalVisitor eval = new EvalVisitor();
+			EvalVisitor eval = new EvalVisitor(repl);
 			eval.visit(tree);
 
 		} catch (IOException e) {
@@ -99,13 +99,19 @@ public class Main {
 
 	}
 
-	private static void exec() throws InterruptedException {
+	private static void exec(boolean repl) throws InterruptedException {
 		// run the statement
 		interpreter = new PythonInterpreter();
+		InputStream filepy;
 		try {
 
-			InputStream filepy = new FileInputStream(Envir.dir
-					+ Envir.exeFileName);
+			if (repl) {
+				filepy = new FileInputStream(Envir.dir
+						+ Envir.exeFileName);
+			} else {
+				filepy= new FileInputStream(Envir.dir
+						+ Envir.compileFileName);
+			}
 
 			// execute a statement
 			interpreter.execfile(filepy);
@@ -148,7 +154,7 @@ public class Main {
 		}
 
 		// initialization
-		Gen.initShell();
+		Gen.initShell(repl);
 		String input = null;
 		Pattern pre = Pattern.compile("\\{");
 		Pattern pos = Pattern.compile("\\}");
@@ -163,8 +169,9 @@ public class Main {
 				strseen.append(input + "\n");
 				if ((count = isComplete(input, count, pre, pos)) != 0)
 					continue;
-				parse(strseen.toString());
-				// exec();
+
+				parse(strseen.toString(), repl);
+				exec(repl);
 				strseen.delete(0, strseen.length());
 			}
 		} else {
@@ -175,10 +182,10 @@ public class Main {
 				index++;
 				if ((count = isComplete(input, count, pre, pos)) != 0)
 					continue;
-				parse(strseen.toString());
+				parse(strseen.toString(), repl);
 				strseen.delete(0, strseen.length());
 			}
-			// exec();
+			exec(repl);
 		}
 
 		Gen.closeShell();

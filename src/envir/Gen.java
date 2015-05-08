@@ -22,9 +22,13 @@ public class Gen {
   
   
   
-  public static void initShell(){   
+  public static void initShell(boolean repl){   
     temp = new File(Envir.tempFileName);
-    exec = new File(Envir.exeFileName);
+    if (repl) {
+    	exec = new File(Envir.exeFileName);
+    }else {
+    	exec = new File(Envir.compileFileName);
+    }
     //dirty = new File(dirtyFileName);
     if(temp.exists())
       temp.delete();
