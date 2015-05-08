@@ -99,13 +99,19 @@ public class Main {
 
 	}
 
-	private static void exec() throws InterruptedException {
+	private static void exec(boolean repl) throws InterruptedException {
 		// run the statement
 		interpreter = new PythonInterpreter();
+		InputStream filepy;
 		try {
 
-			InputStream filepy = new FileInputStream(Envir.dir
-					+ Envir.exeFileName);
+			if (repl) {
+				filepy = new FileInputStream(Envir.dir
+						+ Envir.exeFileName);
+			} else {
+				filepy= new FileInputStream(Envir.dir
+						+ Envir.compileFileName);
+			}
 
 			// execute a statement
 			interpreter.execfile(filepy);
@@ -148,7 +154,7 @@ public class Main {
 		}
 
 		// initialization
-		Gen.initShell();
+		Gen.initShell(repl);
 		String input = null;
 		Pattern pre = Pattern.compile("\\{");
 		Pattern pos = Pattern.compile("\\}");
@@ -165,7 +171,7 @@ public class Main {
 					continue;
 
 				parse(strseen.toString(), repl);
-				// exec();
+				exec(repl);
 				strseen.delete(0, strseen.length());
 			}
 		} else {
@@ -179,7 +185,7 @@ public class Main {
 				parse(strseen.toString(), repl);
 				strseen.delete(0, strseen.length());
 			}
-		 exec();
+			exec(repl);
 		}
 
 		Gen.closeShell();
