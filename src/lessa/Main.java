@@ -169,6 +169,7 @@ public class Main {
 				strseen.append(input + "\n");
 				if ((count = isComplete(input, count, pre, pos)) != 0)
 					continue;
+
 				parse(strseen.toString(), repl);
 				exec(repl);
 				strseen.delete(0, strseen.length());
