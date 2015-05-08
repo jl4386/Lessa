@@ -9,16 +9,17 @@ while(start1 < 'D6w'){
 	start1 += 1;
 }
 print ("broken chord: ");
+
 for (n in scale){
 	if (n == 'A4w'){
-		print ("\n");
+		print(" ");
 		break;
 	}
 	elif (n.pitch != "C" and n.pitch != "E" and n.pitch != "G"){
 		continue;
 	}
 	else{
-		print (str(n) + " ");
+		print(str(n) + " ");
 	}
 	chord.append(n);
 }
