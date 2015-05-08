@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 
 
 
+
+
 //import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -27,6 +29,7 @@ import envir.Envir;
 import envir.Gen;
 import envir.SenmanticError;
 import envir.SemanErrorDic;
+import envir.SymbolError;
 import envir.SyntaxError;
 
 
@@ -45,7 +48,7 @@ public class Main {
       input = new ANTLRInputStream(stream);
       ExprLexer lexer = new ExprLexer(input);
       lexer.removeErrorListeners();
-      lexer.addErrorListener(DescriptiveErrorListener.INSTANCE);
+      lexer.addErrorListener(TokenErrorListener.INSTANCE);
       CommonTokenStream tokens = new CommonTokenStream(lexer);
       ExprParser parser = new ExprParser(tokens);
       parser.removeErrorListeners();
@@ -61,6 +64,8 @@ public class Main {
     } catch(SyntaxError se){
       //se.printStackTrace();
       System.err.println(se.getMessage());
+    } catch(SymbolError sbe){
+      System.err.println(sbe.getMessage());
     }
     
     
