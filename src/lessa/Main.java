@@ -114,22 +114,24 @@ public class Main {
 				filepy = new FileInputStream(Envir.dir
 						+ Envir.exeFileName);
 				// execute a statement
-	            interpreter.execfile(filepy);
+	            
+                if(Envir.playflag){
+                  System.out.println("Song is going to play, waiting...");
+                  MidiPlay player = new MidiPlay();
+                  player.run();
+                  MidiLis listener = new MidiLis(player.sequencer);
+                  player.sequencer.addMetaEventListener(listener);
+                  Envir.playflag =false;
+                }else{
+                  // execute a statement
+                  interpreter.execfile(filepy);
+                }
 			} else {
 			    
 				filepy= new FileInputStream(Envir.dir
 						+ Envir.compileFileName);
-				if(Envir.playflag){
-				  MidiPlay player = new MidiPlay();
-				  player.run();
-				  MidiLis listener = new MidiLis(player.sequencer);
-				  player.sequencer.addMetaEventListener(listener);
-				  Envir.playflag =false;
-				}else{
-				  // execute a statement
-	              interpreter.execfile(filepy);
-				}
 				
+				interpreter.execfile(filepy);
 			}
 			
 			

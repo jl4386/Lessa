@@ -55,7 +55,7 @@ public class MidiPlay extends Thread{
     
     
   }
-  /** test program
+  /** test program*/
   public static void main(String[] args) throws Exception {
     MidiPlay m = new MidiPlay();
     m.run();
@@ -63,5 +63,5 @@ public class MidiPlay extends Thread{
     m.sequencer.addMetaEventListener(ml);
     System.out.println("hw");
   }
-  */
+  /**/
 }
