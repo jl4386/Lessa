@@ -162,7 +162,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //stmt: assign_stmt
   @Override public String visitASSIGNSTMT(ExprParser.ASSIGNSTMTContext ctx) { 
 	  println("stmt -> assign_stmt");
-	  String ret = indent.getIndent() + visit(ctx.assign_stmt()) + "\n";
+	  String ret = indent.getIndent() + visit(ctx.assign_stmt());
 	  println("stmt -> assign_stmt return:\n" + ret);
 	  return ret;
   }
@@ -170,7 +170,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //stmt: jump_stmt 
   @Override public String visitJMPSTMT(ExprParser.JMPSTMTContext ctx) { 
 	  println("stmt -> jump_stmt");
-	  String ret = indent.getIndent() + visit(ctx.jump_stmt()) + "\n";
+	  String ret = indent.getIndent() + visit(ctx.jump_stmt());
 	  println("stmt -> jump_stmt return:\n" + ret);
 	  return ret;
   }
