@@ -104,15 +104,36 @@ public class Gen {
     Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
     while(it.hasNext()){
       Map.Entry<String, Variable> pair= it.next();
+      
       if (pair.getValue().dirty){
         PyObject value = interpreter.get(pair.getKey());
-        pair.getValue().value = value.toString();
+        
+        System.out.println(value);
+        if(isInstance(value.toString())){
+          System.out.println(value);
+          System.out.println(getClassName(value.toString()));
+          pair.getValue().value = getClassName(value.toString())+"()";
+        }else{
+          pair.getValue().value = value.toString();
+        }
+          
+        
       }
       else if(pair.getValue().create){
         pair.getValue().create = false;
       }
     }
     
+  }
+  private static String getClassName(String test){
+    String temp = test.substring("<definition.".length());
+    
+    return temp.split(" ")[0];
+    
+  }
+  
+  private static boolean isInstance(String test){
+    return test.contains("instance");
   }
   
   public static void removeErrorVariables(){

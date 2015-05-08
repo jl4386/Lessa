@@ -508,9 +508,16 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
       cls.append(visit(ctx.test_list()));
     cls.append(")").append(":\n");
     indent.addIndent();
-    String rt = cls.toString()+visit(ctx.compound_stmt());
+    
+    StringBuilder sb = new StringBuilder();
+    sb.append(visit(ctx.compound_stmt()));
+    if(sb.toString().trim().equals("")){
+      sb.append(indent.getIndent()).append("pass");
+    }
+    
+    
     indent.delIndent();
-    return rt; 
+    return cls.append(sb).toString(); 
   }
   
   //while_stmt: WHILE '(' test ')' stmt

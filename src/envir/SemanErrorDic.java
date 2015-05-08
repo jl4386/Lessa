@@ -18,6 +18,8 @@ public class SemanErrorDic {
     Exceptions.put(Py.ValueError, new SenmanticError("VALUE ERROR","00006"));
     Exceptions.put(Py.OverflowError, new SenmanticError("ARITHMETIC ERROR","00007"));
     Exceptions.put(Py.JavaError,new SenmanticError( "UNDEFINED ERROR","00008"));
+    Exceptions.put(Py.AttributeError,new SenmanticError( "UNDEFINED ATTRIBUTE","00009"));
+    
     
   }
 }
