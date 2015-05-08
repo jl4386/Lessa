@@ -1,0 +1,5 @@
+while (start1 < 'D6w'){
+	print (str(start1)+" ");
+	scale.append(start1);
+	start1 += 1;
+}

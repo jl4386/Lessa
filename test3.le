@@ -1,0 +1,24 @@
+scale = [];
+chord = [];
+start1 = 'C4w';
+print("scale:");  
+
+while(start1 < 'D6w'){
+	print (str(start1)+" ");
+	scale.append(start1);
+	start1 += 1;
+}
+print ("broken chord: ");
+for (n in scale){
+	if (n == 'A4w'){
+		print ("\n");
+		break;
+	}
+	elif (n.pitch != "C" and n.pitch != "E" and n.pitch != "G"){
+		continue;
+	}
+	else{
+		print (str(n) + " ");
+	}
+	chord.append(n);
+}
