@@ -68,7 +68,7 @@ public class Main {
 		return count;
 	}
 
-	private static void parse(String s) {
+	private static void parse(String s, boolean repl) {
 		InputStream stream = new ByteArrayInputStream(
 				s.getBytes(StandardCharsets.UTF_8));
 		ANTLRInputStream input;
@@ -84,7 +84,7 @@ public class Main {
 			parser.addErrorListener(DescriptiveErrorListener.INSTANCE);
 			ParseTree tree = parser.prog(); // parse
 
-			EvalVisitor eval = new EvalVisitor();
+			EvalVisitor eval = new EvalVisitor(repl);
 			eval.visit(tree);
 
 		} catch (IOException e) {
@@ -163,7 +163,7 @@ public class Main {
 				strseen.append(input + "\n");
 				if ((count = isComplete(input, count, pre, pos)) != 0)
 					continue;
-				parse(strseen.toString());
+				parse(strseen.toString(), repl);
 				// exec();
 				strseen.delete(0, strseen.length());
 			}
@@ -175,7 +175,7 @@ public class Main {
 				index++;
 				if ((count = isComplete(input, count, pre, pos)) != 0)
 					continue;
-				parse(strseen.toString());
+				parse(strseen.toString(), repl);
 				strseen.delete(0, strseen.length());
 			}
 			// exec();
