@@ -10,99 +10,99 @@ import envir.ImpStmt;
 import envir.Indent;
 import envir.Variable;
 
-
 public class EvalVisitor extends ExprBaseVisitor<String> {
   Map<String, Integer> memory = new HashMap<String, Integer>();//我不知道这是啥！！！
   Indent indent = new Indent();
   boolean funcflag = false;
   boolean classflag = false;
-  
-  public EvalVisitor() throws FileNotFoundException, UnsupportedEncodingException {
-    //writer = new PrintWriter("out.py", "UTF-8");
-  }
+  boolean replflag = false;
 
+  	public EvalVisitor(boolean repl) throws FileNotFoundException,
+  			UnsupportedEncodingException {
+  		// writer = new PrintWriter("out.py", "UTF-8");
+  		this.replflag = repl;
+  	}
 
-  /** print_stmt: PRINT STRING ;*/
-  /**@Override 
-  public Integer visitPrint_stmt(ExprParser.Print_stmtContext ctx) {
-    String print = ctx.PRINT().getText();
-    String value = ctx.STRING().getText();
+  	/** print_stmt: PRINT STRING ; */
+  	/**
+  	 * @Override public Integer visitPrint_stmt(ExprParser.Print_stmtContext
+  	 *           ctx) { String print = ctx.PRINT().getText(); String value =
+  	 *           ctx.STRING().getText();
+  	 * 
+  	 *           try {
+  	 *           //println("-----------------generating code-----------------\n"
+  	 *           ); Writer w = new FileWriter(Envir.exeFileName, false);
+  	 *           w.write(print); w.write(" "); w.write(value);
+  	 *           //println(print+" "+value); w.close(); } catch (IOException e)
+  	 *           { // TODO Auto-generated catch block e.printStackTrace(); }
+  	 * 
+  	 *           return 0; }
+  	 **/
 
-    try {
-      //println("-----------------generating code-----------------\n");
-      Writer w = new FileWriter(Envir.exeFileName, false);
-      w.write(print);
-      w.write(" ");
-      w.write(value);
-      //println(print+" "+value);
-      w.close();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+  	// single_input -> (stmt)*
+  	@Override
+  	public String visitSingle_input(ExprParser.Single_inputContext ctx) {
+  		println("single_input -> (stmt)* ");
+  		int i = 0;
 
-    return 0;
-  }**/
-  
-  
-  
-  
-  
-  //single_input -> (stmt)* 
-  @Override public String visitSingle_input(ExprParser.Single_inputContext ctx) {
-	  println("single_input -> (stmt)* ");
-	  int i = 0;
+  		String input = "";
+  		Writer exWriter = null;
+  		if (replflag) {
+  			/**
+  			 * pre-write: write vars and imp_stmt into execfile
+  			 */
+  			try {
+  				exWriter = new FileWriter(Envir.exeFileName, false);
+  				exWriter.write("#----------Pre-generate codes begin----------\n\n");
+  				exWriter.write("#Auto-generate imp_stmt support function and class\n");
+  				Gen.writeImps(exWriter);
+  				exWriter.write("#Auto-generate variables from variable tables\n");
+  				Gen.writeVars(exWriter);
+  				exWriter.write("#----------Pre-generate codes end------------\n\n");
+  			} catch (IOException e1) {
+  				// TODO Auto-generated catch block
+  				e1.printStackTrace();
+  			}
+  		} else {
+  			try {
+  				exWriter = new FileWriter(Envir.compileFileName, true);
+  			} catch (IOException e1) {
+  				// TODO Auto-generated catch block
+  				e1.printStackTrace();
+  			}
+  			
+  		}
+  		/**
+  		 * tree traversal generate target code
+  		 */
+  		while (ctx.stmt(i) != null) {
+  			input += visit(ctx.stmt(i++)) + "\n";
+  			i++;
+  		}
 
-	  String input = "";
-	  Writer exWriter = null;
-	  
-	  /** pre-write: 
-	   *  write vars and imp_stmt into execfile
-	   */
-      try {
-        exWriter = new FileWriter(Envir.exeFileName, false);
-        exWriter.write("#----------Pre-generate codes begin----------\n\n");
-        exWriter.write("#Auto-generate imp_stmt support function and class\n");
-        Gen.writeImps(exWriter);
-        exWriter.write("#Auto-generate variables from variable tables\n");
-        Gen.writeVars(exWriter);
-        exWriter.write("#----------Pre-generate codes end------------\n\n");
-      } catch (IOException e1) {
-        // TODO Auto-generated catch block
-        e1.printStackTrace();
-      }
-	  
-      /** tree traversal
-       *    generate target code
-       */
-	  while(ctx.stmt(i) != null) {
-		  input += visit(ctx.stmt(i++)) + "\n";
-		  i++;
-	  }
-	   
-	  try {
-	    
-	    // write class, function def into tempfile
-	    if(funcflag || classflag){
-          Writer w = new FileWriter(Envir.tempFileName, true);
-          w.write(input);
-          w.close();
-          
-        }else{
-          // write into execution 
-          exWriter.write(input);
-          exWriter.write("\n");
-          exWriter.close();
-          println("final written single_input:");
-          println(input);
-        }
-	    } catch (IOException e) {
-	      // TODO Auto-generated catch block
-	      e.printStackTrace();
-	    }
-	  return input;
-  }
-  
+  		try {
+  			
+  			// write class, function def into tempfile
+  			if ((funcflag || classflag) && replflag) {
+  				Writer w = new FileWriter(Envir.tempFileName, true);
+  				w.write(input);
+  				w.close();
+
+  			} else {
+  				// write into execution
+  				exWriter.write(input);
+  				exWriter.write("\n");
+  				exWriter.close();
+  				println("final written single_input:");
+  				println(input);
+  			}
+  		} catch (IOException e) {
+  			// TODO Auto-generated catch block
+  			e.printStackTrace();
+  		}
+  		return input;
+  	}
+
   //stmt -> simple_stmt 
   @Override public String visitSIMPLESTMT(ExprParser.SIMPLESTMTContext ctx) { 
 	  println("stmt -> simple_stmt ");
@@ -1100,7 +1100,4 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
     return visitChildren(ctx);
 		  
   }**/
-
 }
-
-		

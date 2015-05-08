@@ -22,7 +22,7 @@ public class Run {
         ExprParser parser = new ExprParser(tokens);
         ParseTree tree = parser.prog(); // parse
 
-        EvalVisitor eval = new EvalVisitor();
-        eval.visit(tree);
+        //EvalVisitor eval = new EvalVisitor();
+        //eval.visit(tree);
     }
 }

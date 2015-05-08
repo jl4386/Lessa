@@ -10,6 +10,7 @@ public class Envir {
   public static final Map<String, ImpStmt> defTable = new HashMap<String, ImpStmt>();
   public static final String tempFileName = "definition.py";
   public static final String exeFileName = "exec.py";
+  public static final String compileFileName = "output.py";
   
   public static final String dir = System.getProperty("user.dir")+"/";
   
