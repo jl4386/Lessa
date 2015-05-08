@@ -61,8 +61,12 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	   */
       try {
         exWriter = new FileWriter(Envir.exeFileName, false);
+        exWriter.write("#----------Pre-generate codes begin----------\n\n");
+        exWriter.write("#Auto-generate imp_stmt support function and class\n");
         Gen.writeImps(exWriter);
+        exWriter.write("#Auto-generate variables from variable tables\n");
         Gen.writeVars(exWriter);
+        exWriter.write("#----------Pre-generate codes end------------\n\n");
       } catch (IOException e1) {
         // TODO Auto-generated catch block
         e1.printStackTrace();

@@ -149,7 +149,7 @@ public class Gen {
   public static void writeVars(Writer w){
     Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
     try {
-      w.write("#Auto-generate variables from variable tables\n");
+      
     
     while(it.hasNext()){
       Map.Entry<String, Variable> pair= it.next();
@@ -173,12 +173,12 @@ public class Gen {
   
   public static void writeImps(Writer w){
     try {
-      w.write("#Auto-generate imp_stmt support function and class\n");
+      
       w.write("import imp\n");
-      //w.write("music=imp.load_source('music', '"+Envir.dir+"music.py')\n" );
+      w.write("music=imp.load_source('music', '"+Envir.dir+"music.py')\n" );
       String module = Envir.tempFileName.substring(0, Envir.tempFileName.length()-3);
       w.write(module+"=imp.load_source('"+module+"', '"+Envir.dir+Envir.tempFileName+"')\n" );  
-      //w.write("from music import *");
+      w.write("from music import *\n");
       
       
     Iterator<Entry<String, ImpStmt>> it = Envir.defTable.entrySet().iterator();

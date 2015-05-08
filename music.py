@@ -1,6 +1,9 @@
 #Import the library
-from midiutil.MidiFile import MIDIFile
-import pygame
+import imp
+import os
+MidiFile=imp.load_source('MidiFile',os.getcwd()+'/midiutil/MidiFile.py')
+from MidiFile import MIDIFile
+
 
 pitch_dict = {'A0': 21, 'B0': 23, 'C1': 24, 'D1': 26, 'E1': 28, 'F1': 29, 'G1': 31, 'A1': 33, 'B1': 35, 
 				'C2': 36, 'D2': 38, 'E2': 40, 'F2': 41, 'G2': 43, 'A2': 45, 'B2': 47,
