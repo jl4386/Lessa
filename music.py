@@ -325,27 +325,27 @@ class song:
 		MyMIDI.writeFile(binfile)
 		binfile.close()
 
-		# play MIDI file
-		freq = 44100    # audio CD quality
-		bitsize = -16   # unsigned 16 bit
-		channels = 2    # 1 is mono, 2 is stereo
-		buffer = 1024    # number of samples
-		pygame.mixer.init(freq, bitsize, channels, buffer)
-		# optional volume 0 to 1.0
-		pygame.mixer.music.set_volume(0.8)
-
-		clock = pygame.time.Clock()
-		try:
-			pygame.mixer.music.load('output.mid')
-			print "Music file %s loaded!" % 'output.mid'
-		except pygame.error:
-			print "File %s not found! (%s)" % ('output.mid', pygame.get_error())
-			return
-
-		pygame.mixer.music.play()
-		while pygame.mixer.music.get_busy():
-		# check if playback has finished
-			clock.tick(30)
+# 		# play MIDI file
+# 		freq = 44100    # audio CD quality
+# 		bitsize = -16   # unsigned 16 bit
+# 		channels = 2    # 1 is mono, 2 is stereo
+# 		buffer = 1024    # number of samples
+# 		pygame.mixer.init(freq, bitsize, channels, buffer)
+# 		# optional volume 0 to 1.0
+# 		pygame.mixer.music.set_volume(0.8)
+# 
+# 		clock = pygame.time.Clock()
+# 		try:
+# 			pygame.mixer.music.load('output.mid')
+# 			print "Music file %s loaded!" % 'output.mid'
+# 		except pygame.error:
+# 			print "File %s not found! (%s)" % ('output.mid', pygame.get_error())
+# 			return
+# 
+# 		pygame.mixer.music.play()
+# 		while pygame.mixer.music.get_busy():
+# 		# check if playback has finished
+# 			clock.tick(30)
 
 	def get_sequence_list(self):
 		return self.sequence_list
