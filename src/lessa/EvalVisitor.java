@@ -542,7 +542,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //while_stmt: WHILE '(' test ')' stmt
   @Override public String visitWhile_stmt(ExprParser.While_stmtContext ctx) {
 	  println("while_stmt -> WHILE '(' test ')' stmt");
-	  String ret ="while " + visit(ctx.test()) + ":" + "\n";
+	  String ret =indent.getIndent()+"while " + visit(ctx.test()) + ":" + "\n";
 	  indent.addIndent();
 	  ret += visit(ctx.stmt());
 	  indent.delIndent();
@@ -554,9 +554,11 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //for_stmt: FOR '(' expr_list IN test_list ')' stmt 
   @Override public String visitFor_stmt(ExprParser.For_stmtContext ctx) {
 	  println("for_stmt -> FOR '(' expr_list IN test_list ')' stmt");
-	  indent.addIndent();
-	  String ret = "for" + " " + visit(ctx.expr_list()) + " " + "in" +  " " 
-	  + visit(ctx.test_list()) + ":" + "\n" +  visit(ctx.stmt());
+    String ret = indent.getIndent();
+	  ret+=("for" + " " + visit(ctx.expr_list()) + " " + "in" +  " " 
+	  + visit(ctx.test_list()) + ":" + "\n");
+    indent.addIndent();
+    ret += visit(ctx.stmt());
 	  indent.delIndent();
 	  println("for_stmt return:" + ret);
 	  return ret;
@@ -745,7 +747,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
     String arithstring = visit(ctx.term(0));
     int i = 1;
     while (ctx.term(i) != null) {
-    	arithstring += " " + ctx.ADDMINOP(i-1).getText() + " " + visit(ctx.term(i++)); 
+    	arithstring += (" " + ctx.ADDMINOP(i-1).getText() + " " + visit(ctx.term(i))); 
     	i++;
     }
     /**try {
@@ -840,7 +842,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 			  String trailerStr = visit(ctx.trailer(0));
 			  if (trailerStr.substring(0, 1).equals("(")) {
 				  String ret = "list_to_seq" + trailerStr; 
-				  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+				  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
 				  return ret;
 			  }
 		  }
@@ -852,7 +854,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 			  String third = visit(ctx.trailer(1));
 			  third = third.substring(1, third.length() - 1);
 			  String ret = visit(ctx.atom()) + visit(ctx.trailer(0)) + "(" + third + ",\"" + third + "\")";
-			  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+			  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
 			  return ret;
 		  }
 	  }
