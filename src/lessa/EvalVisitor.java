@@ -833,10 +833,23 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 			  String ret = trailerStr + ".to_list()";
 			  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
 			  return ret;
-		  } else if (atomStr.equals("seq")) {
+		  } else if (atomStr.equals("seq") && ctx.trailer(0) != null) {
 			  String trailerStr = visit(ctx.trailer(0));
-			  String ret = "list_to_seq" + trailerStr; 
-			  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+			  if (trailerStr.substring(0, 1).equals("(")) {
+				  String ret = "list_to_seq" + trailerStr; 
+				  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+				  return ret;
+			  }
+		  }
+	  }
+	  
+	  if (ctx.trailer(0) != null) {
+		  String trailerStr = visit(ctx.trailer(0));
+		  if (trailerStr.equals(".add")) {
+			  String third = visit(ctx.trailer(1));
+			  third = third.substring(1, third.length() - 1);
+			  String ret = visit(ctx.atom()) + visit(ctx.trailer(0)) + "(" + third + ",\"" + third + "\")";
+			  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
 			  return ret;
 		  }
 	  }
