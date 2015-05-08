@@ -1,9 +1,7 @@
 package lessa;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.io.*;
 
 import envir.Envir;
@@ -45,81 +43,53 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 
     return 0;
   }**/
-  private void writeVars(Writer w){
-    Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
-    try {
-      w.write("#Auto-generate variables from variable tables\n");
-    
-    while(it.hasNext()){
-      Map.Entry<String, Variable> pair= it.next();
-     
-        if(pair.getValue().create){
-          pair.getValue().create=false;
-        }else{
-          w.write(pair.getKey());
-          w.write("=");
-          w.write(pair.getValue().value);
-          w.write("\n");
-        } 
-      }
-    w.write("\n");
-    } catch (IOException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
-  }
   
-  private void writeImps(Writer w){
-    try {
-      w.write("#Auto-generate imp_stmt support function and class\n");
-      w.write("import imp\n");
-      w.write("music=imp.load_source('music', '"+Envir.dir+"music.py')\n" );
-      String module = Envir.tempFileName.substring(0, Envir.tempFileName.length()-3);
-      w.write(module+"=imp.load_source('"+module+"', '"+Envir.dir+Envir.tempFileName+"')\n" );  
-      w.write("from music import *");
-      
-      
-    Iterator<Entry<String, ImpStmt>> it = Envir.defTable.entrySet().iterator();
-    
-    while(it.hasNext()){
-      Map.Entry<String, ImpStmt> pair = it.next();
-      
-        
-        w.write(pair.getValue().stmt);
-        w.write("\n");
-      
-    }
-    w.write("\n");
-    } catch (IOException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
-  }
+  
+  
   
   
   //single_input -> (stmt)* 
   @Override public String visitSingle_input(ExprParser.Single_inputContext ctx) {
 	  println("single_input -> (stmt)* ");
 	  int i = 0;
-	  
-	  
+
 	  String input = "";
+	  Writer exWriter = null;
+	  
+	  /** pre-write: 
+	   *  write vars and imp_stmt into execfile
+	   */
+      try {
+        exWriter = new FileWriter(Envir.exeFileName, false);
+        exWriter.write("#----------Pre-generate codes begin----------\n\n");
+        exWriter.write("#Auto-generate imp_stmt support function and class\n");
+        Gen.writeImps(exWriter);
+        exWriter.write("#Auto-generate variables from variable tables\n");
+        Gen.writeVars(exWriter);
+        exWriter.write("#----------Pre-generate codes end------------\n\n");
+      } catch (IOException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
+	  
+      /** tree traversal
+       *    generate target code
+       */
 	  while(ctx.stmt(i) != null) {
 		  input += visit(ctx.stmt(i++)) + "\n";
 		  i++;
 	  }
-	  
+	   
 	  try {
-	    Writer exWriter = new FileWriter(Envir.exeFileName, false);
 	    
+	    // write class, function def into tempfile
 	    if(funcflag || classflag){
           Writer w = new FileWriter(Envir.tempFileName, true);
           w.write(input);
           w.close();
           
         }else{
-          writeImps(exWriter);
-          writeVars(exWriter);
+          // write into execution 
           exWriter.write(input);
           exWriter.write("\n");
           exWriter.close();
@@ -400,15 +370,21 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  println("assign_stmt:expr assign_operators expr ';'");
 
 	  String retValue = null;
+	  String rExpr = visit(ctx.expr(0));
 	  String leftExpr = visit(ctx.expr(1));
 	  if (leftExpr.substring(0, 1).equals("#")) {
 		  retValue = visit(ctx.expr(0)) + ".pitch_up()";
 	  } else if (leftExpr.substring(0, 1).equals("~")){
 		  retValue = visit(ctx.expr(0)) + ".pitch_down()";
+	  } else if (rExpr.contains(".instrument")) {
+		  println(rExpr);
+		  String[] l = rExpr.split(".");
+		  retValue = l[0] + "." + "change_instrument(" + leftExpr + ")"; 
 	  } else {
 		  retValue = visit(ctx.expr(0)) + " " + visit(ctx.assign_operators()) +  " " + visit(ctx.expr(1));
 	  }
 
+ 
 	  String expr = visit(ctx.expr(0));
 	  String value = visit(ctx.expr(1));
 	  //StringBuffer ret =new StringBuffer();
@@ -536,9 +512,16 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
       cls.append(visit(ctx.test_list()));
     cls.append(")").append(":\n");
     indent.addIndent();
-    String rt = cls.toString()+visit(ctx.compound_stmt());
+    
+    StringBuilder sb = new StringBuilder();
+    sb.append(visit(ctx.compound_stmt()));
+    if(sb.toString().trim().equals("")){
+      sb.append(indent.getIndent()).append("pass");
+    }
+    
+    
     indent.delIndent();
-    return rt; 
+    return cls.append(sb).toString(); 
   }
   
   //while_stmt: WHILE '(' test ')' stmt
@@ -820,6 +803,21 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //atom_trailer -> (THIS '.')? atom  (trailer)*;
   public String visitAtom_trailer(ExprParser.Atom_trailerContext ctx) {
 	  println("atom_trailer -> (THIS '.')? atom  (trailer)*");
+	  
+	  
+	  String atomStr = null;
+	  if (ctx.atom() != null) {
+		  atomStr =  visit(ctx.atom());
+		  if (atomStr.equals("play")) {
+			  String trailerStr = visit(ctx.trailer(0));
+			  trailerStr = trailerStr.substring(1, trailerStr.length() - 1);
+			  String ret = trailerStr + ".play()";
+			  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+			  return ret;
+		  }
+	  }
+	  
+	  
 	  String at = "";
 	  if (ctx.THIS() != null) {
 		  at = "self.";
@@ -832,6 +830,13 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  }
 	  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + at);
 	  return at;
+  }
+  
+  //atom ->'{' (songmaker)?  '}' 
+  @Override public String visitATOMSONG(ExprParser.ATOMSONGContext ctx) { 
+	  println("atom ->'{' (songmaker)?  '}' ");
+	  String ret = "song()";
+	  return ret;
   }
   
   //atom -> NAME
@@ -996,9 +1001,11 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   // sequencemaker -> (NOTE|NAME) ( ',' NOTE|NAME)*
   @Override public String visitSequencemaker(ExprParser.SequencemakerContext ctx) {
 	  println(" (NOTE | NAME) ( ',' (NOTE | NAME) )* ");
+	  
 	  String ret = "";
 	  int i = 0;
 	  while(ctx.getChild(i) != null) {
+		 
 		  if (!ctx.getChild(i).getText().equals(",")) {
 			  if (i > 0) ret += ", ";
 			  String s = ctx.getChild(i).getText();
@@ -1010,6 +1017,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  }
 		  i++;
 	  }
+	  println("sequencemaker -> (NOTE|NAME) ( ',' NOTE|NAME)* return:" + ret);
 	  return ret;
   }
   

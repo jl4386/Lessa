@@ -4,6 +4,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.python.core.PyObject;
+import org.python.util.PythonInterpreter;
 
 public class Gen {
   
@@ -91,14 +97,106 @@ public class Gen {
     }
   }
   
-  public static void refreshDirty(){
+  public static void refreshDirty(PythonInterpreter interpreter){
     /**
-     * To be finished
+     * refresh dirty variables 
      */
+    Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
+    while(it.hasNext()){
+      Map.Entry<String, Variable> pair= it.next();
+      
+      if (pair.getValue().dirty){
+        PyObject value = interpreter.get(pair.getKey());
+        
+        System.out.println(value);
+        if(isInstance(value.toString())){
+          System.out.println(value);
+          System.out.println(getClassName(value.toString()));
+          pair.getValue().value = getClassName(value.toString())+"()";
+        }else{
+          pair.getValue().value = value.toString();
+        }
+          
+        
+      }
+      else if(pair.getValue().create){
+        pair.getValue().create = false;
+      }
+    }
+    
+  }
+  private static String getClassName(String test){
+    String temp = test.substring("<definition.".length());
+    
+    return temp.split(" ")[0];
     
   }
   
+  private static boolean isInstance(String test){
+    return test.contains("instance");
+  }
   
+  public static void removeErrorVariables(){
+    Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
+    while(it.hasNext()){
+      Variable v = it.next().getValue();
+      if (v.create){
+        Envir.varTable.remove(v.name);
+      }
+    }
+  }
+  
+  public static void writeVars(Writer w){
+    Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet().iterator();
+    try {
+      
+    
+    while(it.hasNext()){
+      Map.Entry<String, Variable> pair= it.next();
+     
+        if(pair.getValue().create){
+          pair.getValue().create=false;
+        }else{
+          w.write(pair.getKey());
+          w.write("=");
+          w.write(pair.getValue().value);
+          w.write("\n");
+        } 
+      }
+    w.write("\n");
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+  }
+  
+  
+  public static void writeImps(Writer w){
+    try {
+      
+      w.write("import imp\n");
+      w.write("music=imp.load_source('music', '"+Envir.dir+"music.py')\n" );
+      String module = Envir.tempFileName.substring(0, Envir.tempFileName.length()-3);
+      w.write(module+"=imp.load_source('"+module+"', '"+Envir.dir+Envir.tempFileName+"')\n" );  
+      w.write("from music import *\n");
+      
+      
+    Iterator<Entry<String, ImpStmt>> it = Envir.defTable.entrySet().iterator();
+    
+    while(it.hasNext()){
+      Map.Entry<String, ImpStmt> pair = it.next();
+      
+        
+        w.write(pair.getValue().stmt);
+        w.write("\n");
+      
+    }
+    w.write("\n");
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+  }
   
   public static void main(String[] args){
 ////    Gen.initShell();

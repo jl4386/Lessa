@@ -1,6 +1,9 @@
 #Import the library
-from midiutil.MidiFile import MIDIFile
-import pygame
+import imp
+import os
+MidiFile=imp.load_source('MidiFile',os.getcwd()+'/midiutil/MidiFile.py')
+from MidiFile import MIDIFile
+
 
 pitch_dict = {'A0': 21, 'B0': 23, 'C1': 24, 'D1': 26, 'E1': 28, 'F1': 29, 'G1': 31, 'A1': 33, 'B1': 35, 
 				'C2': 36, 'D2': 38, 'E2': 40, 'F2': 41, 'G2': 43, 'A2': 45, 'B2': 47,
@@ -322,27 +325,27 @@ class song:
 		MyMIDI.writeFile(binfile)
 		binfile.close()
 
-		# play MIDI file
-		freq = 44100    # audio CD quality
-		bitsize = -16   # unsigned 16 bit
-		channels = 2    # 1 is mono, 2 is stereo
-		buffer = 1024    # number of samples
-		pygame.mixer.init(freq, bitsize, channels, buffer)
-		# optional volume 0 to 1.0
-		pygame.mixer.music.set_volume(0.8)
-
-		clock = pygame.time.Clock()
-		try:
-			pygame.mixer.music.load('output.mid')
-			print "Music file %s loaded!" % 'output.mid'
-		except pygame.error:
-			print "File %s not found! (%s)" % ('output.mid', pygame.get_error())
-			return
-
-		pygame.mixer.music.play()
-		while pygame.mixer.music.get_busy():
-		# check if playback has finished
-			clock.tick(30)
+# 		# play MIDI file
+# 		freq = 44100    # audio CD quality
+# 		bitsize = -16   # unsigned 16 bit
+# 		channels = 2    # 1 is mono, 2 is stereo
+# 		buffer = 1024    # number of samples
+# 		pygame.mixer.init(freq, bitsize, channels, buffer)
+# 		# optional volume 0 to 1.0
+# 		pygame.mixer.music.set_volume(0.8)
+# 
+# 		clock = pygame.time.Clock()
+# 		try:
+# 			pygame.mixer.music.load('output.mid')
+# 			print "Music file %s loaded!" % 'output.mid'
+# 		except pygame.error:
+# 			print "File %s not found! (%s)" % ('output.mid', pygame.get_error())
+# 			return
+# 
+# 		pygame.mixer.music.play()
+# 		while pygame.mixer.music.get_busy():
+# 		# check if playback has finished
+# 			clock.tick(30)
 
 	def get_sequence_list(self):
 		return self.sequence_list

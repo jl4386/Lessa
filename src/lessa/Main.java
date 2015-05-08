@@ -9,10 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,70 +18,19 @@ import java.util.regex.Pattern;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.python.core.PyObject;
+import org.python.core.PyException;
 import org.python.util.PythonInterpreter;
 
 import envir.Envir;
 import envir.Gen;
-import envir.Variable;
+import envir.SenmanticError;
+import envir.SemanErrorDic;
+import envir.SymbolError;
+import envir.SyntaxError;
 
 public class Main {
 	private static Scanner sc;
 	private static PythonInterpreter interpreter;
-
-	private static void parse(String s) {
-		InputStream stream = new ByteArrayInputStream(
-				s.getBytes(StandardCharsets.UTF_8));
-		ANTLRInputStream input;
-		// parse the statement
-		try {
-			input = new ANTLRInputStream(stream);
-			ExprLexer lexer = new ExprLexer(input);
-			lexer.removeErrorListeners();
-			lexer.addErrorListener(DescriptiveErrorListener.INSTANCE);
-			CommonTokenStream tokens = new CommonTokenStream(lexer);
-			ExprParser parser = new ExprParser(tokens);
-			parser.removeErrorListeners();
-			parser.addErrorListener(DescriptiveErrorListener.INSTANCE);
-			ParseTree tree = parser.prog(); // parse
-
-			EvalVisitor eval = new EvalVisitor();
-			eval.visit(tree);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	private static void exec() {
-		// run the statement
-		interpreter = new PythonInterpreter();
-		try {
-
-			InputStream filepy = new FileInputStream(Envir.dir
-					+ Envir.exeFileName);
-			interpreter.execfile(filepy);
-			Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet()
-					.iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, Variable> pair = it.next();
-				if (pair.getValue().dirty) {
-					PyObject value = interpreter.get(pair.getKey());
-					pair.getValue().value = value.toString();
-				}
-			}
-
-			filepy.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	private static List<String> readFile(String file) throws Exception {
 		String line = null;
@@ -92,7 +38,7 @@ public class Main {
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		while ((line = br.readLine()) != null) {
 			lines.add(line);
-			//System.out.println(line);
+			// System.out.println(line);
 		}
 		br.close();
 		return lines;
@@ -122,6 +68,76 @@ public class Main {
 		return count;
 	}
 
+	private static void parse(String s) {
+		InputStream stream = new ByteArrayInputStream(
+				s.getBytes(StandardCharsets.UTF_8));
+		ANTLRInputStream input;
+		// parse the statement
+		try {
+			input = new ANTLRInputStream(stream);
+			ExprLexer lexer = new ExprLexer(input);
+			lexer.removeErrorListeners();
+			lexer.addErrorListener(TokenErrorListener.INSTANCE);
+			CommonTokenStream tokens = new CommonTokenStream(lexer);
+			ExprParser parser = new ExprParser(tokens);
+			parser.removeErrorListeners();
+			parser.addErrorListener(DescriptiveErrorListener.INSTANCE);
+			ParseTree tree = parser.prog(); // parse
+
+			EvalVisitor eval = new EvalVisitor();
+			eval.visit(tree);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SyntaxError se) {
+			// se.printStackTrace();
+			System.err.println(se.getMessage());
+		} catch (SymbolError sbe) {
+			System.err.println(sbe.getMessage());
+		}
+
+	}
+
+	private static void exec() throws InterruptedException {
+		// run the statement
+		interpreter = new PythonInterpreter();
+		try {
+
+			InputStream filepy = new FileInputStream(Envir.dir
+					+ Envir.exeFileName);
+
+			// execute a statement
+			interpreter.execfile(filepy);
+
+			// refresh variables
+			Gen.refreshDirty(interpreter);
+
+			filepy.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PyException se) {
+			// se.printStackTrace();
+
+			// TODO
+			System.out.println("Debug helper output:" + se.type);
+			SenmanticError le = SemanErrorDic.Exceptions.get(se.type);
+			StringBuffer sb = new StringBuffer("Error Number:");
+			sb.append(" ").append(le.codeNO).append("  Type:").append(le.type);
+			sb.append("\nDescription: ").append(se.value);
+			System.err.println(sb);
+			System.out.println(se.traceback.dumpStack());
+
+			// remove error variables
+			Gen.removeErrorVariables();
+
+		}
+	}
+
 	public static void main(String[] args) throws Exception {
 		sc = new Scanner(System.in);
 		boolean repl = true;
@@ -148,7 +164,7 @@ public class Main {
 				if ((count = isComplete(input, count, pre, pos)) != 0)
 					continue;
 				parse(strseen.toString());
-				//exec();
+				// exec();
 				strseen.delete(0, strseen.length());
 			}
 		} else {
@@ -162,7 +178,7 @@ public class Main {
 				parse(strseen.toString());
 				strseen.delete(0, strseen.length());
 			}
-			//exec();
+			// exec();
 		}
 
 		Gen.closeShell();
