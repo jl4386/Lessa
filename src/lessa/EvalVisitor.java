@@ -92,7 +92,6 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   		 */
   		while (ctx.stmt(i) != null) {
   			input += visit(ctx.stmt(i++)) + "\n";
-  			i++;
   		}
 
   		try {
@@ -162,7 +161,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //stmt: assign_stmt
   @Override public String visitASSIGNSTMT(ExprParser.ASSIGNSTMTContext ctx) { 
 	  println("stmt -> assign_stmt");
-	  String ret = indent.getIndent() + visit(ctx.assign_stmt());
+	  String ret = indent.getIndent() + visit(ctx.assign_stmt()) + "\n";
 	  println("stmt -> assign_stmt return:\n" + ret);
 	  return ret;
   }
@@ -170,7 +169,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //stmt: jump_stmt 
   @Override public String visitJMPSTMT(ExprParser.JMPSTMTContext ctx) { 
 	  println("stmt -> jump_stmt");
-	  String ret = indent.getIndent() + visit(ctx.jump_stmt());
+	  String ret = indent.getIndent() + visit(ctx.jump_stmt()) + "\n";
 	  println("stmt -> jump_stmt return:\n" + ret);
 	  return ret;
   }
@@ -369,7 +368,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //stmt_list: stmt_list stmt
   @Override public String visitLISTLISTSTMT(ExprParser.LISTLISTSTMTContext ctx) { 
 	  println("stmt_list -> stmt_list stmt");
-	  String ret = visit(ctx.stmt_list())  + "\n" + visit(ctx.stmt());
+	  String ret = visit(ctx.stmt_list())  + visit(ctx.stmt());
 	  return ret;
   }
   
