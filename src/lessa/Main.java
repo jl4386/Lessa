@@ -164,7 +164,7 @@ public class Main {
 				if ((count = isComplete(input, count, pre, pos)) != 0)
 					continue;
 				parse(strseen.toString());
-				// exec();
+				exec();
 				strseen.delete(0, strseen.length());
 			}
 		} else {
@@ -178,7 +178,7 @@ public class Main {
 				parse(strseen.toString());
 				strseen.delete(0, strseen.length());
 			}
-			// exec();
+		 exec();
 		}
 
 		Gen.closeShell();

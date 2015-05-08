@@ -814,6 +814,17 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 			  String ret = trailerStr + ".play()";
 			  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
 			  return ret;
+		  } else if (atomStr.equals("list")) {
+			  String trailerStr = visit(ctx.trailer(0));
+			  trailerStr = trailerStr.substring(1, trailerStr.length() - 1);
+			  String ret = trailerStr + ".to_list()";
+			  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+			  return ret;
+		  } else if (atomStr.equals("seq")) {
+			  String trailerStr = visit(ctx.trailer(0));
+			  String ret = "list_to_seq" + trailerStr; 
+			  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+			  return ret;
 		  }
 	  }
 	  
@@ -902,7 +913,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  println("'[' (sequencemaker)? ']'");
 	  String ret = "";
 	  if (ctx.sequencemaker() != null) ret = visit(ctx.sequencemaker());
-	  ret = "[" + ret + "]";
+	  ret = "sequence([" + ret + "])";
 	  return ret;
   }
   
@@ -931,7 +942,18 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //trailer -> '.' NAME
   @Override public String visitTLRNAME(ExprParser.TLRNAMEContext ctx) { 
 	  println("trailer -> '.' NAME");
-	  String ret = "." + ctx.NAME().getText();
+	  String ret = null;
+	  String nameStr = ctx.NAME().getText();
+	  if (nameStr.equals("pitch")) {
+		  ret = ".get_pitch()";
+	  } else if (nameStr.equals("tone")) {
+		  ret = ".get_tone()";
+	  } else if (nameStr.equals("duration")) {
+		  ret = ".get_duration()";
+	  } else {
+		  ret = "." + ctx.NAME().getText();
+	  }
+	  println("trailer -> '.' NAME return:" + ret);
 	  return ret;
   }
   
