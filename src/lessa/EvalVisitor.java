@@ -16,11 +16,11 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   boolean funcflag = false;
   boolean classflag = false;
   boolean replflag = false;
-
+  
   	public EvalVisitor(boolean repl) throws FileNotFoundException,
   			UnsupportedEncodingException {
   		// writer = new PrintWriter("out.py", "UTF-8");
-  		this.replflag = repl;
+  		replflag = repl;
   	}
 
   	/** print_stmt: PRINT STRING ; */
@@ -66,12 +66,25 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   		} else {
   			try {
   				exWriter = new FileWriter(Envir.compileFileName, true);
+  				BufferedReader br = new BufferedReader(new FileReader(Envir.compileFileName));
+  				if (br.readLine()==null) {
+  					try {
+  						exWriter.write("import imp\n");
+  						exWriter.write("music=imp.load_source('music', '" + Envir.dir
+  								+ "music.py')\n");
+  						exWriter.write("from music import *\n");
+  					} catch (IOException e1) {
+  		  				// TODO Auto-generated catch block
+  		  				e1.printStackTrace();
+  					}
+  				}
   			} catch (IOException e1) {
   				// TODO Auto-generated catch block
   				e1.printStackTrace();
   			}
   			
   		}
+  		
   		/**
   		 * tree traversal generate target code
   		 */
@@ -812,18 +825,18 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 			  String trailerStr = visit(ctx.trailer(0));
 			  trailerStr = trailerStr.substring(1, trailerStr.length() - 1);
 			  String ret = trailerStr + ".play()";
-			  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+			  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
 			  return ret;
 		  } else if (atomStr.equals("list")) {
 			  String trailerStr = visit(ctx.trailer(0));
 			  trailerStr = trailerStr.substring(1, trailerStr.length() - 1);
 			  String ret = trailerStr + ".to_list()";
-			  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+			  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
 			  return ret;
 		  } else if (atomStr.equals("seq")) {
 			  String trailerStr = visit(ctx.trailer(0));
 			  String ret = "list_to_seq" + trailerStr; 
-			  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+			  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
 			  return ret;
 		  }
 	  }
@@ -839,7 +852,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  at += visit(ctx.trailer(i));
 		  i++;
 	  }
-	  System.out.println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + at);
+	  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + at);
 	  return at;
   }
   
@@ -1083,7 +1096,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   }
   
   private static void println(String msg) {
-	  System.out.println(msg);
+	  //println(msg);
   }
   
   /**
