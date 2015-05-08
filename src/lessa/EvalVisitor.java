@@ -17,6 +17,8 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   boolean classflag = false;
   boolean replflag = false;
   
+  
+  
   	public EvalVisitor(boolean repl) throws FileNotFoundException,
   			UnsupportedEncodingException {
   		// writer = new PrintWriter("out.py", "UTF-8");
@@ -822,11 +824,12 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  if (ctx.atom() != null) {
 		  atomStr =  visit(ctx.atom());
 		  if (atomStr.equals("play")) {
-			  String trailerStr = visit(ctx.trailer(0));
-			  trailerStr = trailerStr.substring(1, trailerStr.length() - 1);
-			  String ret = trailerStr + ".play()";
-			  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
-			  return ret;
+		      Envir.playflag = true;
+//			  String trailerStr = visit(ctx.trailer(0));
+//			  trailerStr = trailerStr.substring(1, trailerStr.length() - 1);
+//			  String ret = trailerStr + ".play()";
+//			  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+			  return "";
 		  } else if (atomStr.equals("list")) {
 			  String trailerStr = visit(ctx.trailer(0));
 			  trailerStr = trailerStr.substring(1, trailerStr.length() - 1);

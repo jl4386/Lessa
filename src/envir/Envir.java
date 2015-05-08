@@ -11,8 +11,10 @@ public class Envir {
   public static final String tempFileName = "definition.py";
   public static final String exeFileName = "exec.py";
   public static final String compileFileName = "output.py";
+  public static final String defaultMidiFileName = "output.mid";
   
   public static final String dir = System.getProperty("user.dir")+"/";
   
+  public static boolean playflag = false;
   
 }
