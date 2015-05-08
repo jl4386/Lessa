@@ -363,13 +363,14 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  if (ctx.stmt_list() != null) {
 		  ret += visit(ctx.stmt_list());
 	  }
+	  println("compound_stmt -> '{' (stmt_list)? '}' return:" + ret);
 	  return ret;
   }
   
   //stmt_list: stmt_list stmt
   @Override public String visitLISTLISTSTMT(ExprParser.LISTLISTSTMTContext ctx) { 
 	  println("stmt_list -> stmt_list stmt");
-	  String ret = visit(ctx.stmt_list())  + visit(ctx.stmt());
+	  String ret = visit(ctx.stmt_list())  + "\n" + visit(ctx.stmt());
 	  return ret;
   }
   
