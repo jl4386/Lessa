@@ -112,8 +112,8 @@ public class Gen {
 
 				System.out.println(value);
 				if (isInstance(value.toString())) {
-					System.out.println(value);
-					System.out.println(getClassName(value.toString()));
+					//System.out.println(value);
+					//System.out.println(getClassName(value.toString()));
 					pair.getValue().value = getClassName(value.toString())
 							+ "()";
 				} else {
