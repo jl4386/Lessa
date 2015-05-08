@@ -4,7 +4,6 @@ import os
 MidiFile=imp.load_source('MidiFile',os.getcwd()+'/midiutil/MidiFile.py')
 from MidiFile import MIDIFile
 
-
 pitch_dict = {'A0': 21, 'B0': 23, 'C1': 24, 'D1': 26, 'E1': 28, 'F1': 29, 'G1': 31, 'A1': 33, 'B1': 35, 
 				'C2': 36, 'D2': 38, 'E2': 40, 'F2': 41, 'G2': 43, 'A2': 45, 'B2': 47,
 				'C3': 48, 'D3': 50, 'E3': 52, 'F3': 53, 'G3': 55, 'A3': 57, 'B3': 59,
@@ -313,7 +312,7 @@ class song:
 		except ValueError, IndexError:
 			raise ValueError('The sequence you are trying to delete is not in the song')
 
-	def play(self):
+	def create_MIDI(self, file_name):
 		# Create the MIDIFile Object with n track
 		MyMIDI = MIDIFile(len(self.sequence_list), removeDuplicates = False, deinterleave = False)
 		for i in range(len(self.sequence_list)):
@@ -321,10 +320,11 @@ class song:
 			self.change_instrument(MyMIDI, i, 0, 0, self.sequence_list[i].instrument)
 
 		# write MIDI file to disk.
-		binfile = open("output.mid", 'wb')
+		binfile = open(file_name, 'wb')
 		MyMIDI.writeFile(binfile)
 		binfile.close()
 
+# 	def play(self, file_name):
 # 		# play MIDI file
 # 		freq = 44100    # audio CD quality
 # 		bitsize = -16   # unsigned 16 bit
@@ -339,7 +339,7 @@ class song:
 # 			pygame.mixer.music.load('output.mid')
 # 			print "Music file %s loaded!" % 'output.mid'
 # 		except pygame.error:
-# 			print "File %s not found! (%s)" % ('output.mid', pygame.get_error())
+# 			print "File %s not found! (%s)" % (file_name, pygame.get_error())
 # 			return
 # 
 # 		pygame.mixer.music.play()
