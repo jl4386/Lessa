@@ -90,17 +90,19 @@ public class Main {
 		String line = null;
 		List<String> lines = new ArrayList<String>();
 		BufferedReader br = new BufferedReader(new FileReader(file));
-		while ((line = br.readLine()) != null)
+		while ((line = br.readLine()) != null) {
 			lines.add(line);
+			//System.out.println(line);
+		}
 		br.close();
 		return lines;
 	}
 
-	private static boolean isComplete(String input, Pattern pre, Pattern pos) {
-		int count = 0; // count the number of parenthesis
+	private static int isComplete(String input, int count, Pattern pre,
+			Pattern pos) {
 		if (input.endsWith(";") && count == 0) {
 			// System.out.println(strseen.toString())
-			return true;
+			return count;
 		}
 
 		Matcher prematcher = pre.matcher(input);
@@ -110,21 +112,23 @@ public class Main {
 			count++;
 		while (posmatcher.find())
 			count--;
+		// System.out.println(""+count);
 
 		if (input.endsWith("}") && count == 0) {
-			// System.out.println(strseen.toString());
-			return true;
+			// System.out.println("finish");
+
+			return count;
 		}
-		return false;
+		return count;
 	}
 
 	public static void main(String[] args) throws Exception {
 		sc = new Scanner(System.in);
-		int repl = 1;
+		boolean repl = true;
 		List<String> lines = new ArrayList<String>();
 		if (args.length == 1) {
 			lines = readFile(args[0]);
-			repl = lines.size();
+			repl = false;
 		}
 
 		// initialization
@@ -134,19 +138,31 @@ public class Main {
 		Pattern pos = Pattern.compile("\\}");
 
 		StringBuffer strseen = new StringBuffer();
-
-		if (args.length == 0) {
+		int count = 0; // count the number of parenthesis
+		if (repl) {
 			System.out.println("Welcome to Lessa world!");
 			System.out.println("Lessa 1.0");
 			System.out.println("-------------------------------");
-		}
-		while (!(input = sc.nextLine()).equals("exit()")) {
-			strseen.append(input + "\n");
-			if (!isComplete(input, pre, pos))
-				continue;
-			parse(strseen.toString());
-			// exec();
-			strseen.delete(0, strseen.length());
+			while (!(input = sc.nextLine()).equals("exit()")) {
+				strseen.append(input + "\n");
+				if ((count = isComplete(input, count, pre, pos)) != 0)
+					continue;
+				parse(strseen.toString());
+				//exec();
+				strseen.delete(0, strseen.length());
+			}
+		} else {
+			int index = 0;
+			while (index < lines.size()) {
+				input = lines.get(index);
+				strseen.append(input + "\n");
+				index++;
+				if ((count = isComplete(input, count, pre, pos)) != 0)
+					continue;
+				parse(strseen.toString());
+				strseen.delete(0, strseen.length());
+			}
+			//exec();
 		}
 
 		Gen.closeShell();
