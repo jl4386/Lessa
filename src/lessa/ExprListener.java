@@ -1,4 +1,6 @@
-package lessa;// Generated from Expr.g4 by ANTLR 4.5
+package lessa;
+
+// Generated from Expr.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -58,15 +60,125 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitDecorated(ExprParser.DecoratedContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#stmt}.
+	 * Enter a parse tree produced by the {@code SIMPLESTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
 	 * @param ctx the parse tree
 	 */
-	void enterStmt(ExprParser.StmtContext ctx);
+	void enterSIMPLESTMT(ExprParser.SIMPLESTMTContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#stmt}.
+	 * Exit a parse tree produced by the {@code SIMPLESTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
 	 * @param ctx the parse tree
 	 */
-	void exitStmt(ExprParser.StmtContext ctx);
+	void exitSIMPLESTMT(ExprParser.SIMPLESTMTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code EXPRSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterEXPRSTMT(ExprParser.EXPRSTMTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code EXPRSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitEXPRSTMT(ExprParser.EXPRSTMTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code COMPSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterCOMPSTMT(ExprParser.COMPSTMTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code COMPSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitCOMPSTMT(ExprParser.COMPSTMTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code SELECTSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterSELECTSTMT(ExprParser.SELECTSTMTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code SELECTSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitSELECTSTMT(ExprParser.SELECTSTMTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ITRSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterITRSTMT(ExprParser.ITRSTMTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ITRSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitITRSTMT(ExprParser.ITRSTMTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code JMPSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterJMPSTMT(ExprParser.JMPSTMTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code JMPSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitJMPSTMT(ExprParser.JMPSTMTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FUNCDEFSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterFUNCDEFSTMT(ExprParser.FUNCDEFSTMTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FUNCDEFSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitFUNCDEFSTMT(ExprParser.FUNCDEFSTMTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CLASSDEFSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterCLASSDEFSTMT(ExprParser.CLASSDEFSTMTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CLASSDEFSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitCLASSDEFSTMT(ExprParser.CLASSDEFSTMTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ASSIGNSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterASSIGNSTMT(ExprParser.ASSIGNSTMTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ASSIGNSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitASSIGNSTMT(ExprParser.ASSIGNSTMTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code DECORATEDSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterDECORATEDSTMT(ExprParser.DECORATEDSTMTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code DECORATEDSTMT}
+	 * labeled alternative in {@link ExprParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitDECORATEDSTMT(ExprParser.DECORATEDSTMTContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#simple_stmt}.
 	 * @param ctx the parse tree
@@ -98,15 +210,29 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitDel_stmt(ExprParser.Del_stmtContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#import_stmt}.
+	 * Enter a parse tree produced by the {@code IMNAMESTMT}
+	 * labeled alternative in {@link ExprParser#import_stmt}.
 	 * @param ctx the parse tree
 	 */
-	void enterImport_stmt(ExprParser.Import_stmtContext ctx);
+	void enterIMNAMESTMT(ExprParser.IMNAMESTMTContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#import_stmt}.
+	 * Exit a parse tree produced by the {@code IMNAMESTMT}
+	 * labeled alternative in {@link ExprParser#import_stmt}.
 	 * @param ctx the parse tree
 	 */
-	void exitImport_stmt(ExprParser.Import_stmtContext ctx);
+	void exitIMNAMESTMT(ExprParser.IMNAMESTMTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code IMFROMSTMT}
+	 * labeled alternative in {@link ExprParser#import_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterIMFROMSTMT(ExprParser.IMFROMSTMTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IMFROMSTMT}
+	 * labeled alternative in {@link ExprParser#import_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitIMFROMSTMT(ExprParser.IMFROMSTMTContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#import_name}.
 	 * @param ctx the parse tree
@@ -198,15 +324,29 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitCompound_stmt(ExprParser.Compound_stmtContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#stmt_list}.
+	 * Enter a parse tree produced by the {@code LISTLISTSTMT}
+	 * labeled alternative in {@link ExprParser#stmt_list}.
 	 * @param ctx the parse tree
 	 */
-	void enterStmt_list(ExprParser.Stmt_listContext ctx);
+	void enterLISTLISTSTMT(ExprParser.LISTLISTSTMTContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#stmt_list}.
+	 * Exit a parse tree produced by the {@code LISTLISTSTMT}
+	 * labeled alternative in {@link ExprParser#stmt_list}.
 	 * @param ctx the parse tree
 	 */
-	void exitStmt_list(ExprParser.Stmt_listContext ctx);
+	void exitLISTLISTSTMT(ExprParser.LISTLISTSTMTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code LISTSTMT}
+	 * labeled alternative in {@link ExprParser#stmt_list}.
+	 * @param ctx the parse tree
+	 */
+	void enterLISTSTMT(ExprParser.LISTSTMTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LISTSTMT}
+	 * labeled alternative in {@link ExprParser#stmt_list}.
+	 * @param ctx the parse tree
+	 */
+	void exitLISTSTMT(ExprParser.LISTSTMTContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#selection_stmt}.
 	 * @param ctx the parse tree
@@ -218,15 +358,29 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitSelection_stmt(ExprParser.Selection_stmtContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#iteration_stmt}.
+	 * Enter a parse tree produced by the {@code WILEITR}
+	 * labeled alternative in {@link ExprParser#iteration_stmt}.
 	 * @param ctx the parse tree
 	 */
-	void enterIteration_stmt(ExprParser.Iteration_stmtContext ctx);
+	void enterWILEITR(ExprParser.WILEITRContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#iteration_stmt}.
+	 * Exit a parse tree produced by the {@code WILEITR}
+	 * labeled alternative in {@link ExprParser#iteration_stmt}.
 	 * @param ctx the parse tree
 	 */
-	void exitIteration_stmt(ExprParser.Iteration_stmtContext ctx);
+	void exitWILEITR(ExprParser.WILEITRContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FORITR}
+	 * labeled alternative in {@link ExprParser#iteration_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterFORITR(ExprParser.FORITRContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FORITR}
+	 * labeled alternative in {@link ExprParser#iteration_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitFORITR(ExprParser.FORITRContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#while_stmt}.
 	 * @param ctx the parse tree
@@ -278,25 +432,101 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitAssign_stmt(ExprParser.Assign_stmtContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#assign_operators}.
+	 * Enter a parse tree produced by the {@code ASSIGNOP}
+	 * labeled alternative in {@link ExprParser#assign_operators}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssign_operators(ExprParser.Assign_operatorsContext ctx);
+	void enterASSIGNOP(ExprParser.ASSIGNOPContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#assign_operators}.
+	 * Exit a parse tree produced by the {@code ASSIGNOP}
+	 * labeled alternative in {@link ExprParser#assign_operators}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssign_operators(ExprParser.Assign_operatorsContext ctx);
+	void exitASSIGNOP(ExprParser.ASSIGNOPContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#jump_stmt}.
+	 * Enter a parse tree produced by the {@code PASSIGNOP}
+	 * labeled alternative in {@link ExprParser#assign_operators}.
 	 * @param ctx the parse tree
 	 */
-	void enterJump_stmt(ExprParser.Jump_stmtContext ctx);
+	void enterPASSIGNOP(ExprParser.PASSIGNOPContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#jump_stmt}.
+	 * Exit a parse tree produced by the {@code PASSIGNOP}
+	 * labeled alternative in {@link ExprParser#assign_operators}.
 	 * @param ctx the parse tree
 	 */
-	void exitJump_stmt(ExprParser.Jump_stmtContext ctx);
+	void exitPASSIGNOP(ExprParser.PASSIGNOPContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code MASSIGNOP}
+	 * labeled alternative in {@link ExprParser#assign_operators}.
+	 * @param ctx the parse tree
+	 */
+	void enterMASSIGNOP(ExprParser.MASSIGNOPContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code MASSIGNOP}
+	 * labeled alternative in {@link ExprParser#assign_operators}.
+	 * @param ctx the parse tree
+	 */
+	void exitMASSIGNOP(ExprParser.MASSIGNOPContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code TASSIGNOP}
+	 * labeled alternative in {@link ExprParser#assign_operators}.
+	 * @param ctx the parse tree
+	 */
+	void enterTASSIGNOP(ExprParser.TASSIGNOPContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code TASSIGNOP}
+	 * labeled alternative in {@link ExprParser#assign_operators}.
+	 * @param ctx the parse tree
+	 */
+	void exitTASSIGNOP(ExprParser.TASSIGNOPContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code DASSIGNOP}
+	 * labeled alternative in {@link ExprParser#assign_operators}.
+	 * @param ctx the parse tree
+	 */
+	void enterDASSIGNOP(ExprParser.DASSIGNOPContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code DASSIGNOP}
+	 * labeled alternative in {@link ExprParser#assign_operators}.
+	 * @param ctx the parse tree
+	 */
+	void exitDASSIGNOP(ExprParser.DASSIGNOPContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BJMP}
+	 * labeled alternative in {@link ExprParser#jump_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterBJMP(ExprParser.BJMPContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BJMP}
+	 * labeled alternative in {@link ExprParser#jump_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitBJMP(ExprParser.BJMPContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CJMP}
+	 * labeled alternative in {@link ExprParser#jump_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterCJMP(ExprParser.CJMPContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CJMP}
+	 * labeled alternative in {@link ExprParser#jump_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitCJMP(ExprParser.CJMPContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code RJMP}
+	 * labeled alternative in {@link ExprParser#jump_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterRJMP(ExprParser.RJMPContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code RJMP}
+	 * labeled alternative in {@link ExprParser#jump_stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitRJMP(ExprParser.RJMPContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#break_stmt}.
 	 * @param ctx the parse tree
@@ -438,35 +668,77 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitArith_expr(ExprParser.Arith_exprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#term}.
+	 * Enter a parse tree produced by the {@code FTERM}
+	 * labeled alternative in {@link ExprParser#term}.
 	 * @param ctx the parse tree
 	 */
-	void enterTerm(ExprParser.TermContext ctx);
+	void enterFTERM(ExprParser.FTERMContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#term}.
+	 * Exit a parse tree produced by the {@code FTERM}
+	 * labeled alternative in {@link ExprParser#term}.
 	 * @param ctx the parse tree
 	 */
-	void exitTerm(ExprParser.TermContext ctx);
+	void exitFTERM(ExprParser.FTERMContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#tone}.
+	 * Enter a parse tree produced by the {@code TTERM}
+	 * labeled alternative in {@link ExprParser#term}.
 	 * @param ctx the parse tree
 	 */
-	void enterTone(ExprParser.ToneContext ctx);
+	void enterTTERM(ExprParser.TTERMContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#tone}.
+	 * Exit a parse tree produced by the {@code TTERM}
+	 * labeled alternative in {@link ExprParser#term}.
 	 * @param ctx the parse tree
 	 */
-	void exitTone(ExprParser.ToneContext ctx);
+	void exitTTERM(ExprParser.TTERMContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#factor}.
+	 * Enter a parse tree produced by the {@code SFATOMTONE}
+	 * labeled alternative in {@link ExprParser#tone}.
 	 * @param ctx the parse tree
 	 */
-	void enterFactor(ExprParser.FactorContext ctx);
+	void enterSFATOMTONE(ExprParser.SFATOMTONEContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#factor}.
+	 * Exit a parse tree produced by the {@code SFATOMTONE}
+	 * labeled alternative in {@link ExprParser#tone}.
 	 * @param ctx the parse tree
 	 */
-	void exitFactor(ExprParser.FactorContext ctx);
+	void exitSFATOMTONE(ExprParser.SFATOMTONEContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ATOMTONE}
+	 * labeled alternative in {@link ExprParser#tone}.
+	 * @param ctx the parse tree
+	 */
+	void enterATOMTONE(ExprParser.ATOMTONEContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ATOMTONE}
+	 * labeled alternative in {@link ExprParser#tone}.
+	 * @param ctx the parse tree
+	 */
+	void exitATOMTONE(ExprParser.ATOMTONEContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code PMFACTOR}
+	 * labeled alternative in {@link ExprParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void enterPMFACTOR(ExprParser.PMFACTORContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code PMFACTOR}
+	 * labeled alternative in {@link ExprParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void exitPMFACTOR(ExprParser.PMFACTORContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code PWFACTOR}
+	 * labeled alternative in {@link ExprParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void enterPWFACTOR(ExprParser.PWFACTORContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code PWFACTOR}
+	 * labeled alternative in {@link ExprParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void exitPWFACTOR(ExprParser.PWFACTORContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#power}.
 	 * @param ctx the parse tree
@@ -488,15 +760,125 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitAtom_trailer(ExprParser.Atom_trailerContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#atom}.
+	 * Enter a parse tree produced by the {@code ATOMLIST}
+	 * labeled alternative in {@link ExprParser#atom}.
 	 * @param ctx the parse tree
 	 */
-	void enterAtom(ExprParser.AtomContext ctx);
+	void enterATOMLIST(ExprParser.ATOMLISTContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#atom}.
+	 * Exit a parse tree produced by the {@code ATOMLIST}
+	 * labeled alternative in {@link ExprParser#atom}.
 	 * @param ctx the parse tree
 	 */
-	void exitAtom(ExprParser.AtomContext ctx);
+	void exitATOMLIST(ExprParser.ATOMLISTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ATOMSONG}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void enterATOMSONG(ExprParser.ATOMSONGContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ATOMSONG}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void exitATOMSONG(ExprParser.ATOMSONGContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ATOMSEQ}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void enterATOMSEQ(ExprParser.ATOMSEQContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ATOMSEQ}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void exitATOMSEQ(ExprParser.ATOMSEQContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ATOMNAME}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void enterATOMNAME(ExprParser.ATOMNAMEContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ATOMNAME}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void exitATOMNAME(ExprParser.ATOMNAMEContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ATOMNUM}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void enterATOMNUM(ExprParser.ATOMNUMContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ATOMNUM}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void exitATOMNUM(ExprParser.ATOMNUMContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ATOMSTR}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void enterATOMSTR(ExprParser.ATOMSTRContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ATOMSTR}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void exitATOMSTR(ExprParser.ATOMSTRContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ATOMNONE}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void enterATOMNONE(ExprParser.ATOMNONEContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ATOMNONE}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void exitATOMNONE(ExprParser.ATOMNONEContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ATOMTR}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void enterATOMTR(ExprParser.ATOMTRContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ATOMTR}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void exitATOMTR(ExprParser.ATOMTRContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ATOMFAL}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void enterATOMFAL(ExprParser.ATOMFALContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ATOMFAL}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void exitATOMFAL(ExprParser.ATOMFALContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ATOMNOTE}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void enterATOMNOTE(ExprParser.ATOMNOTEContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ATOMNOTE}
+	 * labeled alternative in {@link ExprParser#atom}.
+	 * @param ctx the parse tree
+	 */
+	void exitATOMNOTE(ExprParser.ATOMNOTEContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#listmaker_test}.
 	 * @param ctx the parse tree
@@ -508,15 +890,41 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitListmaker_test(ExprParser.Listmaker_testContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#trailer}.
+	 * Enter a parse tree produced by the {@code TLRARG}
+	 * labeled alternative in {@link ExprParser#trailer}.
 	 * @param ctx the parse tree
 	 */
-	void enterTrailer(ExprParser.TrailerContext ctx);
+	void enterTLRARG(ExprParser.TLRARGContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#trailer}.
+	 * Exit a parse tree produced by the {@code TLRARG}
+	 * labeled alternative in {@link ExprParser#trailer}.
 	 * @param ctx the parse tree
 	 */
-	void exitTrailer(ExprParser.TrailerContext ctx);
+	void exitTLRARG(ExprParser.TLRARGContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code TLRSUBLIST}
+	 * labeled alternative in {@link ExprParser#trailer}.
+	 * @param ctx the parse tree
+	 */
+	void enterTLRSUBLIST(ExprParser.TLRSUBLISTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code TLRSUBLIST}
+	 * labeled alternative in {@link ExprParser#trailer}.
+	 * @param ctx the parse tree
+	 */
+	void exitTLRSUBLIST(ExprParser.TLRSUBLISTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code TLRNAME}
+	 * labeled alternative in {@link ExprParser#trailer}.
+	 * @param ctx the parse tree
+	 */
+	void enterTLRNAME(ExprParser.TLRNAMEContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code TLRNAME}
+	 * labeled alternative in {@link ExprParser#trailer}.
+	 * @param ctx the parse tree
+	 */
+	void exitTLRNAME(ExprParser.TLRNAMEContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#sequencemaker}.
 	 * @param ctx the parse tree
@@ -548,15 +956,29 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitSubscriptlist(ExprParser.SubscriptlistContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#subscript}.
+	 * Enter a parse tree produced by the {@code SUBSCRT}
+	 * labeled alternative in {@link ExprParser#subscript}.
 	 * @param ctx the parse tree
 	 */
-	void enterSubscript(ExprParser.SubscriptContext ctx);
+	void enterSUBSCRT(ExprParser.SUBSCRTContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#subscript}.
+	 * Exit a parse tree produced by the {@code SUBSCRT}
+	 * labeled alternative in {@link ExprParser#subscript}.
 	 * @param ctx the parse tree
 	 */
-	void exitSubscript(ExprParser.SubscriptContext ctx);
+	void exitSUBSCRT(ExprParser.SUBSCRTContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code SUBSCRTT}
+	 * labeled alternative in {@link ExprParser#subscript}.
+	 * @param ctx the parse tree
+	 */
+	void enterSUBSCRTT(ExprParser.SUBSCRTTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code SUBSCRTT}
+	 * labeled alternative in {@link ExprParser#subscript}.
+	 * @param ctx the parse tree
+	 */
+	void exitSUBSCRTT(ExprParser.SUBSCRTTContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#arglist}.
 	 * @param ctx the parse tree
@@ -568,25 +990,53 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitArglist(ExprParser.ArglistContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#argument}.
+	 * Enter a parse tree produced by the {@code ARGTEST}
+	 * labeled alternative in {@link ExprParser#argument}.
 	 * @param ctx the parse tree
 	 */
-	void enterArgument(ExprParser.ArgumentContext ctx);
+	void enterARGTEST(ExprParser.ARGTESTContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#argument}.
+	 * Exit a parse tree produced by the {@code ARGTEST}
+	 * labeled alternative in {@link ExprParser#argument}.
 	 * @param ctx the parse tree
 	 */
-	void exitArgument(ExprParser.ArgumentContext ctx);
+	void exitARGTEST(ExprParser.ARGTESTContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#list_iter}.
+	 * Enter a parse tree produced by the {@code ARGEQ}
+	 * labeled alternative in {@link ExprParser#argument}.
 	 * @param ctx the parse tree
 	 */
-	void enterList_iter(ExprParser.List_iterContext ctx);
+	void enterARGEQ(ExprParser.ARGEQContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#list_iter}.
+	 * Exit a parse tree produced by the {@code ARGEQ}
+	 * labeled alternative in {@link ExprParser#argument}.
 	 * @param ctx the parse tree
 	 */
-	void exitList_iter(ExprParser.List_iterContext ctx);
+	void exitARGEQ(ExprParser.ARGEQContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code LISTITRFOR}
+	 * labeled alternative in {@link ExprParser#list_iter}.
+	 * @param ctx the parse tree
+	 */
+	void enterLISTITRFOR(ExprParser.LISTITRFORContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LISTITRFOR}
+	 * labeled alternative in {@link ExprParser#list_iter}.
+	 * @param ctx the parse tree
+	 */
+	void exitLISTITRFOR(ExprParser.LISTITRFORContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code LISTITRIF}
+	 * labeled alternative in {@link ExprParser#list_iter}.
+	 * @param ctx the parse tree
+	 */
+	void enterLISTITRIF(ExprParser.LISTITRIFContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LISTITRIF}
+	 * labeled alternative in {@link ExprParser#list_iter}.
+	 * @param ctx the parse tree
+	 */
+	void exitLISTITRIF(ExprParser.LISTITRIFContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#list_for}.
 	 * @param ctx the parse tree
@@ -608,15 +1058,29 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitList_if(ExprParser.List_ifContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#comp_iter}.
+	 * Enter a parse tree produced by the {@code CMPITRFOR}
+	 * labeled alternative in {@link ExprParser#comp_iter}.
 	 * @param ctx the parse tree
 	 */
-	void enterComp_iter(ExprParser.Comp_iterContext ctx);
+	void enterCMPITRFOR(ExprParser.CMPITRFORContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#comp_iter}.
+	 * Exit a parse tree produced by the {@code CMPITRFOR}
+	 * labeled alternative in {@link ExprParser#comp_iter}.
 	 * @param ctx the parse tree
 	 */
-	void exitComp_iter(ExprParser.Comp_iterContext ctx);
+	void exitCMPITRFOR(ExprParser.CMPITRFORContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code CMPITRIF}
+	 * labeled alternative in {@link ExprParser#comp_iter}.
+	 * @param ctx the parse tree
+	 */
+	void enterCMPITRIF(ExprParser.CMPITRIFContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CMPITRIF}
+	 * labeled alternative in {@link ExprParser#comp_iter}.
+	 * @param ctx the parse tree
+	 */
+	void exitCMPITRIF(ExprParser.CMPITRIFContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#comp_for}.
 	 * @param ctx the parse tree
@@ -638,16 +1102,6 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitComp_if(ExprParser.Comp_ifContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#testlist1}.
-	 * @param ctx the parse tree
-	 */
-	void enterTestlist1(ExprParser.Testlist1Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link ExprParser#testlist1}.
-	 * @param ctx the parse tree
-	 */
-	void exitTestlist1(ExprParser.Testlist1Context ctx);
-	/**
 	 * Enter a parse tree produced by {@link ExprParser#parameters}.
 	 * @param ctx the parse tree
 	 */
@@ -668,15 +1122,29 @@ public interface ExprListener extends ParseTreeListener {
 	 */
 	void exitVarargslist(ExprParser.VarargslistContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ExprParser#fpdef}.
+	 * Enter a parse tree produced by the {@code FPDEFNAME}
+	 * labeled alternative in {@link ExprParser#fpdef}.
 	 * @param ctx the parse tree
 	 */
-	void enterFpdef(ExprParser.FpdefContext ctx);
+	void enterFPDEFNAME(ExprParser.FPDEFNAMEContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ExprParser#fpdef}.
+	 * Exit a parse tree produced by the {@code FPDEFNAME}
+	 * labeled alternative in {@link ExprParser#fpdef}.
 	 * @param ctx the parse tree
 	 */
-	void exitFpdef(ExprParser.FpdefContext ctx);
+	void exitFPDEFNAME(ExprParser.FPDEFNAMEContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FPDEFLIST}
+	 * labeled alternative in {@link ExprParser#fpdef}.
+	 * @param ctx the parse tree
+	 */
+	void enterFPDEFLIST(ExprParser.FPDEFLISTContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FPDEFLIST}
+	 * labeled alternative in {@link ExprParser#fpdef}.
+	 * @param ctx the parse tree
+	 */
+	void exitFPDEFLIST(ExprParser.FPDEFLISTContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ExprParser#fplist}.
 	 * @param ctx the parse tree

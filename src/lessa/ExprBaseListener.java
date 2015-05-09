@@ -1,4 +1,6 @@
-package lessa;// Generated from Expr.g4 by ANTLR 4.5
+package lessa;
+
+// Generated from Expr.g4 by ANTLR 4.5
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -76,13 +78,121 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStmt(ExprParser.StmtContext ctx) { }
+	@Override public void enterSIMPLESTMT(ExprParser.SIMPLESTMTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStmt(ExprParser.StmtContext ctx) { }
+	@Override public void exitSIMPLESTMT(ExprParser.SIMPLESTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEXPRSTMT(ExprParser.EXPRSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEXPRSTMT(ExprParser.EXPRSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCOMPSTMT(ExprParser.COMPSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCOMPSTMT(ExprParser.COMPSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSELECTSTMT(ExprParser.SELECTSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSELECTSTMT(ExprParser.SELECTSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterITRSTMT(ExprParser.ITRSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitITRSTMT(ExprParser.ITRSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterJMPSTMT(ExprParser.JMPSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitJMPSTMT(ExprParser.JMPSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFUNCDEFSTMT(ExprParser.FUNCDEFSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFUNCDEFSTMT(ExprParser.FUNCDEFSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCLASSDEFSTMT(ExprParser.CLASSDEFSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCLASSDEFSTMT(ExprParser.CLASSDEFSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterASSIGNSTMT(ExprParser.ASSIGNSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitASSIGNSTMT(ExprParser.ASSIGNSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDECORATEDSTMT(ExprParser.DECORATEDSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDECORATEDSTMT(ExprParser.DECORATEDSTMTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -124,13 +234,25 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterImport_stmt(ExprParser.Import_stmtContext ctx) { }
+	@Override public void enterIMNAMESTMT(ExprParser.IMNAMESTMTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitImport_stmt(ExprParser.Import_stmtContext ctx) { }
+	@Override public void exitIMNAMESTMT(ExprParser.IMNAMESTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIMFROMSTMT(ExprParser.IMFROMSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIMFROMSTMT(ExprParser.IMFROMSTMTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -244,13 +366,25 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStmt_list(ExprParser.Stmt_listContext ctx) { }
+	@Override public void enterLISTLISTSTMT(ExprParser.LISTLISTSTMTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStmt_list(ExprParser.Stmt_listContext ctx) { }
+	@Override public void exitLISTLISTSTMT(ExprParser.LISTLISTSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLISTSTMT(ExprParser.LISTSTMTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLISTSTMT(ExprParser.LISTSTMTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -268,13 +402,25 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIteration_stmt(ExprParser.Iteration_stmtContext ctx) { }
+	@Override public void enterWILEITR(ExprParser.WILEITRContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIteration_stmt(ExprParser.Iteration_stmtContext ctx) { }
+	@Override public void exitWILEITR(ExprParser.WILEITRContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFORITR(ExprParser.FORITRContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFORITR(ExprParser.FORITRContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -340,25 +486,97 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssign_operators(ExprParser.Assign_operatorsContext ctx) { }
+	@Override public void enterASSIGNOP(ExprParser.ASSIGNOPContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssign_operators(ExprParser.Assign_operatorsContext ctx) { }
+	@Override public void exitASSIGNOP(ExprParser.ASSIGNOPContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterJump_stmt(ExprParser.Jump_stmtContext ctx) { }
+	@Override public void enterPASSIGNOP(ExprParser.PASSIGNOPContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitJump_stmt(ExprParser.Jump_stmtContext ctx) { }
+	@Override public void exitPASSIGNOP(ExprParser.PASSIGNOPContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMASSIGNOP(ExprParser.MASSIGNOPContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMASSIGNOP(ExprParser.MASSIGNOPContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTASSIGNOP(ExprParser.TASSIGNOPContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTASSIGNOP(ExprParser.TASSIGNOPContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDASSIGNOP(ExprParser.DASSIGNOPContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDASSIGNOP(ExprParser.DASSIGNOPContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBJMP(ExprParser.BJMPContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBJMP(ExprParser.BJMPContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCJMP(ExprParser.CJMPContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCJMP(ExprParser.CJMPContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRJMP(ExprParser.RJMPContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRJMP(ExprParser.RJMPContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -532,37 +750,73 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTerm(ExprParser.TermContext ctx) { }
+	@Override public void enterFTERM(ExprParser.FTERMContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTerm(ExprParser.TermContext ctx) { }
+	@Override public void exitFTERM(ExprParser.FTERMContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTone(ExprParser.ToneContext ctx) { }
+	@Override public void enterTTERM(ExprParser.TTERMContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTone(ExprParser.ToneContext ctx) { }
+	@Override public void exitTTERM(ExprParser.TTERMContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFactor(ExprParser.FactorContext ctx) { }
+	@Override public void enterSFATOMTONE(ExprParser.SFATOMTONEContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFactor(ExprParser.FactorContext ctx) { }
+	@Override public void exitSFATOMTONE(ExprParser.SFATOMTONEContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterATOMTONE(ExprParser.ATOMTONEContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitATOMTONE(ExprParser.ATOMTONEContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPMFACTOR(ExprParser.PMFACTORContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPMFACTOR(ExprParser.PMFACTORContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPWFACTOR(ExprParser.PWFACTORContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPWFACTOR(ExprParser.PWFACTORContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -592,13 +846,121 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAtom(ExprParser.AtomContext ctx) { }
+	@Override public void enterATOMLIST(ExprParser.ATOMLISTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAtom(ExprParser.AtomContext ctx) { }
+	@Override public void exitATOMLIST(ExprParser.ATOMLISTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterATOMSONG(ExprParser.ATOMSONGContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitATOMSONG(ExprParser.ATOMSONGContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterATOMSEQ(ExprParser.ATOMSEQContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitATOMSEQ(ExprParser.ATOMSEQContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterATOMNAME(ExprParser.ATOMNAMEContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitATOMNAME(ExprParser.ATOMNAMEContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterATOMNUM(ExprParser.ATOMNUMContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitATOMNUM(ExprParser.ATOMNUMContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterATOMSTR(ExprParser.ATOMSTRContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitATOMSTR(ExprParser.ATOMSTRContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterATOMNONE(ExprParser.ATOMNONEContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitATOMNONE(ExprParser.ATOMNONEContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterATOMTR(ExprParser.ATOMTRContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitATOMTR(ExprParser.ATOMTRContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterATOMFAL(ExprParser.ATOMFALContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitATOMFAL(ExprParser.ATOMFALContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterATOMNOTE(ExprParser.ATOMNOTEContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitATOMNOTE(ExprParser.ATOMNOTEContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -616,13 +978,37 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTrailer(ExprParser.TrailerContext ctx) { }
+	@Override public void enterTLRARG(ExprParser.TLRARGContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTrailer(ExprParser.TrailerContext ctx) { }
+	@Override public void exitTLRARG(ExprParser.TLRARGContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTLRSUBLIST(ExprParser.TLRSUBLISTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTLRSUBLIST(ExprParser.TLRSUBLISTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTLRNAME(ExprParser.TLRNAMEContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTLRNAME(ExprParser.TLRNAMEContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -664,13 +1050,25 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSubscript(ExprParser.SubscriptContext ctx) { }
+	@Override public void enterSUBSCRT(ExprParser.SUBSCRTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSubscript(ExprParser.SubscriptContext ctx) { }
+	@Override public void exitSUBSCRT(ExprParser.SUBSCRTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSUBSCRTT(ExprParser.SUBSCRTTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSUBSCRTT(ExprParser.SUBSCRTTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -688,25 +1086,49 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArgument(ExprParser.ArgumentContext ctx) { }
+	@Override public void enterARGTEST(ExprParser.ARGTESTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArgument(ExprParser.ArgumentContext ctx) { }
+	@Override public void exitARGTEST(ExprParser.ARGTESTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterList_iter(ExprParser.List_iterContext ctx) { }
+	@Override public void enterARGEQ(ExprParser.ARGEQContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitList_iter(ExprParser.List_iterContext ctx) { }
+	@Override public void exitARGEQ(ExprParser.ARGEQContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLISTITRFOR(ExprParser.LISTITRFORContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLISTITRFOR(ExprParser.LISTITRFORContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLISTITRIF(ExprParser.LISTITRIFContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLISTITRIF(ExprParser.LISTITRIFContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -736,13 +1158,25 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterComp_iter(ExprParser.Comp_iterContext ctx) { }
+	@Override public void enterCMPITRFOR(ExprParser.CMPITRFORContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitComp_iter(ExprParser.Comp_iterContext ctx) { }
+	@Override public void exitCMPITRFOR(ExprParser.CMPITRFORContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCMPITRIF(ExprParser.CMPITRIFContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCMPITRIF(ExprParser.CMPITRIFContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -772,18 +1206,6 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTestlist1(ExprParser.Testlist1Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitTestlist1(ExprParser.Testlist1Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterParameters(ExprParser.ParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -808,13 +1230,25 @@ public class ExprBaseListener implements ExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFpdef(ExprParser.FpdefContext ctx) { }
+	@Override public void enterFPDEFNAME(ExprParser.FPDEFNAMEContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFpdef(ExprParser.FpdefContext ctx) { }
+	@Override public void exitFPDEFNAME(ExprParser.FPDEFNAMEContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFPDEFLIST(ExprParser.FPDEFLISTContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFPDEFLIST(ExprParser.FPDEFLISTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

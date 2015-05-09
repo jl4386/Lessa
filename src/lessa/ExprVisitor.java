@@ -470,13 +470,6 @@ public interface ExprVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitATOMSONG(ExprParser.ATOMSONGContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ATOMTESTLIST}
-	 * labeled alternative in {@link ExprParser#atom}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitATOMTESTLIST(ExprParser.ATOMTESTLISTContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ATOMSEQ}
 	 * labeled alternative in {@link ExprParser#atom}.
 	 * @param ctx the parse tree
@@ -663,12 +656,6 @@ public interface ExprVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitComp_if(ExprParser.Comp_ifContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ExprParser#testlist1}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTestlist1(ExprParser.Testlist1Context ctx);
 	/**
 	 * Visit a parse tree produced by {@link ExprParser#parameters}.
 	 * @param ctx the parse tree

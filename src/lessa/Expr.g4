@@ -231,8 +231,6 @@ atom_trailer:
 atom:
 		'(' (test | listmaker_test)? ')'            #ATOMLIST 
 	| 	'{' (songmaker)?  '}'                #ATOMSONG
-	/// what it testlist1 ????
-	|	'\'' testlist1 '\''                  #ATOMTESTLIST
 	|   '[' (sequencemaker)? ']'             #ATOMSEQ
 	| 	NAME                                 #ATOMNAME
 	| 	NUMBER                               #ATOMNUM
@@ -310,9 +308,6 @@ comp_for:
 
 comp_if:
 		IF test (comp_iter)? ;
-
-testlist1: 
-		test (',' test)* ;
 
 parameters: 
 		'(' (varargslist)? ')' ;
