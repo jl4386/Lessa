@@ -399,8 +399,8 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  } else if (leftExpr.substring(0, 1).equals("~")){
 		  retValue = visit(ctx.expr(0)) + ".pitch_down()";
 	  } else if (rExpr.contains(".instrument")) {
-		  println(rExpr);
-		  String[] l = rExpr.split(".");
+		  println("rExpr is:" + rExpr);
+		  String[] l = rExpr.split("\\.");
 		  retValue = l[0] + "." + "change_instrument(" + leftExpr + ")"; 
 	  } else {
 		  retValue = visit(ctx.expr(0)) + " " + visit(ctx.assign_operators()) +  " " + visit(ctx.expr(1));
