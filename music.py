@@ -189,11 +189,9 @@ class sequence:
 
 		if self.instrument != other.instrument:
 			raise ValueError('Two sequence have different instrument, cannot concatenate')
-		tmp_stream = self.stream + other.stream
-		tmp_seq = sequence()
-		tmp_seq.stream = tmp_stream
-		tmp_seq.instrument = self.instrument
-		return tmp_seq
+
+		self.stream += other.stream
+		return self
 
 	def __iadd__(self, other):
 		if not isinstance(other, sequence):
@@ -201,11 +199,42 @@ class sequence:
 			
 		if self.instrument != other.instrument:
 			raise ValueError('Two sequence have different instrument, cannot concatenate')
-		tmp_stream = self.stream + other.stream
-		tmp_seq = sequence()
-		tmp_seq.stream = tmp_stream
-		tmp_seq.instrument = self.instrument
-		return tmp_seq
+
+		self.stream += other.stream
+		return self
+
+	def __mul__(self, other):
+		if not isinstance(other, int):
+			raise TypeError('Sequences can only be multiplied to numbers')
+		
+		tmp_stream = self.stream
+
+		for i in range(1, other):
+			self.stream = self.stream + tmp_stream
+		
+		return self
+
+	def __imul__(self, other):
+		if not isinstance(other, int):
+			raise TypeError('Sequences can only be multiplied to numbers')
+		
+		tmp_stream = self.stream
+
+		for i in range(1, other):
+			self.stream = self.stream + tmp_stream
+		
+		return self
+	
+	def __mul__(self, other):
+		if not isinstance(other, int):
+			raise TypeError('Sequences can only be multiplied to numbers')
+		
+		tmp_stream = self.stream
+		
+		for i in range(other):
+			self.stream += tmp_stream
+		
+		return self
 
 	def __getitem__(self, key):
 		return self.stream[key]

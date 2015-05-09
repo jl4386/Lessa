@@ -71,6 +71,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   				BufferedReader br = new BufferedReader(new FileReader(Envir.compileFileName));
   				if (br.readLine()==null) {
   					try {
+  						exWriter.write("#!/usr/bin/python\n");
   						exWriter.write("import imp\n");
   						exWriter.write("music=imp.load_source('music', '" + Envir.dir
   								+ "music.py')\n");
@@ -80,6 +81,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   		  				e1.printStackTrace();
   					}
   				}
+  				br.close();
   			} catch (IOException e1) {
   				// TODO Auto-generated catch block
   				e1.printStackTrace();
@@ -208,6 +210,10 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   @Override public String visitIMNAMESTMT(ExprParser.IMNAMESTMTContext ctx) {
 	  println("import_stmt -> import_name");
 	  String ret = visit(ctx.import_name());
+	  ImpStmt temp = Envir.defTable.get(Envir.userImport);
+	  StringBuffer sb = new StringBuffer(temp.stmt);
+	  sb.append(ret).append("\n");
+	  temp.stmt = sb.toString();
 	  return ret;
   }
   
@@ -284,6 +290,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  println("import_name -> IMPORT dotted_as_names return:" + ret);
 	  return ret;
   }
+  
   //dotted_as_names -> dotted_as_name (',' dotted_as_name)* 
   @Override public String visitDotted_as_names(ExprParser.Dotted_as_namesContext ctx) { 
 	  println("dotted_as_names -> dotted_as_name (',' dotted_as_name)*");
@@ -300,7 +307,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //dotted_as_name -> dotted_name ('as' NAME)? 
   @Override public String visitDotted_as_name(ExprParser.Dotted_as_nameContext ctx) { 
 	  println("dotted_as_name -> dotted_name ('as' NAME)?");
-	  String ret = visit(ctx.dotted_name());
+	  String ret = visit(ctx.dotted_name()) + " ";
 	  if (ctx.NAME() != null) {
 		  ret += "as" + " " +  ctx.NAME().getText(); 
 	  }
@@ -410,7 +417,9 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	      Envir.varTable.get(expr).dirty=true;
 	    }else{
 	      Variable v = new Variable(expr,value);
+	      v.dirty=true;
 	      Envir.varTable.put(expr, v);
+	      
 	      //v.dirty=true;
 	    }
 	  }
@@ -814,7 +823,10 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   public String visitPower(ExprParser.PowerContext ctx) {
 	  println("power -> atom_trailer ('**' factor)?");
 	  String at = visit(ctx.atom_trailer());
-	  return at;
+	  if (ctx.factor() != null) {
+		  at += "**" + visit(ctx.factor());
+    }
+    return at;
   }
   
   //atom_trailer -> (THIS '.')? atom  (trailer)*;
@@ -825,6 +837,13 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  String atomStr = null;
 	  if (ctx.atom() != null) {
 		  atomStr =  visit(ctx.atom());
+		  
+		  if(atomStr!=null){
+		    String var = getInstance(atomStr);
+	          if(var!=null)
+	            setDirty(var);
+		  }
+		  
 		  if (atomStr.equals("play")) {
 		      Envir.playflag = true;
 //			  String trailerStr = visit(ctx.trailer(0));
@@ -850,6 +869,12 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  
 	  if (ctx.trailer(0) != null) {
 		  String trailerStr = visit(ctx.trailer(0));
+		  if(trailerStr!=null){
+		    String var = getInstance(trailerStr);
+		    if(var!=null)
+	            setDirty(var);
+		  }
+		  
 		  if (trailerStr.equals(".add")) {
 			  String third = visit(ctx.trailer(1));
 			  third = third.substring(1, third.length() - 1);
@@ -871,7 +896,26 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  i++;
 	  }
 	  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + at);
+	  if(at!=null){
+	    String var = getInstance(at);
+	      if(var!=null)
+	        setDirty(var);
+	  }
+	  
 	  return at;
+  }
+  
+  private static void setDirty(String var){
+    if(Envir.varTable.containsKey(var))
+      Envir.varTable.get(var).dirty=true;
+  }
+  
+  private static String getInstance(String s){
+    if(s.contains(".")){
+      return s.split("\\.")[0];
+    }
+    return null;
+    
   }
   
   //atom ->'{' (songmaker)?  '}' 
@@ -960,6 +1004,35 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  ret.append( ")");
 	  println("trailer ->'(' arglist? ')' return:" + ret.toString());
 	  return ret.toString();
+  }
+  
+  //arglist -> (argument ',')* (argument (',')? | '*' test (',' argument)* (',' '**' test)? | '**' test)
+  @Override public String visitArglist(ExprParser.ArglistContext ctx) { 
+	  println("arglist -> (argument ',')* (argument (',')? | '*' test (',' argument)* (',' '**' test)? | '**' test)");
+	  String ret = "";
+	  int i = 0;
+	  while (ctx.argument(i) != null) {
+		  ret += visit(ctx.argument(i)) + ",";
+		  i++;
+	  }
+	  return ret;
+  }
+  
+  //argument -> test (comp_for)?
+  @Override public String visitARGTEST(ExprParser.ARGTESTContext ctx) { 
+	  println("argument -> test (comp_for)?");
+	  String ret = visit(ctx.test());
+	  if (ctx.comp_for() != null) {
+		  ret += visit(ctx.comp_for());
+	  }
+	  return visitChildren(ctx);
+  }
+  
+  //argument -> test '=' test 
+  @Override public String visitARGEQ(ExprParser.ARGEQContext ctx) { 
+	  println("argument -> test '=' test");
+	  String ret = visit(ctx.test(0)) + "=" + visit(ctx.test(1));
+	  return ret;
   }
   
   //trailer -> '[' subscriptlist ']'
