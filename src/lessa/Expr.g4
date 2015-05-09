@@ -229,7 +229,7 @@ atom_trailer:
 
 
 atom:
-		'(' (listmaker_test)? ')'            #ATOMLIST 
+		'(' (test | listmaker_test)? ')'            #ATOMLIST 
 	| 	'{' (songmaker)?  '}'                #ATOMSONG
 	/// what it testlist1 ????
 	|	'\'' testlist1 '\''                  #ATOMTESTLIST
