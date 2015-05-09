@@ -836,8 +836,13 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  String atomStr = null;
 	  if (ctx.atom() != null) {
 		  atomStr =  visit(ctx.atom());
-		  String var = getInstance(atomStr);
-		  setDirty(var);
+		  
+		  if(atomStr!=null){
+		    String var = getInstance(atomStr);
+	          if(var!=null)
+	            setDirty(var);
+		  }
+		  
 		  if (atomStr.equals("play")) {
 		      Envir.playflag = true;
 //			  String trailerStr = visit(ctx.trailer(0));
@@ -863,8 +868,12 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  
 	  if (ctx.trailer(0) != null) {
 		  String trailerStr = visit(ctx.trailer(0));
-		  String var = getInstance(trailerStr);
-		  setDirty(var);
+		  if(trailerStr!=null){
+		    String var = getInstance(trailerStr);
+		    if(var!=null)
+	            setDirty(var);
+		  }
+		  
 		  if (trailerStr.equals(".add")) {
 			  String third = visit(ctx.trailer(1));
 			  third = third.substring(1, third.length() - 1);
@@ -886,8 +895,12 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  i++;
 	  }
 	  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + at);
-	  String var = getInstance(at);
-	  setDirty(var);
+	  if(at!=null){
+	    String var = getInstance(at);
+	      if(var!=null)
+	        setDirty(var);
+	  }
+	  
 	  return at;
   }
   
