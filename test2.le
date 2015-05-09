@@ -1,10 +1,40 @@
-if (a == 1) {
-	print("1");
-}elif(a > 1) {
-	a = 1;
-	b = 2;
-	break;
-	c = 3;
-}else {
-	continue;
+class MinStack {
+	def __init__(){
+		this.data = ();
+    	this.min = ();
+ 	}
+    def push(x) {
+        if (len(this.data) == 0) {
+            this.data.append(x);
+            this.min.append(x);
+        } else {
+            curr = this.min[len(this.min)-1];
+            this.data.append(x);
+            if (x < curr) {
+                this.min.append(x);
+            } else {
+                this.min.append(curr);
+            }
+        }
+    }
+
+    def pop() {
+        this.min.remove(len(data)-1);
+        this.data.remove(len(data)-1);
+    }
+
+    def top() {
+        return this.data[len(this.data)-1];
+    }
+
+    def getMin() {
+        return this.min[len(this.data)-1];
+    }
 }
+
+a = MinStack();
+a.push(3);
+a.push(1);
+a.push(2);
+print(a.top()); 
+print(a.getMin());
