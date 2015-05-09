@@ -2,6 +2,7 @@ package lessa;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 
 
@@ -133,6 +135,15 @@ public class Main {
 						+ Envir.compileFileName);
 				
 				interpreter.execfile(filepy);
+				File f = new File(Envir.defaultMidiFileName);
+				if(f.exists()){
+				  System.out.println("Song is going to play, waiting...");
+                  MidiPlay player = new MidiPlay();
+                  player.run();
+                  MidiLis listener = new MidiLis(player.sequencer);
+                  player.sequencer.addMetaEventListener(listener);
+                  
+				}
 			}
 			
 			
