@@ -361,7 +361,7 @@ NUMBER      	: INT |	FLOAT ;
 
 FLOAT			: DIGIT+ '.' DIGIT+ EXPONENT? ;
 
-NOTE 			: '\'' ((('A'..'G'|'a'..'g') ('2'..'8') ('w'|'h'|'q'|'e'|'s')) | ('R'|'r') )'\'' ;
+NOTE 			: '\'' ((('A'..'G'|'a'..'g') ('1'..'8') ('w'|'h'|'q'|'e'|'s')) | ('R'|'r') )'\'' ;
 
 NAME            : ID ;
 
