@@ -208,7 +208,7 @@ public class Main {
 			exec(repl);
 		}
 
-		Gen.closeShell();
+		//Gen.closeShell();
 
 		// ExprLexer lexer = new ExprLexer(new ANTLRFileStream("?"));
 		// ExprParser parser = new ExprParser(new CommonTokenStream(lexer));
