@@ -846,11 +846,11 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  
 		  if (atomStr.equals("play")) {
 		      Envir.playflag = true;
-//			  String trailerStr = visit(ctx.trailer(0));
-//			  trailerStr = trailerStr.substring(1, trailerStr.length() - 1);
-//			  String ret = trailerStr + ".play()";
-//			  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
-			  return "";
+			  String trailerStr = visit(ctx.trailer(0));
+			  trailerStr = trailerStr.substring(1, trailerStr.length() - 1);
+			  String ret = trailerStr + ".play()";
+			  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
+			  return ret;
 		  } else if (atomStr.equals("list")) {
 			  String trailerStr = visit(ctx.trailer(0));
 			  trailerStr = trailerStr.substring(1, trailerStr.length() - 1);
