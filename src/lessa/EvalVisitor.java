@@ -369,6 +369,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  if (ctx.stmt_list() != null) {
 		  ret += visit(ctx.stmt_list());
 	  }
+	  println("compound_stmt -> '{' (stmt_list)? '}' return:" + ret);
 	  return ret;
   }
   
@@ -973,12 +974,17 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  return ret;
   }
   
-  //atom -> '(' (listmaker_test)? ')' 
+  //atom -> '(' (test | listmaker_test)? ')' 
   @Override public String visitATOMLIST(ExprParser.ATOMLISTContext ctx) {
-	  println("'(' (listmaker_test)? ')' ");
+	  println("'(' (test | listmaker_test)? ')' ");
 	  String ret = "";
-	  if (ctx.listmaker_test() != null) ret = visit(ctx.listmaker_test());
-	  ret = "[" + ret + "]";
+	  if (ctx.test() != null ) {
+	  	ret = visit(ctx.test());
+	  	ret = "(" + ret + ")";
+	  } else if (ctx.listmaker_test() != null) {
+	  	ret = visit(ctx.listmaker_test());
+	  	ret = "[" + ret + "]";
+	  }
 	  return ret;
   }
  
