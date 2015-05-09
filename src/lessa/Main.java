@@ -10,11 +10,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 
 
@@ -22,6 +25,7 @@ import java.util.regex.Pattern;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.gui.TreeViewer;
 import org.python.core.PyException;
 import org.python.util.PythonInterpreter;
 
@@ -37,8 +41,8 @@ import envir.SyntaxError;
 public class Main {
 	private static Scanner sc;
 	private static PythonInterpreter interpreter = new PythonInterpreter();;
-	public boolean playflag = false; 
-	
+	public boolean playflag = false;
+
 	private static List<String> readFile(String file) throws Exception {
 		String line = null;
 		List<String> lines = new ArrayList<String>();
@@ -82,17 +86,32 @@ public class Main {
 		// parse the statement
 		try {
 			input = new ANTLRInputStream(stream);
+			//lexer
 			ExprLexer lexer = new ExprLexer(input);
 			lexer.removeErrorListeners();
 			lexer.addErrorListener(TokenErrorListener.INSTANCE);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
+			
+			//parser
 			ExprParser parser = new ExprParser(tokens);
 			parser.removeErrorListeners();
 			parser.addErrorListener(DescriptiveErrorListener.INSTANCE);
-			ParseTree tree = parser.prog(); // parse
-
+			ParseTree tree = parser.prog(); 
+			
+			//parser tree viewer
+			JFrame frame = new JFrame("Antlr AST");
+			JPanel panel = new JPanel();
+			TreeViewer viewr = new TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
+			panel.add(viewr); 
+			frame.add(panel);
+		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		    frame.setSize(200,200);
+		    frame.setVisible(true);
+		    
+		    //tree walk -> code generation
 			EvalVisitor eval = new EvalVisitor(repl);
 			eval.visit(tree);
+			
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -108,45 +127,41 @@ public class Main {
 
 	private static void exec(boolean repl) throws InterruptedException {
 		// run the statement
-		
+
 		InputStream filepy;
 		try {
 
 			if (repl) {
-				filepy = new FileInputStream(Envir.dir
-						+ Envir.exeFileName);
+				filepy = new FileInputStream(Envir.dir + Envir.exeFileName);
 				// execute a statement
-	            
-                if(Envir.playflag){
-                  System.out.println("Song is going to play, waiting...");
-                  MidiPlay player = new MidiPlay();
-                  player.run();
-                  MidiLis listener = new MidiLis(player.sequencer);
-                  player.sequencer.addMetaEventListener(listener);
-                  Envir.playflag =false;
-                }else{
-                  // execute a statement
-                  interpreter.execfile(filepy);
 
-                }
+				if (Envir.playflag) {
+					System.out.println("Song is going to play, waiting...");
+					MidiPlay player = new MidiPlay();
+					player.run();
+					MidiLis listener = new MidiLis(player.sequencer);
+					player.sequencer.addMetaEventListener(listener);
+					Envir.playflag = false;
+				} else {
+					// execute a statement
+					interpreter.execfile(filepy);
+
+				}
 			} else {
-			    
-				filepy= new FileInputStream(Envir.dir
-						+ Envir.compileFileName);
-				
+
+				filepy = new FileInputStream(Envir.dir + Envir.compileFileName);
+
 				interpreter.execfile(filepy);
 				File f = new File(Envir.defaultMidiFileName);
-				if(f.exists()){
-				  System.out.println("Song is going to play, waiting...");
-                  MidiPlay player = new MidiPlay();
-                  player.run();
-                  MidiLis listener = new MidiLis(player.sequencer);
-                  player.sequencer.addMetaEventListener(listener);
-                  
+				if (f.exists()) {
+					System.out.println("Song is going to play, waiting...");
+					MidiPlay player = new MidiPlay();
+					player.run();
+					MidiLis listener = new MidiLis(player.sequencer);
+					player.sequencer.addMetaEventListener(listener);
+
 				}
 			}
-			
-			
 
 			// refresh variables
 			Gen.refreshDirty(interpreter);
@@ -220,7 +235,7 @@ public class Main {
 			exec(repl);
 		}
 
-		//Gen.closeShell();
+		// Gen.closeShell();
 
 		// ExprLexer lexer = new ExprLexer(new ANTLRFileStream("?"));
 		// ExprParser parser = new ExprParser(new CommonTokenStream(lexer));
