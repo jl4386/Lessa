@@ -71,6 +71,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   				BufferedReader br = new BufferedReader(new FileReader(Envir.compileFileName));
   				if (br.readLine()==null) {
   					try {
+  						exWriter.write("#!/usr/bin/python\n");
   						exWriter.write("import imp\n");
   						exWriter.write("music=imp.load_source('music', '" + Envir.dir
   								+ "music.py')\n");
@@ -289,6 +290,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  println("import_name -> IMPORT dotted_as_names return:" + ret);
 	  return ret;
   }
+  
   //dotted_as_names -> dotted_as_name (',' dotted_as_name)* 
   @Override public String visitDotted_as_names(ExprParser.Dotted_as_namesContext ctx) { 
 	  println("dotted_as_names -> dotted_as_name (',' dotted_as_name)*");
@@ -305,7 +307,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //dotted_as_name -> dotted_name ('as' NAME)? 
   @Override public String visitDotted_as_name(ExprParser.Dotted_as_nameContext ctx) { 
 	  println("dotted_as_name -> dotted_name ('as' NAME)?");
-	  String ret = visit(ctx.dotted_name());
+	  String ret = visit(ctx.dotted_name()) + " ";
 	  if (ctx.NAME() != null) {
 		  ret += "as" + " " +  ctx.NAME().getText(); 
 	  }
@@ -820,7 +822,10 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   public String visitPower(ExprParser.PowerContext ctx) {
 	  println("power -> atom_trailer ('**' factor)?");
 	  String at = visit(ctx.atom_trailer());
-	  return at;
+	  if (ctx.factor() != null) {
+		  at += "**" + visit(ctx.factor());
+    }
+    return at;
   }
   
   //atom_trailer -> (THIS '.')? atom  (trailer)*;
@@ -985,6 +990,35 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  ret.append( ")");
 	  println("trailer ->'(' arglist? ')' return:" + ret.toString());
 	  return ret.toString();
+  }
+  
+  //arglist -> (argument ',')* (argument (',')? | '*' test (',' argument)* (',' '**' test)? | '**' test)
+  @Override public String visitArglist(ExprParser.ArglistContext ctx) { 
+	  println("arglist -> (argument ',')* (argument (',')? | '*' test (',' argument)* (',' '**' test)? | '**' test)");
+	  String ret = "";
+	  int i = 0;
+	  while (ctx.argument(i) != null) {
+		  ret += visit(ctx.argument(i)) + ",";
+		  i++;
+	  }
+	  return ret;
+  }
+  
+  //argument -> test (comp_for)?
+  @Override public String visitARGTEST(ExprParser.ARGTESTContext ctx) { 
+	  println("argument -> test (comp_for)?");
+	  String ret = visit(ctx.test());
+	  if (ctx.comp_for() != null) {
+		  ret += visit(ctx.comp_for());
+	  }
+	  return visitChildren(ctx);
+  }
+  
+  //argument -> test '=' test 
+  @Override public String visitARGEQ(ExprParser.ARGEQContext ctx) { 
+	  println("argument -> test '=' test");
+	  String ret = visit(ctx.test(0)) + "=" + visit(ctx.test(1));
+	  return ret;
   }
   
   //trailer -> '[' subscriptlist ']'
