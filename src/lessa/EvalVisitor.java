@@ -80,6 +80,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   		  				e1.printStackTrace();
   					}
   				}
+  				br.close();
   			} catch (IOException e1) {
   				// TODO Auto-generated catch block
   				e1.printStackTrace();
@@ -208,6 +209,10 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   @Override public String visitIMNAMESTMT(ExprParser.IMNAMESTMTContext ctx) {
 	  println("import_stmt -> import_name");
 	  String ret = visit(ctx.import_name());
+	  ImpStmt temp = Envir.defTable.get(Envir.userImport);
+	  StringBuffer sb = new StringBuffer(temp.stmt);
+	  sb.append(ret).append("\n");
+	  temp.stmt = sb.toString();
 	  return ret;
   }
   
@@ -409,7 +414,9 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	      Envir.varTable.get(expr).dirty=true;
 	    }else{
 	      Variable v = new Variable(expr,value);
+	      v.dirty=true;
 	      Envir.varTable.put(expr, v);
+	      
 	      //v.dirty=true;
 	    }
 	  }
@@ -824,6 +831,8 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  String atomStr = null;
 	  if (ctx.atom() != null) {
 		  atomStr =  visit(ctx.atom());
+		  String var = getInstance(atomStr);
+		  setDirty(var);
 		  if (atomStr.equals("play")) {
 		      Envir.playflag = true;
 //			  String trailerStr = visit(ctx.trailer(0));
@@ -849,6 +858,8 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  
 	  if (ctx.trailer(0) != null) {
 		  String trailerStr = visit(ctx.trailer(0));
+		  String var = getInstance(trailerStr);
+		  setDirty(var);
 		  if (trailerStr.equals(".add")) {
 			  String third = visit(ctx.trailer(1));
 			  third = third.substring(1, third.length() - 1);
@@ -870,7 +881,22 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  i++;
 	  }
 	  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + at);
+	  String var = getInstance(at);
+	  setDirty(var);
 	  return at;
+  }
+  
+  private static void setDirty(String var){
+    if(Envir.varTable.containsKey(var))
+      Envir.varTable.get(var).dirty=true;
+  }
+  
+  private static String getInstance(String s){
+    if(s.contains(".")){
+      return s.split("\\.")[0];
+    }
+    return null;
+    
   }
   
   //atom ->'{' (songmaker)?  '}' 

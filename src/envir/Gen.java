@@ -110,12 +110,13 @@ public class Gen {
 			if (pair.getValue().dirty) {
 				PyObject value = interpreter.get(pair.getKey());
 
-				System.out.println(value);
-				if (isInstance(value.toString())) {
-					//System.out.println(value);
-					//System.out.println(getClassName(value.toString()));
-					pair.getValue().value = getClassName(value.toString())
-							+ "()";
+				//System.out.println(value);
+				if (value.getType().getName().equals("instance")) {
+					
+					pair.getValue().value = null;
+					pair.getValue().isclass=true;
+					
+					interpreter.set(pair.getKey(), value);
 				} else {
 					pair.getValue().value = value.toString();
 				}
@@ -127,16 +128,16 @@ public class Gen {
 
 	}
 
-	private static String getClassName(String test) {
-		String temp = test.substring("<definition.".length());
+//	private static String getClassName(String test) {
+//		String temp = test.substring("<definition.".length());
+//
+//		return temp.split(" ")[0];
+//
+//	}
 
-		return temp.split(" ")[0];
-
-	}
-
-	private static boolean isInstance(String test) {
-		return test.contains("instance");
-	}
+//	private static boolean isInstance(String test) {
+//		return test.contains("instance");
+//	}
 
 	public static void removeErrorVariables() {
 		Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet()
@@ -159,7 +160,11 @@ public class Gen {
 
 				if (pair.getValue().create) {
 					pair.getValue().create = false;
-				} else {
+				}else if(pair.getValue().isclass){
+				  
+				  continue;
+				}
+				else {
 					w.write(pair.getKey());
 					w.write("=");
 					w.write(pair.getValue().value);

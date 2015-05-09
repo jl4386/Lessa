@@ -34,7 +34,7 @@ import envir.SyntaxError;
 
 public class Main {
 	private static Scanner sc;
-	private static PythonInterpreter interpreter;
+	private static PythonInterpreter interpreter = new PythonInterpreter();;
 	public boolean playflag = false; 
 	
 	private static List<String> readFile(String file) throws Exception {
@@ -106,7 +106,7 @@ public class Main {
 
 	private static void exec(boolean repl) throws InterruptedException {
 		// run the statement
-		interpreter = new PythonInterpreter();
+		
 		InputStream filepy;
 		try {
 
@@ -125,6 +125,7 @@ public class Main {
                 }else{
                   // execute a statement
                   interpreter.execfile(filepy);
+
                 }
 			} else {
 			    
@@ -208,7 +209,7 @@ public class Main {
 			exec(repl);
 		}
 
-		Gen.closeShell();
+		//Gen.closeShell();
 
 		// ExprLexer lexer = new ExprLexer(new ANTLRFileStream("?"));
 		// ExprParser parser = new ExprParser(new CommonTokenStream(lexer));
