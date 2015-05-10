@@ -1,4 +1,5 @@
 package lessa;
+
 // Generated from Expr.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -3492,8 +3493,8 @@ public class ExprParser extends Parser {
 	}
 	public static class SFATOMTONEContext extends ToneContext {
 		public Token op;
-		public AtomContext atom() {
-			return getRuleContext(AtomContext.class,0);
+		public Atom_trailerContext atom_trailer() {
+			return getRuleContext(Atom_trailerContext.class,0);
 		}
 		public TerminalNode SHARP() { return getToken(ExprParser.SHARP, 0); }
 		public TerminalNode FLAT() { return getToken(ExprParser.FLAT, 0); }
@@ -3513,8 +3514,8 @@ public class ExprParser extends Parser {
 		}
 	}
 	public static class ATOMTONEContext extends ToneContext {
-		public AtomContext atom() {
-			return getRuleContext(AtomContext.class,0);
+		public Atom_trailerContext atom_trailer() {
+			return getRuleContext(Atom_trailerContext.class,0);
 		}
 		public ATOMTONEContext(ToneContext ctx) { copyFrom(ctx); }
 		@Override
@@ -3553,12 +3554,13 @@ public class ExprParser extends Parser {
 					consume();
 				}
 				setState(454);
-				atom();
+				atom_trailer();
 				}
 				break;
 			case T__1:
 			case T__4:
 			case T__8:
+			case THIS:
 			case NONE:
 			case TRUE:
 			case FALSE:
@@ -3570,7 +3572,7 @@ public class ExprParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(455);
-				atom();
+				atom_trailer();
 				}
 				break;
 			default:
@@ -6014,8 +6016,8 @@ public class ExprParser extends Parser {
 		"\u01be\7\16\2\2\u01be\u01c0\5\\/\2\u01bf\u01bd\3\2\2\2\u01c0\u01c3\3\2"+
 		"\2\2\u01c1\u01bf\3\2\2\2\u01c1\u01c2\3\2\2\2\u01c2\u01c6\3\2\2\2\u01c3"+
 		"\u01c1\3\2\2\2\u01c4\u01c6\5Z.\2\u01c5\u01bc\3\2\2\2\u01c5\u01c4\3\2\2"+
-		"\2\u01c6Y\3\2\2\2\u01c7\u01c8\t\2\2\2\u01c8\u01cb\5b\62\2\u01c9\u01cb"+
-		"\5b\62\2\u01ca\u01c7\3\2\2\2\u01ca\u01c9\3\2\2\2\u01cb[\3\2\2\2\u01cc"+
+		"\2\u01c6Y\3\2\2\2\u01c7\u01c8\t\2\2\2\u01c8\u01cb\5`\61\2\u01c9\u01cb"+
+		"\5`\61\2\u01ca\u01c7\3\2\2\2\u01ca\u01c9\3\2\2\2\u01cb[\3\2\2\2\u01cc"+
 		"\u01cd\t\3\2\2\u01cd\u01d0\5\\/\2\u01ce\u01d0\5^\60\2\u01cf\u01cc\3\2"+
 		"\2\2\u01cf\u01ce\3\2\2\2\u01d0]\3\2\2\2\u01d1\u01d4\5`\61\2\u01d2\u01d3"+
 		"\7\61\2\2\u01d3\u01d5\5\\/\2\u01d4\u01d2\3\2\2\2\u01d4\u01d5\3\2\2\2\u01d5"+
