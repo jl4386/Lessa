@@ -99,14 +99,16 @@ public class Main {
 			ParseTree tree = parser.prog(); 
 			
 			//parser tree viewer
-			JFrame frame = new JFrame("Antlr AST");
-			JPanel panel = new JPanel();
-			TreeViewer viewr = new TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
-			panel.add(viewr); 
-			frame.add(panel);
-		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		    frame.setSize(200,200);
-		    frame.setVisible(true);
+			if (repl) {
+				JFrame frame = new JFrame("Antlr AST");
+				JPanel panel = new JPanel();
+				TreeViewer viewr = new TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
+				panel.add(viewr); 
+				frame.add(panel);
+			    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			    frame.setSize(200,200);
+			    frame.setVisible(true);
+			}
 		    
 		    //tree walk -> code generation
 			EvalVisitor eval = new EvalVisitor(repl);

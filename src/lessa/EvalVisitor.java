@@ -983,10 +983,16 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  if (ctx.test() != null ) {
 	  	ret = visit(ctx.test());
 	  	ret = "(" + ret + ")";
+	  	println("test is:" + ret);
+	  	return ret;
 	  } else if (ctx.listmaker_test() != null) {
 	  	ret = visit(ctx.listmaker_test());
+	  	println("listmaker_test is:" + ret);
 	  	ret = "[" + ret + "]";
+	  	return ret;
 	  }
+	  ret = "[" + ret + "]";
+	  println("'(' (test | listmaker_test)? ')' return:" + ret);
 	  return ret;
   }
  
