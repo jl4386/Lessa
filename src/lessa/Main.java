@@ -96,6 +96,8 @@ public class Main {
 			ExprParser parser = new ExprParser(tokens);
 			parser.removeErrorListeners();
 			parser.addErrorListener(DescriptiveErrorListener.INSTANCE);
+
+
 			ParseTree tree = parser.prog();
 
 			// parser tree viewer
@@ -112,6 +114,7 @@ public class Main {
 			// }
 
 			// tree walk -> code generation
+
 			EvalVisitor eval = new EvalVisitor(repl);
 			eval.visit(tree);
 
@@ -200,6 +203,12 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws Exception {
+	    
+	    
+	    //System.out.println("sys.path.append('"+Envir.dir.substring(0, Envir.dir.length()-1)+"')");
+	    interpreter.exec("import sys");
+	    interpreter.exec("sys.path.append('"+Envir.dir.substring(0, Envir.dir.length()-1)+"')");
+	    interpreter.exec("from music import *");
 		sc = new Scanner(System.in);
 		boolean repl = true;
 		List<String> params = new ArrayList<String>();

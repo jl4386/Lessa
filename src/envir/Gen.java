@@ -117,7 +117,7 @@ public class Gen {
 					pair.getValue().value = null;
 					pair.getValue().isclass=true;
 					
-					interpreter.set(pair.getKey(), value);
+					interpreter.set(pair.getKey(),(PyObject) value);
 				} else {
 					pair.getValue().value = value.toString();
 				}
@@ -183,13 +183,13 @@ public class Gen {
 		try {
 
 			w.write("import imp\n");
-			w.write("music=imp.load_source('music', '" + Envir.dir
-					+ "music.py')\n");
-			String module = Envir.tempFileName.substring(0,
-					Envir.tempFileName.length() - 3);
-			w.write(module + "=imp.load_source('" + module + "', '" + Envir.dir
-					+ Envir.tempFileName + "')\n");
-			w.write("from music import *\n");
+//			w.write("music=imp.load_source('music', '" + Envir.dir
+//					+ "music.py')\n");
+//			String module = Envir.tempFileName.substring(0,
+//					Envir.tempFileName.length() - 3);
+//			w.write(module + "=imp.load_source('" + module + "', '" + Envir.dir
+//					+ Envir.tempFileName + "')\n");
+//			w.write("from music import *\n");
 
 			Iterator<Entry<String, ImpStmt>> it = Envir.defTable.entrySet()
 					.iterator();
