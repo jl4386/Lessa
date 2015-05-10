@@ -131,7 +131,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  println("stmt -> expr_stmt");
 	  String expression = indent.getIndent() + visit(ctx.expr_stmt());
 	  println("stmt -> expr_stmt return:\n" + expression);
-	  return indent.getIndent() + expression; 
+	  return expression; 
   }
   
   //stmt -> compound_stmt
