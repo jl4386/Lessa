@@ -17,11 +17,13 @@ public class Gen {
 
 	private static File temp;
 	private static File exec;
+	private static File midi;
 
 	private static final String ImpPrefix = "from definition import";
 
 	public static void initShell(boolean repl) {
 		temp = new File(Envir.tempFileName);
+		midi = new File(Envir.defaultMidiFileName);
 		if (repl) {
 			exec = new File(Envir.exeFileName);
 		} else {
@@ -33,6 +35,9 @@ public class Gen {
 
 		if (exec.exists())
 			exec.delete();
+
+		if (midi.exists())
+			midi.delete();
 
 		try {
 			temp.createNewFile();
@@ -48,8 +53,7 @@ public class Gen {
 	public static void closeShell() {
 		if (temp.exists())
 			temp.delete();
-		if (exec.exists())
-			exec.delete();
+		// if (exec.exists()) exec.delete();
 
 	}
 
@@ -109,15 +113,15 @@ public class Gen {
 
 			if (pair.getValue().dirty) {
 				PyObject value = interpreter.get(pair.getKey());
-				if(value==null)
-				  continue;
-				//System.out.println(value);
+				if (value == null)
+					continue;
+				// System.out.println(value);
 				if (value.getType().getName().equals("instance")) {
-					
+
 					pair.getValue().value = null;
-					pair.getValue().isclass=true;
-					
-					interpreter.set(pair.getKey(),(PyObject) value);
+					pair.getValue().isclass = true;
+
+					interpreter.set(pair.getKey(), (PyObject) value);
 				} else {
 					pair.getValue().value = value.toString();
 				}
@@ -129,16 +133,16 @@ public class Gen {
 
 	}
 
-//	private static String getClassName(String test) {
-//		String temp = test.substring("<definition.".length());
-//
-//		return temp.split(" ")[0];
-//
-//	}
+	// private static String getClassName(String test) {
+	// String temp = test.substring("<definition.".length());
+	//
+	// return temp.split(" ")[0];
+	//
+	// }
 
-//	private static boolean isInstance(String test) {
-//		return test.contains("instance");
-//	}
+	// private static boolean isInstance(String test) {
+	// return test.contains("instance");
+	// }
 
 	public static void removeErrorVariables() {
 		Iterator<Entry<String, Variable>> it = Envir.varTable.entrySet()
@@ -161,11 +165,10 @@ public class Gen {
 
 				if (pair.getValue().create) {
 					pair.getValue().create = false;
-				}else if(pair.getValue().isclass){
-				  
-				  continue;
-				}
-				else {
+				} else if (pair.getValue().isclass) {
+
+					continue;
+				} else {
 					w.write(pair.getKey());
 					w.write("=");
 					w.write(pair.getValue().value);
@@ -183,13 +186,14 @@ public class Gen {
 		try {
 
 			w.write("import imp\n");
-//			w.write("music=imp.load_source('music', '" + Envir.dir
-//					+ "music.py')\n");
-//			String module = Envir.tempFileName.substring(0,
-//					Envir.tempFileName.length() - 3);
-//			w.write(module + "=imp.load_source('" + module + "', '" + Envir.dir
-//					+ Envir.tempFileName + "')\n");
-//			w.write("from music import *\n");
+			// w.write("music=imp.load_source('music', '" + Envir.dir
+			// + "music.py')\n");
+			// String module = Envir.tempFileName.substring(0,
+			// Envir.tempFileName.length() - 3);
+			// w.write(module + "=imp.load_source('" + module + "', '" +
+			// Envir.dir
+			// + Envir.tempFileName + "')\n");
+			// w.write("from music import *\n");
 
 			Iterator<Entry<String, ImpStmt>> it = Envir.defTable.entrySet()
 					.iterator();
