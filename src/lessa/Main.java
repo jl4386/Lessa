@@ -19,11 +19,6 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
-
-
-
-
 //import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -91,34 +86,34 @@ public class Main {
 		// parse the statement
 		try {
 			input = new ANTLRInputStream(stream);
-			//lexer
+			// lexer
 			ExprLexer lexer = new ExprLexer(input);
 			lexer.removeErrorListeners();
 			lexer.addErrorListener(TokenErrorListener.INSTANCE);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
-			
-			//parser
+
+			// parser
 			ExprParser parser = new ExprParser(tokens);
 			parser.removeErrorListeners();
 			parser.addErrorListener(DescriptiveErrorListener.INSTANCE);
-			ParseTree tree = parser.prog(); 
-			
-			//parser tree viewer
-			if (repl) {
-				JFrame frame = new JFrame("Antlr AST");
-				JPanel panel = new JPanel();
-				TreeViewer viewr = new TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
-				panel.add(viewr); 
-				frame.add(panel);
-			    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			    frame.setSize(200,200);
-			    frame.setVisible(true);
-			}
-		    
-		    //tree walk -> code generation
+			ParseTree tree = parser.prog();
+
+			// parser tree viewer
+			// if (repl) {
+			// JFrame frame = new JFrame("Antlr AST");
+			// JPanel panel = new JPanel();
+			// TreeViewer viewr = new
+			// TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
+			// panel.add(viewr);
+			// frame.add(panel);
+			// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			// frame.setSize(200,200);
+			// frame.setVisible(true);
+			// }
+
+			// tree walk -> code generation
 			EvalVisitor eval = new EvalVisitor(repl);
 			eval.visit(tree);
-			
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -132,7 +127,8 @@ public class Main {
 
 	}
 
-	private static void exec(boolean repl, List<String> params) throws InterruptedException {
+	private static void exec(boolean repl, List<String> params)
+			throws InterruptedException {
 		// run the statement
 
 		InputStream filepy;
@@ -154,7 +150,11 @@ public class Main {
 					interpreter.execfile(filepy);
 
 				}
+
+				// refresh variables
+				Gen.refreshDirty(interpreter);
 			} else {
+				// add arguments to interpreter list
 				PySystemState state = new PySystemState();
 				String[] args = params.toArray(new String[params.size()]);
 				state.argv.clear();
@@ -173,9 +173,6 @@ public class Main {
 					player.sequencer.addMetaEventListener(listener);
 				}
 			}
-
-			// refresh variables
-			Gen.refreshDirty(interpreter);
 
 			filepy.close();
 		} catch (FileNotFoundException e) {
