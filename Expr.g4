@@ -212,8 +212,8 @@ MULDIVOP:
 	;
 
 tone:
-		op=(SHARP|FLAT) atom                    #SFATOMTONE
-	|	atom                                 #ATOMTONE
+		op=(SHARP|FLAT) atom_trailer                    #SFATOMTONE
+	|	atom_trailer                                 #ATOMTONE
 	;
  
 factor:

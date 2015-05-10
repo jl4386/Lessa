@@ -1,0 +1,21 @@
+seq1 = ['E3q','A3q','C4q'];
+seq1 = seq1 * 4;
+seq2 = ['F3q','A3q','C4q'];
+seq2 = seq2 * 2;
+seq1 = seq1 + seq2;
+seq3 = ['F3q','B3q','D4q'];
+seq3[1] = ~seq3[1];
+seq3 = seq3 * 2;
+seq1 = seq1 + seq3;
+seq5 = ['E3q','G3q','D3q'];
+seq5[1] = #seq5[1];
+seq5 = seq5 + seq1;
+seq5 = seq5 + ['E3q','A3q','B3q', 'F3q','G3q', 'B3q', 'A3w'];
+seq1 = seq1 + seq5;
+seq1.instrument = "Piano";
+
+happyYouSaid = {};
+happyYouSaid.add(seq1);
+
+happyYouSaid.create_MIDI();
+happyYouSaid.play();
