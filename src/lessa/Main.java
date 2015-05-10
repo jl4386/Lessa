@@ -188,13 +188,17 @@ public class Main {
 			// se.printStackTrace();
 
 			// TODO
-			System.out.println("Debug helper output:" + se.type);
+			//System.out.println("Debug helper output:" + se.type);
+		    
 			SenmanticError le = SemanErrorDic.Exceptions.get(se.type);
-			StringBuffer sb = new StringBuffer("Error Number:");
-			sb.append(" ").append(le.codeNO).append("  Type:").append(le.type);
-			sb.append("\nDescription: ").append(se.value);
-			System.err.println(sb);
-			System.out.println(se.traceback.dumpStack());
+			if(le!=null){
+			  StringBuffer sb = new StringBuffer("Error Number:");
+	            sb.append(" ").append(le.codeNO).append("  Type:").append(le.type);
+	            sb.append("\nDescription: ").append(se.value);
+	            System.err.println(sb);
+	            //System.out.println(se.traceback.dumpStack());
+			}
+			
 
 			// remove error variables
 			Gen.removeErrorVariables();

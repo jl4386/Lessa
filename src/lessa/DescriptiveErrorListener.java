@@ -36,7 +36,7 @@ public class DescriptiveErrorListener extends BaseErrorListener {
           sb.append(" around token '").append(t.getText()).append("'");
         }
         
-        throw new SyntaxError(sourceName+"line "+line+":"+charPositionInLine+" "+"\nSyntax Error:"+sb.toString());
+        throw new SyntaxError("line "+line+":"+charPositionInLine+" "+"\nSyntax Error:"+sb.toString());
         
     }
     

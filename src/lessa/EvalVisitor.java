@@ -884,7 +884,6 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 			  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
 			  return ret;
 		  } else if (trailerStr.equals(".play")){
-		    System.out.println("GMF get play ");
             Envir.playflag = true;
 		  }
 	  }
