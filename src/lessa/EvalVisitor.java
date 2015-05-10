@@ -1205,7 +1205,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   }
   
   private static void println(String msg) {
-	  System.out.println(msg);
+	  //System.out.println(msg);
   }
   
   /**
