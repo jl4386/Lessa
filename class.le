@@ -1,0 +1,31 @@
+class C_Major(){
+	def to_B_Major(sequence){
+		for (i in range(len(sequence))){
+			sequence[i] -= 1;
+			if (sequence[i].tone == "E" or sequence[i].tone == "A"){
+				sequence[i] = ~sequence[i];
+			}
+		}
+		return sequence;
+	}
+	
+	def to_G_Major(sequence){
+		for (i in range(len(sequence))){
+			sequence[i] += 5;
+			if (sequence[i].tone == "F"){
+				sequence[i] = #sequence[i];
+			}
+		}
+		return sequence;
+	}
+}
+
+seq1 = ['C4q', 'C4q', 'G4q', 'G4q', 'A4q', 'A4q', 'G4w', 'F4q', 'F4q', 'E4q', 'E4q', 'D4q', 'D4q', 'C4w'];
+
+C_Major_instance = C_Major();
+
+seq_in_B = C_Major_instance.to_B_Major(seq1);
+print(seq_in_B);
+
+seq_in_G = C_Major_instance.to_G_Major(seq1);
+print(seq_in_G);

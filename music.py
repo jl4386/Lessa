@@ -247,8 +247,11 @@ class sequence:
 		return self.stream[key]
 
 	def __setitem__(self, key, value):
-		tmp_note = note(value)
-		self.stream[key] = tmp_note
+		if isinstance(value, str):
+			tmp_note = note(value)
+			self.stream[key] = tmp_note
+		elif isinstance(value, note):
+			self.stream[key] = value
 
 	def __delitem__(self, key):
 		try:
@@ -264,7 +267,6 @@ class sequence:
 
 	def __str__(self):
 		return str(self.stream)
-
 
 	def get_stream(self):
 		return self.stream
