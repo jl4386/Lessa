@@ -109,7 +109,8 @@ public class Gen {
 
 			if (pair.getValue().dirty) {
 				PyObject value = interpreter.get(pair.getKey());
-
+				if(value==null)
+				  continue;
 				//System.out.println(value);
 				if (value.getType().getName().equals("instance")) {
 					
