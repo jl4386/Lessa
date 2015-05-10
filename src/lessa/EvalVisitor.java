@@ -109,13 +109,13 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   				exWriter.write(input);
   				exWriter.write("\n");
   				exWriter.close();
-  				println("final written single_input:");
-  				println(input);
   			}
   		} catch (IOException e) {
   			// TODO Auto-generated catch block
   			e.printStackTrace();
   		}
+  		println("final written single_input:");
+  		println(input);
   		return input;
   	}
 
@@ -492,9 +492,10 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  return visit(ctx.for_stmt());
   }
   
-  //funcdef_stmt
+  //funcdef -> DEF NAME parameters compound_stmt
   @Override
   public String visitFuncdef(ExprParser.FuncdefContext ctx) {
+  	println("funcdef -> DEF NAME parameters compound_stmt");
     funcflag = true;
     String name =ctx.NAME().getText();
     
@@ -517,6 +518,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
     return rt;
   }
   
+ 
   //classdef_stmt
   //TODO
   @Override 
@@ -1020,6 +1022,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  ret += visit(ctx.argument(i)) + ",";
 		  i++;
 	  }
+	  ret = ret.substring(0, ret.length() - 1);
 	  return ret;
   }
   
@@ -1175,10 +1178,14 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
        sb.append(visit(ctx.fpdef(i)));
        if(ctx.test(i)!=null)
          sb.append("=").append(visit(ctx.test(i)));
-       sb.append(", ");
+       sb.append(",");
        i++;
      }   
-     return sb.toString();
+     String sb2 = sb.toString();
+     sb2 = sb2.trim();
+     sb2 = sb2.substring(0, sb2.length() - 1);
+     println("sb is:" + sb);
+     return sb2;
   }
   
   @Override public String visitFPDEFNAME(ExprParser.FPDEFNAMEContext ctx) { 
