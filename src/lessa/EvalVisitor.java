@@ -792,11 +792,11 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  return visit(ctx.tone()); 
   }
   
-//tone -> op=(SHARP|FLAT) atom
+//tone -> op=(SHARP|FLAT) atom_trailer
   @Override 
   public String visitSFATOMTONE(ExprParser.SFATOMTONEContext ctx) {
 	  println("tone -> op=(SHARP|FLAT) atom");
-	  String sf = ctx.op.getText() + visit(ctx.atom());
+	  String sf = ctx.op.getText() + visit(ctx.atom_trailer());
 	  return sf;
   }
   
@@ -804,7 +804,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   @Override 
   public String visitATOMTONE(ExprParser.ATOMTONEContext ctx) {
 	  println("tone -> atom");
-	  return visit(ctx.atom());
+	  return visit(ctx.atom_trailer());
   }
   
   //factor -> op=('+'|'-')  factor
@@ -1205,7 +1205,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   }
   
   private static void println(String msg) {
-	  //System.out.println(msg);
+	  System.out.println(msg);
   }
   
   /**
