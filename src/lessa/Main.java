@@ -99,7 +99,7 @@ public class Main {
 			ParseTree tree = parser.prog(); 
 			
 			//parser tree viewer
-			if (repl) {
+			if (false) {
 				JFrame frame = new JFrame("Antlr AST");
 				JPanel panel = new JPanel();
 				TreeViewer viewr = new TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
@@ -194,6 +194,12 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws Exception {
+	    
+	    
+	    //System.out.println("sys.path.append('"+Envir.dir.substring(0, Envir.dir.length()-1)+"')");
+	    interpreter.exec("import sys");
+	    interpreter.exec("sys.path.append('"+Envir.dir.substring(0, Envir.dir.length()-1)+"')");
+	    interpreter.exec("from music import *");
 		sc = new Scanner(System.in);
 		boolean repl = true;
 		List<String> lines = new ArrayList<String>();
