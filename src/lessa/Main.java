@@ -19,14 +19,14 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
-
 //import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.gui.TreeViewer;
 import org.python.core.PyException;
+import org.python.core.PyString;
+import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
 import envir.Envir;
@@ -40,7 +40,7 @@ import envir.SyntaxError;
 
 public class Main {
 	private static Scanner sc;
-	private static PythonInterpreter interpreter = new PythonInterpreter();;
+	private static PythonInterpreter interpreter = new PythonInterpreter();
 	public boolean playflag = false;
 
 	private static List<String> readFile(String file) throws Exception {
@@ -86,34 +86,34 @@ public class Main {
 		// parse the statement
 		try {
 			input = new ANTLRInputStream(stream);
-			//lexer
+			// lexer
 			ExprLexer lexer = new ExprLexer(input);
 			lexer.removeErrorListeners();
 			lexer.addErrorListener(TokenErrorListener.INSTANCE);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
-			
-			//parser
+
+			// parser
 			ExprParser parser = new ExprParser(tokens);
 			parser.removeErrorListeners();
 			parser.addErrorListener(DescriptiveErrorListener.INSTANCE);
-			ParseTree tree = parser.prog(); 
-			
-			//parser tree viewer
-			if (repl) {
-				JFrame frame = new JFrame("Antlr AST");
-				JPanel panel = new JPanel();
-				TreeViewer viewr = new TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
-				panel.add(viewr); 
-				frame.add(panel);
-			    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			    frame.setSize(200,200);
-			    frame.setVisible(true);
-			}
-		    
-		    //tree walk -> code generation
+			ParseTree tree = parser.prog();
+
+			// parser tree viewer
+			// if (repl) {
+			// JFrame frame = new JFrame("Antlr AST");
+			// JPanel panel = new JPanel();
+			// TreeViewer viewr = new
+			// TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
+			// panel.add(viewr);
+			// frame.add(panel);
+			// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			// frame.setSize(200,200);
+			// frame.setVisible(true);
+			// }
+
+			// tree walk -> code generation
 			EvalVisitor eval = new EvalVisitor(repl);
 			eval.visit(tree);
-			
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -127,7 +127,8 @@ public class Main {
 
 	}
 
-	private static void exec(boolean repl) throws InterruptedException {
+	private static void exec(boolean repl, List<String> params)
+			throws InterruptedException {
 		// run the statement
 
 		InputStream filepy;
@@ -149,11 +150,20 @@ public class Main {
 					interpreter.execfile(filepy);
 
 				}
+
+				// refresh variables
+				Gen.refreshDirty(interpreter);
 			} else {
-
+				// add arguments to interpreter list
+				PySystemState state = new PySystemState();
+				String[] args = params.toArray(new String[params.size()]);
+				state.argv.clear();
+				for (int i = 0; i < args.length; i++) {
+					state.argv.append(new PyString(args[i]));
+				}
+				PythonInterpreter fileExec = new PythonInterpreter(null, state);
 				filepy = new FileInputStream(Envir.dir + Envir.compileFileName);
-
-				interpreter.execfile(filepy);
+				fileExec.execfile(filepy);
 				File f = new File(Envir.defaultMidiFileName);
 				if (f.exists()) {
 					System.out.println("Song is going to play, waiting...");
@@ -161,12 +171,8 @@ public class Main {
 					player.run();
 					MidiLis listener = new MidiLis(player.sequencer);
 					player.sequencer.addMetaEventListener(listener);
-
 				}
 			}
-
-			// refresh variables
-			Gen.refreshDirty(interpreter);
 
 			filepy.close();
 		} catch (FileNotFoundException e) {
@@ -196,10 +202,14 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		sc = new Scanner(System.in);
 		boolean repl = true;
+		List<String> params = new ArrayList<String>();
 		List<String> lines = new ArrayList<String>();
-		if (args.length == 1) {
+		if (args.length > 0) {
 			lines = readFile(args[0]);
 			repl = false;
+			for (int i = 0; i < args.length; i++) {
+				params.add(args[i]);
+			}
 		}
 
 		// initialization
@@ -220,7 +230,7 @@ public class Main {
 					continue;
 
 				parse(strseen.toString(), repl);
-				exec(repl);
+				exec(repl, params);
 				strseen.delete(0, strseen.length());
 			}
 		} else {
@@ -234,7 +244,7 @@ public class Main {
 				parse(strseen.toString(), repl);
 				strseen.delete(0, strseen.length());
 			}
-			exec(repl);
+			exec(repl, params);
 		}
 
 		// Gen.closeShell();

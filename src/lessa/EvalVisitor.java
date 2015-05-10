@@ -122,7 +122,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   //stmt -> simple_stmt 
   @Override public String visitSIMPLESTMT(ExprParser.SIMPLESTMTContext ctx) { 
 	  println("stmt -> simple_stmt ");
-	  return visit(ctx.simple_stmt());
+	  return indent.getIndent() + visit(ctx.simple_stmt());
   }
   
   
@@ -131,7 +131,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  println("stmt -> expr_stmt");
 	  String expression = indent.getIndent() + visit(ctx.expr_stmt());
 	  println("stmt -> expr_stmt return:\n" + expression);
-	  return expression; 
+	  return indent.getIndent() + expression; 
   }
   
   //stmt -> compound_stmt
@@ -519,13 +519,13 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
   }
   
  
-  //classdef_stmt
+  //classdef -> CLASS NAME ( '(' testlist? ')' )? compound_stmt
   //TODO
   @Override 
   public String visitClassdef(ExprParser.ClassdefContext ctx) { 
     classflag = true;
     StringBuffer cls = new StringBuffer();
-    String name = ctx.NAME().getText();
+    String name = indent.getIndent() + ctx.NAME().getText();
     
     // generate import from class definition
     ImpStmt is = new ImpStmt("from "
@@ -593,7 +593,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  String ret = null;
 	  ret = visit(ctx.or_test(0));
 	  if (ctx.or_test(1) != null) {
-		  ret += "if " + visit(ctx.or_test(1)) + "else " + visit(ctx.test());
+		  ret += "if " + visit(ctx.or_test(1)) + " else " + visit(ctx.test());
 	  }
 	  println("test return:" + ret);
 	  return ret;
@@ -606,7 +606,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  ret = visit(ctx.and_test(0));
 	  int i = 1;
 	  while(ctx.and_test(i) != null) {
-		  ret += "or " + visit(ctx.and_test(i));
+		  ret += " " + "or " + visit(ctx.and_test(i));
 		  i++;
 	  }
 	  //println("or_test return:" + ret);
@@ -620,7 +620,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 	  ret = visit(ctx.not_test(0));
 	  int i = 1;
 	  while(ctx.not_test(i) != null) {
-		  ret += "and " + visit(ctx.not_test(i));
+		  ret += " " + "and " + visit(ctx.not_test(i));
 		  i++;
 	  }
 	  //println("and_test return:" + ret);
