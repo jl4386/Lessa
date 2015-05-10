@@ -237,7 +237,9 @@ public class Main {
 			System.out.println("Welcome to Lessa world!");
 			System.out.println("Lessa 1.0");
 			System.out.println("-------------------------------");
-			while (!(input = sc.nextLine()).equals("exit()")) {
+			while (true) {
+				System.out.print(">>> ");
+				if((input = sc.nextLine()).equals("exit()")) break;
 				strseen.append(input + "\n");
 				if ((count = isComplete(input, count, pre, pos)) != 0)
 					continue;
