@@ -847,7 +847,7 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 		  }
 		  
 		  if (atomStr.equals("play")) {
-		      Envir.playflag = true;
+		      
 			  String trailerStr = visit(ctx.trailer(0));
 			  trailerStr = trailerStr.substring(1, trailerStr.length() - 1);
 			  String ret = trailerStr + ".play()";
@@ -883,6 +883,9 @@ public class EvalVisitor extends ExprBaseVisitor<String> {
 			  String ret = visit(ctx.atom()) + visit(ctx.trailer(0)) + "(" + third + ",\"" + third + "\")";
 			  println("atom_trailer -> (THIS '.')? atom  (trailer)* return:" + ret);
 			  return ret;
+		  } else if (trailerStr.equals(".play")){
+		    System.out.println("GMF get play ");
+            Envir.playflag = true;
 		  }
 	  }
 	  
