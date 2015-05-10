@@ -341,7 +341,7 @@ class song:
 		except ValueError, IndexError:
 			raise ValueError('The sequence you are trying to delete is not in the song')
 
-	def create_MIDI(self, file_name):
+	def create_MIDI(self):
 		# Create the MIDIFile Object with n track
 		MyMIDI = MIDIFile(len(self.sequence_list), removeDuplicates = False, deinterleave = False)
 		for i in range(len(self.sequence_list)):
@@ -349,9 +349,12 @@ class song:
 			self.change_instrument(MyMIDI, i, 0, 0, self.sequence_list[i].instrument)
 
 		# write MIDI file to disk.
-		binfile = open(file_name, 'wb')
+		binfile = open('output.mid', 'wb')
 		MyMIDI.writeFile(binfile)
 		binfile.close()
+		
+	def play(self):
+		pass
 
 # 	def play(self, file_name):
 # 		# play MIDI file
