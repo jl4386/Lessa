@@ -1,21 +1,23 @@
 seq1 = ['C3q', 'C3q', 'G3q', 'G3q', 'A3q', 'A3q', 'G3w', 'F3q', 'F3q', 'E3q', 'E3q', 'D3q', 'D3q', 'C3w'];
 seq2 = ['G3q', 'G3q', 'F3q', 'F3q', 'E3q', 'E3q', 'D3w'];
 
-seq1 = seq1 + (seq2 * 2 + seq1) * 2;
-print(seq1);
-seq1.instrument = "Piano";
-
-seq3 = ['C2w', 'E2w', 'F2w', 'E2w', 'D2w', 'C2w', 'F2q', 'G2q', 'E2w'];
-seq3[3].pitch_up();
-seq4 = ['E2w', 'D2w', 'C2w', 'C2q', 'B1q'];
-
-seq3 = seq3 + seq4 + seq3;
+seq3 = [];
+seq3 = seq1 + seq2 * 2 + seq1;
 print(seq3);
 seq3.instrument = "Piano";
 
+seq4 = ['C2w', 'E2w', 'F2w', 'E2w', 'D2w', 'C2w', 'F2q', 'G2q', 'E2w'];
+seq4[3].pitch_up();
+seq5 = ['E2w', 'D2w', 'C2w', 'C2q', 'B1q'];
+
+seq6 = [];
+seq6 = seq4 + seq5 + seq4;
+print(seq6);
+seq6.instrument = "Piano";
+
 twinkle = {};
-twinkle.add(seq1);
 twinkle.add(seq3);
+twinkle.add(seq6);
 
 twinkle.create_MIDI();
 twinkle.play();

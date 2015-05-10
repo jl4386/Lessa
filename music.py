@@ -26,7 +26,7 @@ tone_list = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 instrument_dict = {'Piano': 1, 'Guitar': 25, 'Bass': 33, 'Violin': 41, 'Cello': 43,
 					'Music Box': 11, 'Trumpet': 57, 'Sax': 65, 'Tinkle Bell': 113}
 
-duration_dict = {'w': 1, 'h': 0.5, 'q': 0.25, 'e': 0.125, 's': 0.0625}
+duration_dict = {'w': 2, 'h': 1, 'q': 0.5, 'e': 0.25, 's': 0.125}
 
 def list_to_seq(list):
 	tmp_seq = sequence()
@@ -190,51 +190,58 @@ class sequence:
 		if self.instrument != other.instrument:
 			raise ValueError('Two sequence have different instrument, cannot concatenate')
 
-		self.stream += other.stream
-		return self
+		tmp_seq = sequence([])
+		tmp_seq.stream = list(self.stream)
+		tmp_seq.instrument = self.instrument
+
+		tmp_seq.stream += other.stream
+
+		return tmp_seq
 
 	def __iadd__(self, other):
 		if not isinstance(other, sequence):
 			raise TypeError('Sequences can only be added to sequences')
-			
+
 		if self.instrument != other.instrument:
 			raise ValueError('Two sequence have different instrument, cannot concatenate')
 
-		self.stream += other.stream
-		return self
+		tmp_seq = sequence([])
+		tmp_seq.stream = list(self.stream)
+		tmp_seq.instrument = self.instrument
+	
+		tmp_seq.stream += other.stream
+
+		return tmp_seq
 
 	def __mul__(self, other):
 		if not isinstance(other, int):
 			raise TypeError('Sequences can only be multiplied to numbers')
 		
-		tmp_stream = self.stream
+		tmp_seq = sequence([])
+		tmp_seq.stream = list(self.stream)
+		tmp_seq.instrument = self.instrument
+
+		tmp_stream = list(self.stream)
 
 		for i in range(1, other):
-			self.stream = self.stream + tmp_stream
+			tmp_seq.stream += tmp_stream
 		
-		return self
+		return tmp_seq
 
 	def __imul__(self, other):
 		if not isinstance(other, int):
 			raise TypeError('Sequences can only be multiplied to numbers')
 		
-		tmp_stream = self.stream
+		tmp_seq = sequence([])
+		tmp_seq.stream = list(self.stream)
+		tmp_seq.instrument = self.instrument
+
+		tmp_stream = list(self.stream)
 
 		for i in range(1, other):
-			self.stream = self.stream + tmp_stream
+			tmp_seq.stream += tmp_stream
 		
-		return self
-	
-	def __mul__(self, other):
-		if not isinstance(other, int):
-			raise TypeError('Sequences can only be multiplied to numbers')
-		
-		tmp_stream = self.stream
-		
-		for i in range(other):
-			self.stream += tmp_stream
-		
-		return self
+		return tmp_seq
 
 	def __getitem__(self, key):
 		return self.stream[key]
