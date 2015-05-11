@@ -1,0 +1,11 @@
+
+seq1 = ['C4q', 'C4q', 'G4q', 'G4q', 'A4q', 'A4q', 'G4w', 'F4q', 'F4q', 'E4q', 'E4q', 'D4q', 'D4q', 'C4w'];
+
+print(seq1);
+
+
+my_original = {};
+my_original.add(seq1);
+
+my_original.create_MIDI() ;
+my_original.play();

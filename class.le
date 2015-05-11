@@ -22,10 +22,25 @@ class C_Major(){
 
 seq1 = ['C4q', 'C4q', 'G4q', 'G4q', 'A4q', 'A4q', 'G4w', 'F4q', 'F4q', 'E4q', 'E4q', 'D4q', 'D4q', 'C4w'];
 
+print("Sequence to be translated:") ;
+print(seq1);
+
 C_Major_instance = C_Major();
 
 seq_in_B = C_Major_instance.to_B_Major(seq1);
+print("Sequence in B Major");
 print(seq_in_B);
 
+
 seq_in_G = C_Major_instance.to_G_Major(seq1);
+print("Sequence in G Major");
 print(seq_in_G);
+
+
+
+print("Let's play Sequence in G Major");
+my_new = {};
+my_new.add(seq_in_G);
+my_new.create_MIDI();
+my_new.play();
+
